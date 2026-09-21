@@ -1,0 +1,187 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.tech-tiers-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vw, 5.5rem);
+}
+
+.my-tier-divider {
+  margin: 1rem 0;
+}
+
+.tech-tier-section {
+  .tier-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+
+    .tier-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: $radius-xs;
+      background-color: $color-surface;
+      border: 1px solid $color-border-subtle;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $color-accent;
+      flex-shrink: 0;
+    }
+
+    .tier-badge {
+      font-family: $font-sans;
+      font-size: $font-size-2xs;
+      letter-spacing: 0.04em;
+      text-transform: capitalize;
+      color: $color-accent;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .tier-title {
+      color: $color-primary;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-desc {
+      max-width: 680px;
+    }
+  }
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tech-module-card {
+  background-color: #ffffff;
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-xs;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all $transition-base;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(10, 31, 68, 0.06);
+
+    .module-bottom-line {
+      width: 100%;
+      background-color: $color-accent;
+    }
+
+    .module-name {
+      color: $color-accent;
+    }
+  }
+
+  .module-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    .module-category {
+      font-family: $font-sans;
+      font-size: $font-size-2xs;
+      color: $color-secondary;
+      letter-spacing: 0.04em;
+      text-transform: capitalize;
+    }
+
+    .module-status-tag {
+      font-family: $font-mono;
+      font-size: 0.625rem;
+      background-color: $color-light-blue;
+      color: $color-accent;
+      padding: 0.2rem 0.5rem;
+      border-radius: $radius-xs;
+      font-weight: 600;
+    }
+  }
+
+  .module-name {
+    font-family: $font-sans;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: $color-primary;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+    transition: color $transition-fast;
+  }
+
+  .module-role {
+    font-family: $font-sans;
+    font-size: $font-size-sm;
+    line-height: $lh-normal;
+    color: $color-text-secondary;
+    margin-bottom: 1.5rem;
+  }
+
+  .module-strengths {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(18, 58, 114, 0.06);
+
+    .strengths-label {
+      font-family: $font-sans;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: capitalize;
+      color: $color-secondary;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .strengths-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+
+      .strength-item {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-family: $font-serif;
+        font-size: 0.8125rem;
+        color: $color-text-primary;
+
+        .text-accent {
+          color: $color-accent;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  .module-bottom-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 32px;
+    height: 2px;
+    background-color: transparent;
+    transition: width $transition-slow, background-color $transition-slow;
+  }
+}
+

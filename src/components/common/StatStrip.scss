@@ -1,0 +1,128 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.stat-strip-section {
+  padding: clamp(3rem, 6vw, 5.5rem) 0;
+  border-top: 1px solid $color-border-subtle;
+  border-bottom: 1px solid $color-border-subtle;
+  background-color: $color-bg;
+
+  &.theme-surface {
+    background-color: $color-surface;
+  }
+
+  &.theme-dark {
+    background-color: $color-primary;
+    border-color: rgba(255, 255, 255, 0.1);
+
+    .stat-number,
+    .stat-suffix {
+      color: #ffffff;
+    }
+
+    .stat-label {
+      color: #93c5fd;
+    }
+
+    .stat-desc {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .stat-separator {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+.stat-strip-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.75rem, 4vw, 2.5rem) clamp(1rem, 3vw, 1.75rem);
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+}
+
+.stat-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.5rem;
+
+  @include respond-below(lg) {
+    padding: 0.5rem 0.25rem;
+    border-bottom: none;
+  }
+
+  @include respond-to(lg) {
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  .stat-figure {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+    margin-bottom: 0.75rem;
+
+    .stat-number {
+      font-family: $font-serif;
+      font-size: clamp(2.35rem, 5.5vw, 4.25rem);
+      font-weight: 400;
+      color: $color-primary;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-suffix {
+      font-family: $font-serif;
+      font-size: clamp(1.65rem, 3.8vw, 2.75rem);
+      font-weight: 400;
+      color: $color-accent;
+      line-height: 1;
+    }
+  }
+
+  .stat-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    .stat-label {
+      font-family: $font-sans;
+      font-size: clamp(0.72rem, 1.8vw, $font-size-xs);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: capitalize;
+      color: $color-secondary;
+    }
+
+    .stat-desc {
+      font-family: $font-sans;
+      font-size: clamp(0.78rem, 1.8vw, $font-size-sm);
+      line-height: 1.45;
+      color: $color-text-secondary;
+    }
+  }
+
+  .stat-separator {
+    display: none;
+
+    @include respond-to(lg) {
+      display: block;
+      position: absolute;
+      top: 10%;
+      right: 0;
+      height: 80%;
+      width: 1px;
+      background-color: $color-border-subtle;
+    }
+  }
+}
+

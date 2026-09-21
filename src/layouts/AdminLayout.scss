@@ -1,0 +1,154 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.admin-wrapper {
+  min-height: 100vh;
+  background-color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(18, 58, 114, 0.12);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-header-container {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-brand-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .admin-emblem-wrap {
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #051026;
+    border: 1px solid rgba(37, 99, 235, 0.3);
+
+    .admin-emblem {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .admin-brand-name {
+    font-family: $font-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $color-primary;
+    display: block;
+    line-height: 1.1;
+  }
+
+  .admin-brand-sub {
+    font-family: $font-mono;
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    color: $color-secondary;
+    display: block;
+  }
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  .admin-user-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(18, 58, 114, 0.06);
+    border: 1px solid rgba(18, 58, 114, 0.15);
+    padding: 5px 12px;
+    border-radius: 6px;
+
+    .user-icon-wrap {
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-text-info {
+      display: flex;
+      flex-direction: column;
+
+      .user-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+      }
+
+      .user-role-tag {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+
+        &.role-superadmin {
+          color: #7c3aed;
+        }
+
+        &.role-editor {
+          color: #0284c7;
+        }
+
+        &.role-viewer {
+          color: #64748b;
+        }
+      }
+    }
+  }
+
+  .admin-logout-btn {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+      color: #dc2626;
+    }
+  }
+
+  .admin-live-badge {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: $font-mono;
+    font-size: $font-size-2xs;
+    color: $color-secondary;
+
+    @include respond-to(md) {
+      display: inline-flex;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+  }
+}
+
+.admin-main {
+  flex: 1;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+}
+

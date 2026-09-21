@@ -1,0 +1,124 @@
+// ==========================================
+// MURTIHUB TECHNOLOGIES — TYPOGRAPHY
+// ==========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+body {
+  font-family: $font-sans;
+  font-size: $font-size-base;
+  line-height: $lh-relaxed;
+  color: $color-text-primary;
+  background-color: $color-bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-sans;
+  font-weight: 700;
+  color: $color-primary;
+  line-height: $lh-tight;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+// Display Headline (Hero size)
+.text-display {
+  font-size: clamp(2.75rem, 6.5vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+// Large Section Title
+.text-h1 {
+  font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+// Subsection Title
+.text-h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.625rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+// Card / Module Title
+.text-h3 {
+  font-size: clamp(1.35rem, 2.2vw, 1.875rem);
+  line-height: 1.25;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.text-h4 {
+  font-size: clamp(1.15rem, 1.6vw, 1.375rem);
+  line-height: 1.35;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+// Technical Eyebrow / Micro-label
+.technical-label {
+  @include technical-label;
+}
+
+.technical-code {
+  font-family: $font-mono;
+  font-size: $font-size-xs;
+  letter-spacing: 0.05em;
+}
+
+// Paragraph leads
+.lead-paragraph {
+  font-size: clamp(1.125rem, 1.5vw, 1.35rem);
+  line-height: 1.65;
+  color: $color-text-secondary;
+  font-weight: 400;
+}
+
+// Monospace metric figure
+.metric-number {
+  font-family: $font-sans;
+  font-size: clamp(2.25rem, 4.2vw, 3.5rem);
+  line-height: 1;
+  font-weight: 700;
+  color: $color-primary;
+  letter-spacing: -0.02em;
+}
+
+.metric-label {
+  font-family: $font-sans;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  color: $color-text-secondary;
+  margin-top: $space-2;
+}
+
+// Blockquotes for leadership
+.editorial-quote {
+  font-family: $font-sans;
+  font-style: italic;
+  font-size: clamp(1.35rem, 2.5vw, 2.15rem);
+  line-height: 1.45;
+  color: $color-primary;
+  position: relative;
+  border-left: 2px solid $color-accent;
+  padding-left: clamp(1.25rem, 3vw, 2.5rem);
+}
+

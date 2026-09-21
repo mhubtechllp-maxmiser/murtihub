@@ -1,0 +1,122 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.section-heading {
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  position: relative;
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: $font-sans;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.04em;
+    color: $color-accent;
+    margin-bottom: 1.25rem;
+
+    .eyebrow-dash {
+      width: 24px;
+      height: 1px;
+      background-color: $color-accent;
+    }
+  }
+
+  .section-title {
+    font-family: $font-sans;
+    font-weight: 700;
+    color: $color-primary;
+    margin-bottom: 1rem;
+    white-space: pre-line;
+    text-transform: capitalize;
+  }
+
+  .section-subtitle {
+    font-family: $font-sans;
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+    color: $color-secondary;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .section-description {
+    color: $color-text-secondary;
+    max-width: 680px;
+  }
+
+  .section-accent-line {
+    margin-top: 1.75rem;
+    width: 60px;
+    height: 2px;
+    background-color: $color-accent;
+  }
+
+  // Alignments
+  &.align-center {
+    text-align: center;
+
+    .section-eyebrow {
+      justify-content: center;
+    }
+
+    .section-description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-accent-line {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &.align-split {
+    .section-heading-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+
+      @include respond-to(lg) {
+        grid-template-columns: 1.2fr 1fr;
+        align-items: flex-end;
+        gap: 4rem;
+      }
+    }
+
+    .section-title {
+      margin-bottom: 0;
+    }
+  }
+
+  // Dark Theme
+  &.theme-dark {
+    .section-eyebrow {
+      color: #60a5fa;
+
+      .eyebrow-dash {
+        background-color: #60a5fa;
+      }
+    }
+
+    .section-title {
+      color: #ffffff;
+    }
+
+    .section-subtitle {
+      color: #93c5fd;
+    }
+
+    .section-description {
+      color: rgba(248, 250, 255, 0.75);
+    }
+
+    .section-accent-line {
+      background-color: #60a5fa;
+    }
+  }
+}
+

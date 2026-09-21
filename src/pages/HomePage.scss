@@ -1,0 +1,182 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.home-hero-section {
+  position: relative;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  background-color: $color-primary;
+
+  @media (max-width: #{$bp-lg}) {
+    height: auto;
+    max-height: none;
+    min-height: auto;
+    overflow: hidden;
+  }
+}
+
+.home-services-section,
+.home-projects-section {
+  background-color: $color-bg;
+
+  .services-section-footer,
+  .projects-section-footer {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .services-expanded-footer,
+    .projects-expanded-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .services-toggle-btn,
+    .projects-toggle-btn {
+      cursor: pointer;
+    }
+  }
+}
+
+.home-architecture-section {
+  position: relative;
+  background: linear-gradient(180deg, #071530 0%, #0a1f44 50%, #071530 100%);
+  border-top: 1px solid rgba(37, 99, 235, 0.2);
+  border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+
+  .architecture-pillars-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+
+    @include respond-to(md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pillar-item {
+      padding: 1.75rem;
+      background-color: rgba(10, 31, 68, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $radius-xs;
+
+      .pillar-num {
+        font-family: $font-mono;
+        font-size: $font-size-xs;
+        color: #60a5fa;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .pillar-title {
+        font-family: $font-serif;
+        font-size: 1.25rem;
+        color: #ffffff;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.5rem;
+      }
+
+      .pillar-desc {
+        font-family: $font-serif;
+        font-size: 0.875rem;
+        line-height: $lh-normal;
+        color: rgba(248, 250, 255, 0.75);
+      }
+    }
+  }
+}
+
+.home-ethos-section {
+  background-color: $color-surface;
+
+  .ethos-pillars-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+
+    @include respond-to(md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ethos-card {
+      background-color: #ffffff;
+      border: 1px solid $color-border-subtle;
+      border-radius: $radius-xs;
+      padding: 2rem;
+      transition: all $transition-base;
+
+      &:hover {
+        border-color: $color-accent;
+        transform: translateY(-3px);
+      }
+
+      .ethos-idx {
+        font-family: $font-mono;
+        font-size: $font-size-xs;
+        color: $color-accent;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.75rem;
+      }
+
+      .ethos-title {
+        font-family: $font-serif;
+        font-size: 1.35rem;
+        color: $color-primary;
+        margin-bottom: 0.5rem;
+      }
+
+      .ethos-desc {
+        font-family: $font-serif;
+        font-size: 0.9375rem;
+        line-height: $lh-normal;
+        color: $color-text-secondary;
+      }
+    }
+  }
+
+  .ethos-quote-block {
+    background-color: #ffffff;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xs;
+    padding: clamp(2rem, 5vw, 4rem);
+
+    .editorial-quote {
+      margin: 0;
+
+      p {
+        font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+        color: $color-primary;
+        line-height: 1.35;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .ethos-attribution {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-family: $font-serif;
+
+      strong {
+        font-size: 1.0625rem;
+        color: $color-primary;
+        letter-spacing: 0.04em;
+      }
+
+      span {
+        font-size: $font-size-sm;
+        color: $color-secondary;
+      }
+    }
+  }
+}
+

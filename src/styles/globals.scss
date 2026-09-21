@@ -1,0 +1,198 @@
+// ==========================================
+// MURTIHUB TECHNOLOGIES — GLOBAL STYLES
+// ==========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'reset';
+@use 'typography';
+@use 'layout';
+@use 'animations';
+
+// Amarante Font
+@font-face {
+  font-family: 'Amarante';
+  src: url('/fonts/Amarante.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Ananda Black — place TTF at /public/fonts/AnandaBlack.ttf
+// Falls back gracefully to Georgia if not present
+@font-face {
+  font-family: 'Ananda Black';
+  src: url('/fonts/AnandaBlack.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Transcity Display Font
+@font-face {
+  font-family: 'Transcity';
+  src: url('/fonts/Transcity.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+:root {
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
+  --color-accent: #{$color-accent};
+  --color-light-blue: #{$color-light-blue};
+  --color-bg: #{$color-bg};
+  --color-surface: #{$color-surface};
+  --color-text-primary: #{$color-text-primary};
+  --color-text-secondary: #{$color-text-secondary};
+}
+
+::selection {
+  background-color: $color-light-blue;
+  color: $color-primary;
+}
+
+// Custom editorial scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $color-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(18, 58, 114, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $color-accent;
+}
+
+// Global button styles
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  font-family: $font-sans;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  padding: 0.95rem 1.85rem;
+  border-radius: $radius-xs;
+  transition: all $transition-base;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.btn-primary {
+  background-color: $color-accent;
+  color: $color-white;
+  border: 1px solid $color-accent;
+
+  &:hover {
+    background-color: $color-secondary;
+    border-color: $color-secondary;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25);
+  }
+}
+
+.btn-dark {
+  background-color: $color-primary;
+  color: $color-white;
+  border: 1px solid $color-primary;
+
+  &:hover {
+    background-color: $color-secondary;
+    border-color: $color-secondary;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(10, 31, 68, 0.25);
+  }
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: $color-primary;
+  border: 1px solid $color-border-medium;
+
+  &:hover {
+    background-color: $color-surface;
+    border-color: $color-primary;
+    color: $color-primary;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-outline-white {
+  background-color: transparent;
+  color: $color-white;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: $color-white;
+    color: $color-white;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-sm {
+  padding: 0.65rem 1.25rem;
+  font-size: $font-size-xs;
+}
+
+// Editorial text link
+.link-editorial {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: $font-sans;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  color: $color-accent;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-secondary;
+
+    .btn-hover-arrow {
+      transform: translateX(4px);
+    }
+  }
+}
+
+// Badges & Tags
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: $font-sans;
+  font-size: $font-size-2xs;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.65rem;
+  background-color: $color-light-blue;
+  color: $color-secondary;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: $radius-xs;
+}
+
+.tag-badge-dark {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+

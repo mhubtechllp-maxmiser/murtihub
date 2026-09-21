@@ -1,0 +1,533 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.admin-studio-container {
+  position: relative;
+}
+
+.admin-toast-alert {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #065f46;
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: $radius-xs;
+  font-family: $font-serif;
+  font-size: 0.9375rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUpToast 0.3s ease;
+}
+
+@keyframes slideUpToast {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.admin-layout-mosaic {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @include respond-to(lg) {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .sidebar-group-title {
+    font-family: $font-mono;
+    font-size: $font-size-2xs;
+    letter-spacing: 0.14em;
+    color: $color-secondary;
+    font-weight: 700;
+  }
+
+  .admin-nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .admin-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: $radius-xs;
+      background-color: #ffffff;
+      border: 1px solid rgba(18, 58, 114, 0.1);
+      color: $color-primary;
+      font-family: $font-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-align: left;
+      transition: all $transition-fast;
+
+      &:hover {
+        background-color: $color-surface;
+        border-color: $color-accent;
+      }
+
+      &.is-active {
+        background-color: $color-primary;
+        color: #ffffff;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  .admin-reset-box {
+    margin-top: 1rem;
+
+    .reset-btn {
+      width: 100%;
+    }
+  }
+}
+
+.admin-work-area {
+  .editor-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(18, 58, 114, 0.1);
+    border-radius: $radius-xs;
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    box-shadow: 0 4px 16px rgba(10, 31, 68, 0.04);
+
+    .editor-card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid rgba(18, 58, 114, 0.08);
+      margin-bottom: 2rem;
+
+      .admin-tag {
+        font-family: $font-mono;
+        font-size: $font-size-2xs;
+        letter-spacing: 0.14em;
+        color: $color-accent;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.35rem;
+      }
+
+      .editor-heading {
+        font-family: $font-serif;
+        font-size: 1.65rem;
+        color: $color-primary;
+        margin-bottom: 0.35rem;
+      }
+
+      .editor-sub {
+        font-family: $font-serif;
+        font-size: 0.875rem;
+        color: $color-text-secondary;
+        max-width: 600px;
+      }
+    }
+  }
+}
+
+// Slide editor list
+.slides-editor-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .slide-editor-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    background-color: $color-surface;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xs;
+
+    .slide-thumb-wrap {
+      position: relative;
+      width: 120px;
+      height: 70px;
+      border-radius: $radius-xs;
+      overflow: hidden;
+      flex-shrink: 0;
+
+      .slide-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .slide-seq-tag {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        background: rgba(10, 31, 68, 0.8);
+        color: #ffffff;
+        font-family: $font-mono;
+        font-size: 0.625rem;
+        padding: 0.15rem 0.35rem;
+        border-radius: 2px;
+      }
+    }
+
+    .slide-details {
+      flex: 1;
+
+      .slide-id-txt {
+        font-family: $font-mono;
+        font-size: $font-size-2xs;
+        color: $color-accent;
+        display: block;
+      }
+
+      .slide-caption-txt {
+        font-family: $font-serif;
+        font-size: 1rem;
+        color: $color-primary;
+        font-weight: 700;
+        margin: 0.2rem 0;
+      }
+
+      .slide-alt-txt {
+        font-family: $font-serif;
+        font-size: 0.8125rem;
+        color: $color-text-secondary;
+        display: block;
+      }
+    }
+
+    .slide-actions {
+      .delete-slide-btn {
+        color: #ef4444;
+        padding: 0.5rem;
+        border-radius: $radius-xs;
+        transition: background-color $transition-fast;
+
+        &:hover {
+          background-color: #fee2e2;
+        }
+      }
+    }
+  }
+}
+
+// Services editor table
+.services-admin-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .service-admin-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    background-color: $color-surface;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xs;
+
+    .svc-id-cell {
+      font-family: $font-mono;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: $color-accent;
+      padding-top: 0.3rem;
+    }
+
+    .svc-main-cell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .admin-inline-input {
+        font-family: $font-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: $color-primary;
+        background-color: #ffffff;
+        border: 1px solid $color-border-subtle;
+        padding: 0.4rem 0.75rem;
+        border-radius: $radius-xs;
+        width: 100%;
+
+        &:focus {
+          outline: 2px solid $color-accent;
+        }
+      }
+
+      .svc-desc-cell {
+        font-family: $font-serif;
+        font-size: 0.875rem;
+        color: $color-text-secondary;
+      }
+
+      .svc-tags-cell {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+    }
+
+    .svc-link-cell {
+      .view-live-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-family: $font-serif;
+        font-size: $font-size-xs;
+        color: $color-accent;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid $color-border-subtle;
+        border-radius: $radius-xs;
+        background-color: #ffffff;
+
+        &:hover {
+          background-color: $color-light-blue;
+        }
+      }
+    }
+  }
+}
+
+// Projects editor
+.projects-admin-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project-admin-card {
+    background-color: $color-surface;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xs;
+    overflow: hidden;
+
+    .proj-admin-thumb {
+      height: 140px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .proj-admin-content {
+      padding: 1.25rem;
+
+      .proj-admin-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+
+        .proj-name-tag {
+          font-family: $font-serif;
+          font-size: $font-size-xs;
+          font-weight: 700;
+          color: $color-accent;
+        }
+
+        .proj-status-select {
+          font-family: $font-mono;
+          font-size: $font-size-2xs;
+          padding: 0.2rem 0.5rem;
+          border-radius: $radius-xs;
+          border: 1px solid $color-border-subtle;
+          background-color: #ffffff;
+        }
+      }
+
+      .proj-admin-title {
+        font-family: $font-serif;
+        font-size: 1.15rem;
+        color: $color-primary;
+        margin-bottom: 0.5rem;
+      }
+
+      .proj-admin-desc {
+        font-family: $font-serif;
+        font-size: 0.8125rem;
+        color: $color-text-secondary;
+        line-height: $lh-normal;
+        margin-bottom: 1rem;
+      }
+
+      .proj-admin-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        .admin-m-chip {
+          font-family: $font-mono;
+          font-size: 0.6875rem;
+          background-color: #ffffff;
+          border: 1px solid rgba(18, 58, 114, 0.1);
+          padding: 0.25rem 0.5rem;
+          border-radius: $radius-xs;
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+// Submissions list
+.submissions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .submission-card {
+    background-color: $color-surface;
+    border: 1px solid $color-border-subtle;
+    border-radius: $radius-xs;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    &.is-handled {
+      opacity: 0.7;
+    }
+
+    .sub-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .sub-name {
+        font-family: $font-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: $color-primary;
+      }
+
+      .sub-company {
+        font-family: $font-serif;
+        font-size: 0.9375rem;
+        color: $color-text-secondary;
+      }
+
+      .sub-meta-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .sub-date {
+          font-family: $font-mono;
+          font-size: $font-size-2xs;
+          color: $color-text-secondary;
+        }
+
+        .sub-status-tag {
+          font-family: $font-mono;
+          font-size: 0.6875rem;
+          padding: 0.2rem 0.5rem;
+          border-radius: $radius-xs;
+
+          &.status-unread {
+            background-color: #fee2e2;
+            color: #991b1b;
+          }
+
+          &.status-handled {
+            background-color: #d1fae5;
+            color: #065f46;
+          }
+        }
+      }
+    }
+
+    .sub-email-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      .sub-type-badge {
+        font-family: $font-mono;
+        font-size: $font-size-2xs;
+        background-color: $color-light-blue;
+        color: $color-secondary;
+        padding: 0.2rem 0.5rem;
+        border-radius: 2px;
+      }
+
+      .sub-email {
+        font-family: $font-serif;
+        font-size: 0.875rem;
+        color: $color-accent;
+      }
+    }
+
+    .sub-message-text {
+      font-family: $font-serif;
+      font-size: 0.9375rem;
+      line-height: $lh-normal;
+      color: $color-text-primary;
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: $radius-xs;
+      border: 1px solid $color-border-subtle;
+    }
+
+    .sub-action-bar {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+// Brand constants form
+.brand-admin-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brand-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-family: $font-mono;
+      font-size: $font-size-2xs;
+      color: $color-secondary;
+      font-weight: 700;
+    }
+
+    .admin-inline-input {
+      font-family: $font-serif;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      background-color: $color-surface;
+      border: 1px solid $color-border-subtle;
+      border-radius: $radius-xs;
+      color: $color-primary;
+    }
+  }
+}
+

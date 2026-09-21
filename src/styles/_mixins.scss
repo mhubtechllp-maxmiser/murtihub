@@ -1,0 +1,99 @@
+// ==========================================
+// MURTIHUB TECHNOLOGIES — SCSS MIXINS
+// ==========================================
+
+@use 'variables' as *;
+
+// Breakpoint Mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: #{$bp-xs - 1px}) { @content; }
+  } @else if $breakpoint == sm {
+    @media (min-width: #{$bp-sm}) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: #{$bp-md}) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: #{$bp-lg}) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: #{$bp-xl}) { @content; }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: #{$bp-2xl}) { @content; }
+  } @else {
+    @media (min-width: #{$breakpoint}) { @content; }
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: #{$bp-sm - 1px}) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: #{$bp-md - 1px}) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: #{$bp-lg - 1px}) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: #{$bp-xl - 1px}) { @content; }
+  } @else {
+    @media (max-width: #{$breakpoint}) { @content; }
+  }
+}
+
+// Container helper
+@mixin container($max: $container-max) {
+  width: 100%;
+  max-width: $max;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1rem, 4vw, 3.5rem);
+  padding-right: clamp(1rem, 4vw, 3.5rem);
+  box-sizing: border-box;
+}
+
+// Technical label
+@mixin technical-label {
+  font-family: $font-sans;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
+  color: $color-accent;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// Editorial headline
+@mixin editorial-heading {
+  font-family: $font-sans;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: $lh-tight;
+  color: $color-primary;
+}
+
+// Thin architectural border
+@mixin technical-card {
+  background-color: $color-surface;
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-xs;
+  transition: border-color $transition-base, background-color $transition-base, transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    border-color: $color-accent;
+    background-color: $color-white;
+    box-shadow: $shadow-md;
+  }
+}
+
+// Focus ring for accessibility
+@mixin focus-ring {
+  outline: 2px solid $color-accent;
+  outline-offset: 3px;
+}
+
+// Reduced motion fallback
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+

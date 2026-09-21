@@ -1,0 +1,124 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.contact-main-section {
+  background-color: $color-bg;
+}
+
+.contact-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1fr 1.3fr;
+    gap: 4.5rem;
+  }
+}
+
+.contact-meta-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .meta-card {
+    background-color: #ffffff;
+    border: 1px solid $color-border-subtle;
+    border-radius: 16px;
+    padding: clamp(1.25rem, 3.5vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    box-shadow: 0 4px 20px -2px rgba(10, 31, 68, 0.04);
+
+    .meta-card-tag {
+      font-family: $font-sans;
+      font-size: $font-size-2xs;
+      letter-spacing: 0.04em;
+      color: $color-accent;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .meta-title {
+      font-family: $font-sans;
+      font-size: 1.65rem;
+      color: $color-primary;
+      text-transform: capitalize;
+    }
+
+    .meta-desc {
+      font-family: $font-sans;
+      font-size: 0.9375rem;
+      line-height: $lh-relaxed;
+      color: $color-text-secondary;
+    }
+
+    .meta-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(18, 58, 114, 0.08);
+
+      .info-key {
+        font-family: $font-sans;
+        font-size: $font-size-2xs;
+        letter-spacing: 0.04em;
+        text-transform: capitalize;
+        color: $color-secondary;
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+
+      .info-val {
+        font-family: $font-sans;
+        font-size: 1.0625rem;
+        color: $color-primary;
+        font-weight: 700;
+
+        &.info-link {
+          color: $color-accent;
+          text-decoration: none;
+          transition: color $transition-fast;
+
+          &:hover {
+            color: $color-secondary;
+          }
+        }
+      }
+    }
+  }
+
+  .standards-checklist-box {
+    background-color: $color-surface;
+    border: 1px solid $color-border-subtle;
+    border-radius: 12px;
+    padding: 1.75rem;
+
+    .standards-title {
+      font-family: $font-sans;
+      font-size: $font-size-xs;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: capitalize;
+      color: $color-secondary;
+      margin-bottom: 1rem;
+    }
+
+    .standards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .standard-item {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        font-family: $font-serif;
+        font-size: 0.875rem;
+        color: $color-text-primary;
+      }
+    }
+  }
+}

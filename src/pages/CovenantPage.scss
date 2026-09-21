@@ -1,0 +1,73 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.covenant-principles-section {
+  background-color: $color-bg;
+
+  .covenant-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    @include respond-to(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+.guarantee-box-section {
+  background-color: $color-surface;
+
+  .covenant-guarantee-panel {
+    background: linear-gradient(135deg, #0a1f44 0%, #123a72 100%);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    border-radius: $radius-xs;
+    padding: clamp(2.5rem, 5vw, 4.5rem);
+    color: #ffffff;
+    box-shadow: 0 20px 48px rgba(10, 31, 68, 0.15);
+
+    .panel-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .guarantee-badge {
+        font-family: $font-mono;
+        font-size: $font-size-2xs;
+        letter-spacing: 0.18em;
+        color: #93c5fd;
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      h2 {
+        color: #ffffff;
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        font-style: italic;
+        color: rgba(248, 250, 255, 0.9);
+        margin-bottom: 2rem;
+      }
+
+      .guarantee-seal {
+        padding: 0.5rem 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $radius-xs;
+        background-color: rgba(0, 0, 0, 0.2);
+
+        .seal-text {
+          font-family: $font-mono;
+          font-size: $font-size-2xs;
+          letter-spacing: 0.14em;
+          color: #93c5fd;
+        }
+      }
+    }
+  }
+}
+

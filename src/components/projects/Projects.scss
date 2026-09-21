@@ -1,0 +1,662 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+// ── Editorial Asymmetric Projects Mosaic Grid ─────────────────────────────────
+
+.project-asymmetric-mosaic {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  &.showing-three {
+    .project-editorial-card:nth-child(3) {
+      @include respond-to(lg) {
+        grid-column: span 12;
+      }
+
+      @include respond-to(xl) {
+        .project-card-link {
+          display: grid;
+          grid-template-columns: 1.15fr 1fr;
+          align-items: stretch;
+        }
+
+        .project-media-wrapper {
+          height: 100%;
+          min-height: 440px;
+        }
+
+        .project-body-content {
+          justify-content: center;
+          padding: clamp(2.25rem, 3.5vw, 3.25rem);
+        }
+      }
+    }
+  }
+}
+
+// ── Base Editorial Project Card ───────────────────────────────────────────────
+
+.project-editorial-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+
+  // Backdrop decorative layers: always strictly absolute and non-interactive
+  .card-ambient-glow,
+  .card-blueprint-grid,
+  .card-accent-beam {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .card-ambient-glow {
+    display: none;
+  }
+
+  .card-blueprint-grid {
+    inset: 0;
+    z-index: 0;
+  }
+
+  .card-accent-beam {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 5;
+  }
+
+  // Grid spans on large screens
+  @include respond-to(lg) {
+    &.span-7 {
+      grid-column: span 7;
+    }
+
+    &.span-5 {
+      grid-column: span 5;
+    }
+
+    &.span-12 {
+      grid-column: span 12;
+
+      @include respond-to(xl) {
+        .project-card-link {
+          display: grid;
+          grid-template-columns: 1.15fr 1fr;
+          align-items: stretch;
+        }
+
+        .project-media-wrapper {
+          height: 100%;
+          min-height: 480px;
+        }
+
+        .project-body-content {
+          justify-content: center;
+          padding: clamp(2.25rem, 3.5vw, 3.25rem);
+        }
+      }
+    }
+  }
+
+  .project-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    z-index: 1;
+  }
+
+  // ── Visual Media Container ──────────────────────────────────────────────────
+
+  .project-media-wrapper {
+    position: relative;
+    width: 100%;
+    height: clamp(210px, 48vw, 320px);
+    overflow: hidden;
+    background-color: #071530;
+
+    @include respond-to(md) {
+      height: 320px;
+    }
+
+    .project-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    .project-image-gradient {
+      position: absolute;
+      inset: 0;
+      transition: opacity 0.35s ease;
+      z-index: 1;
+    }
+
+    .project-overlay-header {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      right: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 3;
+
+      .project-index-num {
+        font-family: $font-mono;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 0.28rem 0.65rem;
+        border-radius: 6px;
+        line-height: 1;
+        backdrop-filter: blur(8px);
+      }
+
+      .status-beacon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.28rem 0.65rem;
+        border-radius: 6px;
+        font-family: $font-mono;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        backdrop-filter: blur(8px);
+
+        .live-pulse-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background-color: #10b981;
+          box-shadow: 0 0 8px #10b981;
+          animation: pulseBeacon 2s infinite ease-in-out;
+        }
+      }
+    }
+  }
+
+  // ── Editorial Information Block ─────────────────────────────────────────────
+
+  .project-body-content {
+    padding: clamp(1.35rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+
+    .project-header {
+      margin-bottom: 1.15rem;
+
+      .project-top-spine {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.65rem;
+
+        .project-institution-name {
+          font-family: $font-sans;
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          text-transform: capitalize;
+        }
+
+        .card-top-line {
+          width: 32px;
+          height: 1px;
+          transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+        }
+      }
+
+      .project-headline {
+        font-family: $font-sans;
+        font-size: clamp(1.4rem, 2vw, 1.85rem);
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        line-height: 1.2;
+        margin: 0;
+        text-transform: capitalize;
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.28s ease;
+      }
+    }
+
+    .project-summary {
+      font-family: $font-sans;
+      font-size: 0.96rem;
+      line-height: 1.7;
+      margin: 0 0 1.75rem;
+      max-width: 580px;
+    }
+
+    // Key Metrics Strip
+    .project-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding: 1.25rem 0;
+      margin-bottom: 1.75rem;
+
+      .project-metric-unit {
+        display: flex;
+        flex-direction: column;
+
+        .metric-val {
+          font-family: $font-sans;
+          font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+          font-weight: 700;
+          line-height: 1.1;
+        }
+
+        .metric-key {
+          font-family: $font-sans;
+          font-size: 0.65rem;
+          font-weight: 600;
+          text-transform: capitalize;
+          letter-spacing: 0.02em;
+          margin-top: 0.35rem;
+        }
+      }
+    }
+
+    // Stack & Action Footer
+    .project-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+      padding-top: 1.25rem;
+
+      .project-stack-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+
+        .tag-badge {
+          font-family: $font-sans;
+          font-size: 0.68rem;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          text-transform: capitalize;
+          border-radius: 6px;
+          padding: 0.3rem 0.65rem;
+          transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+        }
+      }
+
+      .project-cta-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-family: $font-sans;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: capitalize;
+        margin-left: auto;
+        transition: color 0.25s ease;
+
+        .cta-arrow {
+          transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+        }
+      }
+    }
+  }
+}
+
+// ==============================================================================
+// ── ODD CARDS (1st, 3rd, 5th): EDITORIAL LIGHT ARCHITECTURAL SURFACE ──────────
+// ==============================================================================
+
+.project-editorial-card.is-light-variant {
+  background-color: #ffffff;
+  border: 1px solid rgba(10, 31, 68, 0.1);
+  box-shadow:
+    0 4px 20px -2px rgba(10, 31, 68, 0.035),
+    0 1px 2px rgba(10, 31, 68, 0.02);
+
+  // Subtle architectural blueprint grid texture
+  .card-blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(10, 31, 68, 0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 31, 68, 0.022) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  // Top accent line (reveals on hover)
+  .card-accent-beam {
+    background: linear-gradient(90deg, transparent, #2563eb, transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .project-image-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 31, 68, 0.45) 0%,
+      rgba(10, 31, 68, 0.06) 50%,
+      rgba(255, 255, 255, 0.95) 96%,
+      #ffffff 100%
+    );
+  }
+
+  // Special horizontal gradient blend for span-12 on desktop
+  &.span-12 {
+    @include respond-to(xl) {
+      .project-image-gradient {
+        background: linear-gradient(
+          90deg,
+          rgba(10, 31, 68, 0.35) 0%,
+          rgba(10, 31, 68, 0.05) 50%,
+          rgba(255, 255, 255, 0.9) 88%,
+          #ffffff 100%
+        );
+      }
+    }
+  }
+
+  .project-index-num {
+    background-color: rgba(10, 31, 68, 0.78);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .status-beacon {
+    background-color: rgba(10, 31, 68, 0.78);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .project-institution-name {
+    color: #2563eb;
+  }
+
+  .card-top-line {
+    background-color: rgba(10, 31, 68, 0.15);
+  }
+
+  .project-headline {
+    color: #071d49;
+  }
+
+  .project-summary {
+    color: #475569;
+  }
+
+  .project-metrics-row {
+    border-top: 1px solid rgba(10, 31, 68, 0.07);
+    border-bottom: 1px solid rgba(10, 31, 68, 0.07);
+
+    .metric-val {
+      color: #071d49;
+    }
+
+    .metric-key {
+      color: #64748b;
+    }
+  }
+
+  .project-footer {
+    border-top: 1px solid rgba(10, 31, 68, 0.07);
+
+    .tag-badge {
+      background-color: #f1f5f9;
+      border: 1px solid rgba(10, 31, 68, 0.08);
+      color: #1e3a8a;
+
+      &:hover {
+        background-color: rgba(37, 99, 235, 0.1);
+        border-color: rgba(37, 99, 235, 0.28);
+        color: #2563eb;
+        transform: translateY(-1px);
+      }
+    }
+
+    .project-cta-link {
+      color: #071d49;
+    }
+  }
+
+  &:hover {
+    border-color: rgba(37, 99, 235, 0.38);
+    transform: translateY(-5px);
+    box-shadow:
+      0 20px 45px -10px rgba(10, 31, 68, 0.09),
+      0 0 1px rgba(37, 99, 235, 0.25);
+
+    .project-image {
+      transform: scale(1.04);
+    }
+
+    .card-accent-beam {
+      opacity: 1;
+    }
+
+    .card-top-line {
+      width: 56px;
+      background-color: #2563eb;
+    }
+
+    .project-headline {
+      color: #2563eb;
+      transform: translateX(3px);
+    }
+
+    .project-cta-link {
+      color: #2563eb;
+
+      .cta-arrow {
+        transform: translate(3px, -3px);
+      }
+    }
+  }
+}
+
+// ==============================================================================
+// ── EVEN CARDS (2nd, 4th, 6th): DEEP ROYAL NAVY BLUE VARIANT ──────────────────
+// ==============================================================================
+
+.project-editorial-card.is-blue-variant {
+  background: linear-gradient(145deg, #071a40 0%, #051433 55%, #030d22 100%);
+  border: 1px solid rgba(59, 130, 246, 0.32);
+  box-shadow:
+    0 12px 40px -8px rgba(3, 13, 34, 0.5),
+    0 0 25px rgba(37, 99, 235, 0.12);
+
+  // Subtle blue blueprint grid texture
+  .card-blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  // Soft ambient radial glow in upper right corner
+  .card-ambient-glow {
+    display: block;
+    top: -50px;
+    right: -50px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37, 99, 255, 0.26) 0%, transparent 70%);
+    z-index: 2;
+  }
+
+  // Glowing cyan accent line on top edge
+  .card-accent-beam {
+    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+    opacity: 0.85;
+    transition: opacity 0.3s ease, height 0.3s ease;
+  }
+
+  .project-image-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 26, 64, 0.45) 0%,
+      rgba(5, 20, 51, 0.1) 40%,
+      rgba(7, 26, 64, 0.85) 85%,
+      #071a40 100%
+    );
+  }
+
+  // Special horizontal gradient blend for span-12 on desktop
+  &.span-12 {
+    @include respond-to(xl) {
+      .project-image-gradient {
+        background: linear-gradient(
+          90deg,
+          rgba(7, 26, 64, 0.4) 0%,
+          rgba(5, 20, 51, 0.1) 40%,
+          rgba(7, 26, 64, 0.85) 85%,
+          #071a40 100%
+        );
+      }
+    }
+  }
+
+  .project-index-num {
+    background-color: rgba(56, 189, 248, 0.16);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+  }
+
+  .status-beacon {
+    background-color: rgba(5, 20, 51, 0.85);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+  }
+
+  .project-institution-name {
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+  }
+
+  .card-top-line {
+    background-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .project-headline {
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.22);
+  }
+
+  .project-summary {
+    color: rgba(226, 232, 240, 0.86);
+  }
+
+  .project-metrics-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    .metric-val {
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    .metric-key {
+      color: rgba(147, 197, 253, 0.8);
+    }
+  }
+
+  .project-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    .tag-badge {
+      background-color: rgba(30, 58, 138, 0.45);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      color: #93c5fd;
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.15);
+      backdrop-filter: blur(8px);
+
+      &:hover {
+        background-color: rgba(37, 99, 235, 0.35);
+        border-color: #38bdf8;
+        color: #ffffff;
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+        transform: translateY(-1px);
+      }
+    }
+
+    .project-cta-link {
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+    }
+  }
+
+  &:hover {
+    border-color: rgba(56, 189, 248, 0.65);
+    transform: translateY(-5px);
+    box-shadow:
+      0 22px 55px -10px rgba(3, 12, 32, 0.75),
+      0 0 35px rgba(37, 99, 235, 0.4);
+
+    .project-image {
+      transform: scale(1.04);
+    }
+
+    .card-accent-beam {
+      opacity: 1;
+      height: 3px;
+    }
+
+    .card-top-line {
+      width: 56px;
+      background-color: #38bdf8;
+    }
+
+    .project-headline {
+      color: #38bdf8;
+      transform: translateX(3px);
+    }
+
+    .project-cta-link {
+      color: #ffffff;
+      text-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+
+      .cta-arrow {
+        transform: translate(3px, -3px);
+      }
+    }
+  }
+}
+
+// ── Status Pulse Keyframe ────────────────────────────────────────────────────
+
+@keyframes pulseBeacon {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}

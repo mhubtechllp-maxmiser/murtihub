@@ -1,0 +1,433 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+// ── Editorial Asymmetric Mosaic Grid ─────────────────────────────────────────
+
+.service-editorial-mosaic {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  &.showing-three {
+    .service-card:nth-child(3) {
+      @include respond-to(md) {
+        grid-column: span 12;
+      }
+    }
+  }
+}
+
+// ── Base Service Card ─────────────────────────────────────────────────────────
+
+.service-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+
+  // Backdrop decorative layers
+  .card-ambient-glow,
+  .card-blueprint-grid,
+  .card-accent-beam {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .card-ambient-glow {
+    display: none;
+  }
+
+  // Asymmetric spans on medium+ screens
+  @include respond-to(md) {
+    &.layout-large-feature {
+      grid-column: span 7;
+    }
+
+    &.layout-vertical-panel {
+      grid-column: span 5;
+    }
+
+    &.layout-technical-panel {
+      grid-column: span 6;
+    }
+
+    &.layout-wide-panel {
+      grid-column: span 6;
+    }
+
+    &.layout-compact-panel {
+      grid-column: span 5;
+    }
+
+    &.layout-large-technical-panel {
+      grid-column: span 7;
+    }
+  }
+
+  .service-card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: clamp(1.35rem, 3vw, 2.75rem);
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  // Top spine: numeric badge, side label, and line indicator
+  .card-top-spine {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 2rem;
+
+    .service-number-badge {
+      font-family: $font-mono;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.28rem 0.65rem;
+      border-radius: 6px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .service-side-label {
+      font-family: $font-sans;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: capitalize;
+    }
+
+    .card-top-line {
+      width: 32px;
+      height: 1px;
+      margin-left: auto;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+    }
+  }
+
+  // Card Content: Title & Description
+  .card-main-content {
+    flex: 1;
+    margin-bottom: 2.25rem;
+
+    .service-title {
+      font-family: $font-sans;
+      font-size: clamp(1.45rem, 2vw, 1.95rem);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.18;
+      margin: 0 0 1rem;
+      text-transform: capitalize;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.28s ease;
+    }
+
+    .service-desc {
+      font-family: $font-sans;
+      font-size: 0.96rem;
+      line-height: 1.7;
+      margin: 0;
+      max-width: 560px;
+    }
+  }
+
+  // Card Footer Meta: Tech Tags & Explore Discipline Trigger
+  .card-footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.35rem;
+
+    .service-tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+
+      .tag-badge {
+        font-family: $font-sans;
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: capitalize;
+        border-radius: 6px;
+        padding: 0.3rem 0.65rem;
+        transition:
+          background-color 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.2s ease;
+      }
+    }
+
+    .service-action-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: $font-sans;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: capitalize;
+      margin-left: auto;
+      transition: color 0.25s ease;
+
+      .action-arrow {
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+      }
+    }
+  }
+}
+
+// ==============================================================================
+// ── ODD CARDS (1st, 3rd, 5th): EDITORIAL LIGHT ARCHITECTURAL SURFACE ──────────
+// ==============================================================================
+
+.service-card.is-light-variant {
+  background-color: #ffffff;
+  border: 1px solid rgba(10, 31, 68, 0.1);
+  box-shadow:
+    0 4px 20px -2px rgba(10, 31, 68, 0.035),
+    0 1px 2px rgba(10, 31, 68, 0.02);
+
+  // Subtle architectural blueprint grid texture
+  .card-blueprint-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(10, 31, 68, 0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 31, 68, 0.022) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  // Top accent line (reveals on hover)
+  .card-accent-beam {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #2563eb, transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 2;
+  }
+
+  .service-number-badge {
+    background-color: rgba(37, 99, 235, 0.07);
+    color: #2563eb;
+    border: 1px solid rgba(37, 99, 235, 0.18);
+  }
+
+  .service-side-label {
+    color: #64748b;
+  }
+
+  .card-top-line {
+    background-color: rgba(10, 31, 68, 0.15);
+  }
+
+  .service-title {
+    color: #071d49;
+  }
+
+  .service-desc {
+    color: #475569;
+  }
+
+  .card-footer-meta {
+    border-top: 1px solid rgba(10, 31, 68, 0.07);
+
+    .tag-badge {
+      background-color: #f1f5f9;
+      border: 1px solid rgba(10, 31, 68, 0.08);
+      color: #1e3a8a;
+
+      &:hover {
+        background-color: rgba(37, 99, 235, 0.1);
+        border-color: rgba(37, 99, 235, 0.28);
+        color: #2563eb;
+        transform: translateY(-1px);
+      }
+    }
+
+    .service-action-trigger {
+      color: #071d49;
+    }
+  }
+
+  &:hover {
+    border-color: rgba(37, 99, 235, 0.38);
+    transform: translateY(-5px);
+    box-shadow:
+      0 20px 45px -10px rgba(10, 31, 68, 0.09),
+      0 0 1px rgba(37, 99, 235, 0.25);
+
+    .card-accent-beam {
+      opacity: 1;
+    }
+
+    .card-top-line {
+      width: 56px;
+      background-color: #2563eb;
+    }
+
+    .service-title {
+      color: #2563eb;
+      transform: translateX(3px);
+    }
+
+    .service-action-trigger {
+      color: #2563eb;
+
+      .action-arrow {
+        transform: translateX(5px);
+      }
+    }
+  }
+}
+
+// ==============================================================================
+// ── EVEN CARDS (2nd, 4th, 6th): DEEP ROYAL NAVY BLUE VARIANT ──────────────────
+// ==============================================================================
+
+.service-card.is-blue-variant {
+  background: linear-gradient(145deg, #071a40 0%, #051433 55%, #030d22 100%);
+  border: 1px solid rgba(59, 130, 246, 0.32);
+  box-shadow:
+    0 12px 40px -8px rgba(3, 13, 34, 0.5),
+    0 0 25px rgba(37, 99, 235, 0.12);
+
+  // Subtle blue blueprint grid texture
+  .card-blueprint-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  // Soft ambient radial glow in upper right corner
+  .card-ambient-glow {
+    display: block;
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37, 99, 255, 0.26) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  // Glowing cyan accent line on top edge
+  .card-accent-beam {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+    opacity: 0.85;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    z-index: 2;
+  }
+
+  .service-number-badge {
+    background-color: rgba(56, 189, 248, 0.14);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.18);
+  }
+
+  .service-side-label {
+    color: rgba(147, 197, 253, 0.82);
+  }
+
+  .card-top-line {
+    background-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .service-title {
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.22);
+  }
+
+  .service-desc {
+    color: rgba(226, 232, 240, 0.86);
+  }
+
+  .card-footer-meta {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    .tag-badge {
+      background-color: rgba(30, 58, 138, 0.45);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      color: #93c5fd;
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.15);
+      backdrop-filter: blur(8px);
+
+      &:hover {
+        background-color: rgba(37, 99, 235, 0.35);
+        border-color: #38bdf8;
+        color: #ffffff;
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+        transform: translateY(-1px);
+      }
+    }
+
+    .service-action-trigger {
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+    }
+  }
+
+  &:hover {
+    border-color: rgba(56, 189, 248, 0.65);
+    transform: translateY(-5px);
+    box-shadow:
+      0 22px 55px -10px rgba(3, 12, 32, 0.75),
+      0 0 35px rgba(37, 99, 235, 0.4);
+
+    .card-accent-beam {
+      opacity: 1;
+      height: 3px;
+    }
+
+    .card-top-line {
+      width: 56px;
+      background-color: #38bdf8;
+    }
+
+    .service-title {
+      color: #38bdf8;
+      transform: translateX(3px);
+    }
+
+    .service-action-trigger {
+      color: #ffffff;
+      text-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+
+      .action-arrow {
+        transform: translateX(5px);
+      }
+    }
+  }
+}

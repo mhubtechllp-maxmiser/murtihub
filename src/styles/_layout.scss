@@ -1,0 +1,122 @@
+// ==========================================
+// MURTIHUB TECHNOLOGIES — LAYOUT & GRIDS
+// ==========================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.container {
+  @include container;
+}
+
+.container-wide {
+  @include container($container-wide);
+}
+
+.container-narrow {
+  @include container($container-narrow);
+}
+
+// Section padding
+.section {
+  padding-top: clamp(4.5rem, 8vw, 8.5rem);
+  padding-bottom: clamp(4.5rem, 8vw, 8.5rem);
+  position: relative;
+}
+
+.section-sm {
+  padding-top: clamp(3rem, 5vw, 5rem);
+  padding-bottom: clamp(3rem, 5vw, 5rem);
+}
+
+.section-lg {
+  padding-top: clamp(6rem, 11vw, 11.5rem);
+  padding-bottom: clamp(6rem, 11vw, 11.5rem);
+}
+
+// Section theme variations
+.section-light {
+  background-color: $color-bg;
+  color: $color-text-primary;
+}
+
+.section-surface {
+  background-color: $color-surface;
+  color: $color-text-primary;
+}
+
+.section-dark {
+  background-color: $color-primary;
+  color: $color-white;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $color-white;
+  }
+
+  .lead-paragraph,
+  .metric-label {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .metric-number {
+    color: $color-white;
+  }
+}
+
+// Thin architectural hairline divider
+.hairline {
+  height: 1px;
+  background-color: $color-border-subtle;
+  width: 100%;
+  border: none;
+}
+
+.hairline-dark {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.12);
+  width: 100%;
+  border: none;
+}
+
+// Standard 12-column grid
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+// Asymmetric Service Grid Layout
+.service-asymmetric-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+// Asymmetric Project Grid Layout
+.project-asymmetric-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+// Flex Utilities
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

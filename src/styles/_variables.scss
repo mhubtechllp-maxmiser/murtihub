@@ -1,0 +1,105 @@
+// ==========================================
+// MURTIHUB TECHNOLOGIES — SCSS VARIABLES
+// ==========================================
+
+// Color Palette
+$color-primary: #0a1f44;       // Deep Navy Blue
+$color-secondary: #123a72;     // Royal Blue
+$color-accent: #2563eb;        // Vibrant Blue
+$color-light-blue: #e6f0ff;    // Soft Blue Tint
+$color-bg: #f8faff;            // Blue-Toned Off-White (Primary Page Background)
+$color-surface: #edf2fb;       // Card / Section Background
+$color-surface-hover: #e2ebf9; // Surface on hover
+$color-text-primary: #1e293b;  // Dark Blue-Gray
+$color-text-secondary: #64748b;// Muted Blue-Gray
+$color-white: #ffffff;
+$color-black: #000000;
+
+// Border and Line Tokens
+$color-border-subtle: rgba(18, 58, 114, 0.1);
+$color-border-medium: rgba(18, 58, 114, 0.2);
+$color-border-accent: #2563eb;
+$color-divider: rgba(10, 31, 68, 0.08);
+
+// Gradients
+$gradient-hero: linear-gradient(135deg, rgba(10, 31, 68, 0.95) 0%, rgba(18, 58, 114, 0.85) 60%, rgba(37, 99, 235, 0.5) 100%);
+$gradient-card: linear-gradient(180deg, #ffffff 0%, #edf2fb 100%);
+$gradient-accent: linear-gradient(135deg, #0a1f44 0%, #2563eb 100%);
+
+// Typography
+// Amarante Font Stack Across Entire Website
+$font-amarante: 'Amarante', serif;
+$font-sans: 'Amarante', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-serif: 'Amarante', Georgia, serif;
+$font-primary: 'Amarante', 'Plus Jakarta Sans', sans-serif;
+$font-display: 'Amarante', serif;
+$font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+$font-ananda: 'Amarante', serif;
+$font-transcity: 'Amarante', serif;
+
+// Font Sizes (Editorial Scale)
+$font-size-2xs: 0.6875rem; // 11px
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1.0625rem;// 17px
+$font-size-md: 1.1875rem;  // 19px
+$font-size-lg: 1.375rem;   // 22px
+$font-size-xl: 1.625rem;   // 26px
+$font-size-2xl: 2.125rem;  // 34px
+$font-size-3xl: 2.75rem;   // 44px
+$font-size-4xl: 3.5rem;    // 56px
+$font-size-5xl: 4.5rem;    // 72px
+$font-size-display: 5.75rem; // 92px
+
+// Line Heights
+$lh-tight: 1.1;
+$lh-snug: 1.25;
+$lh-normal: 1.55;
+$lh-relaxed: 1.75;
+
+// Spacing System
+$space-1: 0.25rem;   // 4px
+$space-2: 0.5rem;    // 8px
+$space-3: 0.75rem;   // 12px
+$space-4: 1rem;      // 16px
+$space-5: 1.25rem;   // 20px
+$space-6: 1.5rem;    // 24px
+$space-8: 2rem;      // 32px
+$space-10: 2.5rem;   // 40px
+$space-12: 3rem;     // 48px
+$space-16: 4rem;     // 64px
+$space-20: 5rem;     // 80px
+$space-24: 6rem;     // 96px
+$space-32: 8rem;     // 128px
+
+// Layout & Breakpoints
+$container-max: 1380px;
+$container-wide: 1540px;
+$container-narrow: 1040px;
+
+$bp-xs: 480px;
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1440px;
+
+// Radius
+$radius-none: 0;
+$radius-xs: 2px;
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 10px;
+
+// Shadows (Subtle architectural shadows)
+$shadow-sm: 0 1px 3px rgba(10, 31, 68, 0.05), 0 1px 2px rgba(10, 31, 68, 0.04);
+$shadow-md: 0 4px 16px rgba(10, 31, 68, 0.06), 0 2px 4px rgba(10, 31, 68, 0.04);
+$shadow-lg: 0 12px 32px rgba(10, 31, 68, 0.08), 0 4px 12px rgba(10, 31, 68, 0.04);
+$shadow-xl: 0 24px 56px rgba(10, 31, 68, 0.12), 0 8px 24px rgba(10, 31, 68, 0.06);
+
+// Transitions
+$ease-out-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+$transition-fast: 0.2s $ease-out-editorial;
+$transition-base: 0.35s $ease-out-editorial;
+$transition-normal: 0.35s $ease-out-editorial;
+$transition-slow: 0.65s $ease-out-editorial;

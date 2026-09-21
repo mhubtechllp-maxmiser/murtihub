@@ -1,0 +1,287 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.services-list-section {
+  background-color: $color-bg;
+}
+
+.services-editorial-stream {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 8vw, 7rem);
+}
+
+.service-editorial-entry {
+  position: relative;
+  border-radius: $radius-xs;
+  padding: clamp(2rem, 5vw, 4rem);
+  transition: all $transition-base;
+
+  // Light Variant (White Architectural)
+  &.is-light-variant {
+    background-color: #ffffff;
+    border: 1px solid $color-border-subtle;
+    box-shadow: 0 10px 30px rgba(10, 31, 68, 0.03);
+
+    &:hover {
+      border-color: $color-accent;
+      box-shadow: 0 20px 48px rgba(10, 31, 68, 0.07);
+
+      .entry-number {
+        color: $color-accent;
+      }
+    }
+  }
+
+  // Dark Variant (Royal Deep Obsidian Navy)
+  &.is-dark-variant {
+    background: linear-gradient(145deg, #051330 0%, #081d45 50%, #041029 100%);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    box-shadow: 0 20px 50px rgba(2, 6, 20, 0.35);
+
+    &:hover {
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 28px 65px rgba(2, 6, 20, 0.45), 0 0 25px rgba(56, 189, 248, 0.12);
+
+      .entry-number {
+        color: #38bdf8;
+      }
+    }
+
+    .entry-header {
+      border-bottom-color: rgba(255, 255, 255, 0.1);
+
+      .entry-meta {
+        .entry-number {
+          color: #38bdf8;
+        }
+
+        .entry-tier {
+          color: #94a3b8;
+        }
+      }
+
+      .entry-tags .tag-badge {
+        background: rgba(14, 165, 233, 0.15);
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        color: #38bdf8;
+      }
+    }
+
+    .entry-left {
+      .entry-title {
+        color: #ffffff;
+      }
+
+      .entry-lead {
+        color: #93c5fd;
+      }
+
+      .entry-long {
+        color: rgba(226, 232, 240, 0.85);
+      }
+
+      .entry-cta .btn-primary {
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        border: 1px solid #3b82f6;
+        color: #ffffff;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+
+        &:hover {
+          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+          box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+          transform: translateY(-2px);
+        }
+      }
+    }
+
+    .entry-right {
+      .capabilities-box {
+        background-color: rgba(3, 12, 32, 0.7);
+        border-color: rgba(56, 189, 248, 0.2);
+
+        .capabilities-title {
+          color: #60a5fa;
+        }
+
+        .capabilities-list .capability-item {
+          color: #e2e8f0;
+
+          .text-accent {
+            color: #38bdf8;
+          }
+        }
+      }
+
+      .tech-stack-row {
+        .stack-label {
+          color: #93c5fd;
+        }
+
+        .stack-pills .tech-pill {
+          background-color: rgba(10, 31, 68, 0.85);
+          border-color: rgba(56, 189, 248, 0.25);
+          color: #f1f5f9;
+        }
+      }
+    }
+  }
+
+  .entry-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(18, 58, 114, 0.08);
+    margin-bottom: 2.5rem;
+
+    .entry-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+
+      .entry-number {
+        font-family: $font-mono;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $color-secondary;
+        transition: color $transition-fast;
+      }
+
+      .entry-tier {
+        font-family: $font-sans;
+        font-size: $font-size-2xs;
+        letter-spacing: 0.04em;
+        text-transform: capitalize;
+        color: $color-text-secondary;
+        font-weight: 600;
+      }
+    }
+
+    .entry-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+
+  .entry-content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+
+    @include respond-to(lg) {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4.5rem;
+    }
+  }
+
+  .entry-left {
+    display: flex;
+    flex-direction: column;
+
+    .entry-title {
+      font-family: $font-sans;
+      color: $color-primary;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.015em;
+      text-transform: capitalize;
+    }
+
+    .entry-lead {
+      color: $color-primary;
+      margin-bottom: 1.25rem;
+      font-weight: 500;
+    }
+
+    .entry-long {
+      font-family: $font-sans;
+      font-size: 1rem;
+      line-height: $lh-relaxed;
+      color: $color-text-secondary;
+      margin-bottom: 2.5rem;
+    }
+
+    .entry-cta {
+      margin-top: auto;
+    }
+  }
+
+  .entry-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .capabilities-box {
+      background-color: $color-surface;
+      border: 1px solid $color-border-subtle;
+      border-radius: $radius-xs;
+      padding: 1.75rem;
+
+      .capabilities-title {
+        font-family: $font-sans;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: capitalize;
+        color: $color-secondary;
+        margin-bottom: 1.25rem;
+      }
+
+      .capabilities-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+
+        .capability-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.65rem;
+          font-family: $font-sans;
+          font-size: 0.9375rem;
+          line-height: $lh-normal;
+          color: $color-text-primary;
+
+          .text-accent {
+            color: $color-accent;
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+          }
+        }
+      }
+    }
+
+    .tech-stack-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+
+      .stack-label {
+        font-family: $font-mono;
+        font-size: $font-size-2xs;
+        letter-spacing: 0.1em;
+        color: $color-secondary;
+        font-weight: 700;
+      }
+
+      .stack-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+
+        .tech-pill {
+          font-family: $font-mono;
+          font-size: $font-size-2xs;
+          background-color: #ffffff;
+          border: 1px solid rgba(18, 58, 114, 0.15);
+          color: $color-text-primary;
+          padding: 0.35rem 0.65rem;
+          border-radius: $radius-xs;
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,141 @@
+.image-upload-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  .iuf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    .iuf-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .iuf-hint {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  }
+
+  .iuf-body {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+
+  .iuf-preview-box {
+    width: 140px;
+    height: 95px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0f172a;
+    border: 1px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .iuf-preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .iuf-preview-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #64748b;
+      font-size: 10.5px;
+      text-align: center;
+      padding: 8px;
+    }
+  }
+
+  .iuf-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    .iuf-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .iuf-upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .iuf-clear-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #ef4444;
+      border-color: #fca5a5;
+
+      &:hover {
+        background: #fee2e2;
+      }
+    }
+
+    .iuf-url-wrap {
+      .iuf-url-input {
+        width: 100%;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 7px 10px;
+        font-size: 12.5px;
+        color: #0f172a;
+        font-family: monospace;
+
+        &:focus {
+          outline: none;
+          border-color: #0284c7;
+          background: #ffffff;
+        }
+      }
+    }
+
+    .iuf-msg {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+
+      &.iuf-msg-error {
+        color: #ef4444;
+      }
+
+      &.iuf-msg-success {
+        color: #16a34a;
+      }
+    }
+  }
+
+  .spin {
+    animation: iuf-spin 1s linear infinite;
+  }
+
+  @keyframes iuf-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+}
+

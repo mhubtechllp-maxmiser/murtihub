@@ -1,0 +1,127 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.cta-band-section {
+  padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+  position: relative;
+  overflow: hidden;
+
+  &.theme-dark {
+    background: linear-gradient(135deg, #0a1f44 0%, #0d2857 60%, #123a72 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+
+    .cta-eyebrow {
+      color: #60a5fa;
+    }
+
+    .cta-title {
+      color: #ffffff;
+    }
+
+    .cta-description {
+      color: rgba(248, 250, 255, 0.85);
+    }
+
+    .guarantee-item {
+      color: rgba(255, 255, 255, 0.7);
+
+      .guarantee-icon {
+        color: #60a5fa;
+      }
+    }
+
+    .cta-direct-email {
+      color: rgba(255, 255, 255, 0.8);
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.cta-band-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+
+  @include respond-to(lg) {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.cta-content {
+  .cta-eyebrow {
+    font-family: $font-mono;
+    font-family: $font-sans;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: capitalize;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .cta-title {
+    margin-bottom: 1rem;
+    letter-spacing: -0.015em;
+  }
+
+  .cta-description {
+    max-width: 600px;
+    margin-bottom: 2rem;
+  }
+
+  .cta-guarantees {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .guarantee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: $font-serif;
+      font-family: $font-sans;
+      font-size: $font-size-xs;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-start;
+
+  @include respond-to(lg) {
+    align-items: flex-end;
+  }
+
+  .cta-action-btn {
+    padding: 1.15rem 2.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .cta-direct-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: $font-serif;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: color $transition-fast;
+  }
+}
+

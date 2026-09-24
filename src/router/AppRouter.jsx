@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
@@ -8,7 +8,6 @@ import AboutPage from '../pages/AboutPage';
 import ServicesPage from '../pages/ServicesPage';
 import ProjectsPage from '../pages/ProjectsPage';
 import ArchitecturePage from '../pages/ArchitecturePage';
-import LeadershipPage from '../pages/LeadershipPage';
 import CovenantPage from '../pages/CovenantPage';
 import TechArsenalPage from '../pages/TechArsenalPage';
 import ContactPage from '../pages/ContactPage';
@@ -29,7 +28,7 @@ export default function AppRouter() {
         
         {/* Institutional Pages */}
         <Route path="architecture" element={<ArchitecturePage />} />
-        <Route path="leadership" element={<LeadershipPage />} />
+        <Route path="leadership" element={<Navigate to="/about" replace />} />
         <Route path="covenant" element={<CovenantPage />} />
         <Route path="tech-arsenal" element={<TechArsenalPage />} />
         <Route path="contact" element={<ContactPage />} />
@@ -45,4 +44,3 @@ export default function AppRouter() {
     </Routes>
   );
 }
-

@@ -1,24 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, ArrowRight, Award, Lock, Users } from 'lucide-react';
+import { ShieldCheck, Award, Lock, Users } from 'lucide-react';
 import SectionHeading from '../components/common/SectionHeading';
 import CTASection from '../components/common/CTASection';
 import { cmsService } from '../services/cmsService';
 import './AboutPage.scss';
 
+
+const ethosPillars = [
+  {
+    title: "Ethical Stewardship",
+    description: "Upholding moral integrity, unambiguous client advocacy, and responsible engineering in every deployed system."
+  },
+  {
+    title: "Institutional Resilience",
+    description: "Building software architectures and governance frameworks that stand unyielding across generational technological shifts."
+  },
+  {
+    title: "Long-Horizon Value Creation",
+    description: "Prioritizing enduring client sovereignty and computational robustness over short-term expedience."
+  }
+];
+
 export default function AboutPage() {
   const [brand, setBrand] = useState(cmsService.getBrand());
-  const [leadership, setLeadership] = useState(cmsService.getLeadership());
 
   useEffect(() => {
     const unsubBrand = cmsService.subscribe('brand', setBrand);
-    const unsubLeadership = cmsService.subscribe('leadership', setLeadership);
-    return () => { unsubBrand(); unsubLeadership(); };
+    return () => { unsubBrand(); };
   }, []);
-
-  const leader = (leadership?.leaders && leadership.leaders[0]) || leadership?.leader || {};
-  const ethosPillars = leadership?.ethosPillars || [];
-  const leaderQuote = leader?.quotes?.about || leader?.quotes?.leadership || 'Engineering systems with institutional integrity.';
 
   const aboutStats = [
     { value: '2026', label: 'Incorporated Enterprise', sub: 'Est. 2026' },
@@ -179,25 +189,7 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* Founder Quote */}
-          <div className="founder-quote-banner">
-            <blockquote className="editorial-quote">
-              <p>"{leader.quotes.about}"</p>
-              <p>"{leaderQuote}"</p>
-              <footer className="founder-tag">
-                <strong>{leader.name}</strong>
-                <span>Founder & Chairperson, MurtiHub Technologies</span>
-                <span>{leader.title || 'Founder & Chairperson, MurtiHub Technologies'}</span>
-              </footer>
-            </blockquote>
-
-            <div className="leadership-link-wrap">
-              <Link to="/leadership" className="btn btn-outline">
-                <span>View Executive Leadership</span>
-                <ArrowRight size={14} className="btn-hover-arrow" />
-              </Link>
-            </div>
-          </div>
+          
         </div>
       </section>
 

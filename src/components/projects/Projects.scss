@@ -9,33 +9,7 @@
   gap: clamp(1.75rem, 3.5vw, 2.75rem);
 
   @include respond-to(lg) {
-    grid-template-columns: repeat(12, 1fr);
-  }
-
-  &.showing-three {
-    .project-editorial-card:nth-child(3) {
-      @include respond-to(lg) {
-        grid-column: span 12;
-      }
-
-      @include respond-to(xl) {
-        .project-card-link {
-          display: grid;
-          grid-template-columns: 1.15fr 1fr;
-          align-items: stretch;
-        }
-
-        .project-media-wrapper {
-          height: 100%;
-          min-height: 440px;
-        }
-
-        .project-body-content {
-          justify-content: center;
-          padding: clamp(2.25rem, 3.5vw, 3.25rem);
-        }
-      }
-    }
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -75,39 +49,6 @@
     right: 0;
     height: 2px;
     z-index: 5;
-  }
-
-  // Grid spans on large screens
-  @include respond-to(lg) {
-    &.span-7 {
-      grid-column: span 7;
-    }
-
-    &.span-5 {
-      grid-column: span 5;
-    }
-
-    &.span-12 {
-      grid-column: span 12;
-
-      @include respond-to(xl) {
-        .project-card-link {
-          display: grid;
-          grid-template-columns: 1.15fr 1fr;
-          align-items: stretch;
-        }
-
-        .project-media-wrapper {
-          height: 100%;
-          min-height: 480px;
-        }
-
-        .project-body-content {
-          justify-content: center;
-          padding: clamp(2.25rem, 3.5vw, 3.25rem);
-        }
-      }
-    }
   }
 
   .project-card-link {
@@ -244,7 +185,7 @@
       font-family: $font-sans;
       font-size: 0.96rem;
       line-height: 1.7;
-      margin: 0 0 1.75rem;
+      margin: 0;
       max-width: 580px;
     }
 
@@ -363,21 +304,6 @@
       rgba(255, 255, 255, 0.95) 96%,
       #ffffff 100%
     );
-  }
-
-  // Special horizontal gradient blend for span-12 on desktop
-  &.span-12 {
-    @include respond-to(xl) {
-      .project-image-gradient {
-        background: linear-gradient(
-          90deg,
-          rgba(10, 31, 68, 0.35) 0%,
-          rgba(10, 31, 68, 0.05) 50%,
-          rgba(255, 255, 255, 0.9) 88%,
-          #ffffff 100%
-        );
-      }
-    }
   }
 
   .project-index-num {
@@ -523,21 +449,6 @@
       rgba(7, 26, 64, 0.85) 85%,
       #071a40 100%
     );
-  }
-
-  // Special horizontal gradient blend for span-12 on desktop
-  &.span-12 {
-    @include respond-to(xl) {
-      .project-image-gradient {
-        background: linear-gradient(
-          90deg,
-          rgba(7, 26, 64, 0.4) 0%,
-          rgba(5, 20, 51, 0.1) 40%,
-          rgba(7, 26, 64, 0.85) 85%,
-          #071a40 100%
-        );
-      }
-    }
   }
 
   .project-index-num {

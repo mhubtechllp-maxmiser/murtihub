@@ -4,38 +4,45 @@
 .site-footer {
   background-color: $color-primary;
   color: #f8faff;
-  padding-top: clamp(4.5rem, 8vw, 7rem);
-  padding-bottom: 2.5rem;
+  padding: clamp(1.25rem, 2vw, 1.75rem) 0 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   z-index: 10;
 }
 
-.footer-top {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 4vw, 4rem);
+.footer-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.footer-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   @include respond-to(md) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include respond-to(lg) {
-    grid-template-columns: 2fr 1.1fr 1.5fr;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
   }
 }
 
-.footer-brand-col {
+// Row 1: Brand Info
+.footer-row-info {
   .footer-brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     text-decoration: none;
-    margin-bottom: 1.5rem;
+    flex-shrink: 0;
 
     .footer-emblem-wrap {
-      width: 48px;
-      height: 48px;
+      width: 36px;
+      height: 36px;
       border-radius: 4px;
       overflow: hidden;
       background-color: #051026;
@@ -56,135 +63,174 @@
 
     .footer-brand-name {
       font-family: $font-sans;
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #ffffff;
-      letter-spacing: 0.02em;
       line-height: 1.1;
+      letter-spacing: 0.01em;
     }
 
     .footer-tagline {
       font-family: $font-sans;
       font-size: 0.625rem;
-      letter-spacing: 0.04em;
-      text-transform: capitalize;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: 0.2rem;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 0.15rem;
+      letter-spacing: 0.02em;
     }
   }
 
-  .footer-manifesto {
+  .footer-description {
     font-family: $font-sans;
-    font-size: $font-size-sm;
-    line-height: $lh-relaxed;
-    color: rgba(248, 250, 255, 0.75);
-    max-width: 420px;
+    font-size: $font-size-xs;
+    line-height: 1.45;
+    color: rgba(248, 250, 255, 0.7);
+    margin: 0;
+    max-width: 520px;
+
+    @include respond-to(md) {
+      text-align: right;
+    }
   }
 }
 
-.footer-column-title {
+// Shared badge for row headers
+.footer-label-badge {
   font-family: $font-sans;
-  font-size: $font-size-xs;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: capitalize;
-  color: $color-accent;
-  margin-bottom: 1.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #60a5fa;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  display: inline-block;
 }
 
-.footer-nav-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+// Row 2: Quick Links
+.footer-row-links {
+  .footer-row-label {
+    flex-shrink: 0;
+  }
 
-  .footer-link {
-    font-family: $font-sans;
-    font-size: $font-size-sm;
-    color: rgba(248, 250, 255, 0.75);
-    text-decoration: none;
-    display: inline-flex;
+  .footer-nav {
+    display: flex;
     align-items: center;
-    gap: 0.35rem;
-    transition: color $transition-fast, transform $transition-fast;
+  }
 
-    .footer-link-arrow {
-      opacity: 0;
-      transform: translate(-3px, 3px);
-      transition: opacity $transition-fast, transform $transition-fast;
-    }
+  .footer-nav-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.25rem;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 
-    &:hover {
-      color: #ffffff;
-      transform: translateX(4px);
+    .footer-link {
+      font-family: $font-sans;
+      font-size: $font-size-xs;
+      color: rgba(248, 250, 255, 0.75);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: color $transition-fast;
 
       .footer-link-arrow {
-        opacity: 1;
-        transform: translate(0, 0);
+        opacity: 0.4;
+        transition: transform $transition-fast, opacity $transition-fast;
+      }
+
+      &:hover {
+        color: #ffffff;
+
+        .footer-link-arrow {
+          opacity: 1;
+          transform: translate(1px, -1px);
+        }
       }
     }
   }
 }
 
-.footer-inquiries-col {
-  .footer-inquiry-note {
-    font-family: $font-sans;
-    font-size: $font-size-sm;
-    color: rgba(248, 250, 255, 0.75);
-    margin-bottom: 1.25rem;
-    line-height: $lh-normal;
-  }
+// Row 3: Inquiries
+.footer-row-inquiries {
+  border-bottom: none;
+  padding-bottom: 0;
 
-  .footer-email-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.75rem 1.25rem;
-    background-color: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: $radius-xs;
-    color: #ffffff;
-    font-family: $font-sans;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    transition: all $transition-fast;
-
-    &:hover {
-      background-color: $color-accent;
-      border-color: $color-accent;
-      transform: translateY(-2px);
-    }
-  }
-
-  .footer-sla-badge {
+  .footer-inquiry-meta {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-family: $font-mono;
-    font-size: $font-size-2xs;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 1rem;
+    gap: 0.65rem;
+    flex-wrap: wrap;
 
-    .sla-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: #10b981;
+    .footer-inquiry-note {
+      font-family: $font-sans;
+      font-size: $font-size-xs;
+      color: rgba(248, 250, 255, 0.7);
+      margin: 0;
+    }
+  }
+
+  .footer-inquiry-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+
+    .footer-email-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.85rem;
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      color: #ffffff;
+      font-family: $font-sans;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all $transition-fast;
+
+      &:hover {
+        background-color: $color-accent;
+        border-color: $color-accent;
+      }
+    }
+
+    .footer-sla-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: $font-mono;
+      font-size: $font-size-2xs;
+      color: rgba(255, 255, 255, 0.55);
+
+      .sla-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #10b981;
+      }
     }
   }
 }
 
-.footer-hairline {
-  margin: 3.5rem 0 2rem;
-}
-
+// Bottom strip
 .footer-bottom {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.4rem;
   align-items: center;
   justify-content: space-between;
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 
   @include respond-to(md) {
     flex-direction: row;
@@ -192,30 +238,29 @@
 
   .footer-copyright {
     font-family: $font-sans;
-    font-size: $font-size-xs;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: $font-size-2xs;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
   }
 
   .footer-motto {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     font-family: $font-sans;
-    font-size: $font-size-xs;
+    font-size: $font-size-2xs;
     letter-spacing: 0.02em;
-    text-transform: capitalize;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.65);
 
     .motto-diamond {
       color: $color-accent;
-      font-size: 0.5rem;
+      font-size: 0.45rem;
     }
   }
 
   .footer-meta {
     font-family: $font-mono;
     font-size: $font-size-2xs;
-    color: rgba(255, 255, 255, 0.5);
-    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.45);
   }
 }

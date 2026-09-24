@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import './SectionHeading.scss';
 
 export default function SectionHeading({
@@ -6,6 +6,7 @@ export default function SectionHeading({
   title,
   subtitle,
   description,
+  action,
   alignment = 'left', // 'left', 'center', 'split'
   theme = 'light', // 'light' or 'dark'
   className = ''
@@ -22,16 +23,20 @@ export default function SectionHeading({
       {alignment === 'split' ? (
         <div className="section-heading-split">
           <h2 className="section-title text-h1">{title}</h2>
-          <div className="section-description-wrap">
-            {subtitle && <h3 className="section-subtitle">{subtitle}</h3>}
-            {description && <p className="section-description lead-paragraph">{description}</p>}
-          </div>
+          {(subtitle || description || action) && (
+            <div className="section-description-wrap">
+              {subtitle && <h3 className="section-subtitle">{subtitle}</h3>}
+              {description && <p className="section-description lead-paragraph">{description}</p>}
+              {action && <div className="section-heading-action">{action}</div>}
+            </div>
+          )}
         </div>
       ) : (
         <>
           <h2 className="section-title text-h1">{title}</h2>
           {subtitle && <h3 className="section-subtitle">{subtitle}</h3>}
           {description && <p className="section-description lead-paragraph">{description}</p>}
+          {action && <div className="section-heading-action">{action}</div>}
         </>
       )}
 
@@ -39,4 +44,3 @@ export default function SectionHeading({
     </div>
   );
 }
-

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Mail, Clock, ShieldCheck } from 'lucide-react';
 import { brandData } from '../../data/brand';
@@ -11,8 +11,9 @@ export default function CTASection({
   theme = 'dark'
 }) {
   return (
-    <section className={`cta-band-section theme-${theme}`} aria-label="Initiate Engagement">
-      <div className="container">
+    <section className="cta-section-wrapper" aria-label="Initiate Engagement">
+      <div className={`cta-card theme-${theme}`}>
+        <div className="cta-card-glow" aria-hidden="true" />
         <div className="cta-band-grid">
           <div className="cta-content">
             <span className="cta-eyebrow">{eyebrow}</span>
@@ -33,7 +34,6 @@ export default function CTASection({
 
           <div className="cta-actions">
             <Link to="/contact" className="btn btn-primary cta-action-btn">
-              <span>INITIATE ENGAGEMENT</span>
               <span>Initiate Engagement</span>
               <ArrowRight size={16} className="btn-hover-arrow" />
             </Link>
@@ -48,4 +48,3 @@ export default function CTASection({
     </section>
   );
 }
-

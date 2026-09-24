@@ -2,15 +2,13 @@ export const mainNavigation = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Services", path: "/services" },
-  { label: "Published Work", path: "/projects" },
-  { label: "Leadership", path: "/leadership" }
+  { label: "Projects", path: "/projects" }
 ];
 
 export const footerNavigation = [
-  { label: "Overview", path: "/" },
-  { label: "About MurtiHub", path: "/about" },
-  { label: "Digital Engineering", path: "/services" },
-  { label: "Published Work", path: "/projects" },
-  { label: "Leadership", path: "/leadership" },
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Services", path: "/services" },
+  { label: "Projects", path: "/projects" },
   { label: "Contact", path: "/contact" }
 ];

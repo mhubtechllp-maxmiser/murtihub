@@ -4,7 +4,7 @@ export const brandData = {
   tagline: "Engineering A More Open Tomorrow",
   headline: "Ideas Today\nImpact Tomorrow",
   description:
-    "MurtiHub Technologies builds digital solutions, scalable systems, and future-ready products that empower businesses to grow, innovate and lead.",
+    "We build digital solutions, scalable web systems, and modern products that help businesses innovate and grow.",
   email: "info@murtihub.co.in",
   responseSLA: "< 24 Hours",
   incorporationYear: "2026",

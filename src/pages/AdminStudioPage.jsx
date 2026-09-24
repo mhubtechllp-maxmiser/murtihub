@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Image,
   FileText,
-  Briefcase,
   Inbox,
   Settings,
   Plus,
@@ -12,9 +10,7 @@ import {
   ExternalLink,
   Edit2,
   BarChart3,
-  Award,
   ShieldCheck,
-  UploadCloud,
   KeyRound,
   Save,
 } from 'lucide-react';
@@ -22,18 +18,14 @@ import { cmsService } from '../services/cmsService';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import StatsEditor from '../components/admin/StatsEditor';
-import LeadershipEditor from '../components/admin/LeadershipEditor';
 import AdminUserManager from '../components/admin/AdminUserManager';
 import AccountSecurityEditor from '../components/admin/AccountSecurityEditor';
 import ProjectModal from '../components/admin/ProjectModal';
-import ServiceModal from '../components/admin/ServiceModal';
 import './AdminStudioPage.scss';
 
 export default function AdminStudioPage() {
   const { user, isSuperAdmin, canEdit } = useAuth();
   const [activeTab, setActiveTab] = useState('projects'); // Default to projects per user interest
-  const [slides, setSlides] = useState(cmsService.getHeroSlides());
-  const [services, setServices] = useState(cmsService.getServices());
   const [projects, setProjects] = useState(cmsService.getProjects());
   const [submissions, setSubmissions] = useState([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
@@ -46,12 +38,8 @@ export default function AdminStudioPage() {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
 
   // Hidden slide upload refs
-  const slideFileInputRefs = useRef({});
-  const addSlideInputRef = useRef(null);
 
   const loadSubmissions = async () => {
     setLoadingSubmissions(true);
@@ -68,8 +56,6 @@ export default function AdminStudioPage() {
   useEffect(() => {
     loadSubmissions();
     const unsub = cmsService.subscribe('*', () => {
-      setSlides(cmsService.getHeroSlides());
-      setServices(cmsService.getServices());
       setProjects(cmsService.getProjects());
       setBrand(cmsService.getBrand());
       const b = cmsService.getBrand();
@@ -82,67 +68,6 @@ export default function AdminStudioPage() {
   const triggerSaveNotification = (msg) => {
     setSaveAlert(msg);
     setTimeout(() => setSaveAlert(''), 3500);
-  };
-
-  // ==========================================
-  // HERO SLIDES ACTIONS
-  // ==========================================
-  const handleAddSlideFile = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    e.target.value = '';
-
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const res = await api.upload(reader.result, file.name);
-        if (res.success && res.url) {
-          const newSlide = {
-            image: res.url,
-            alt: `MurtiHub Slide ${slides.length + 1}`,
-            caption: 'Institutional Digital Engineering Systems',
-          };
-          const updated = await cmsService.addHeroSlide(newSlide);
-          setSlides(updated);
-          triggerSaveNotification('New hero slide uploaded and published to MongoDB.');
-        }
-      } catch (err) {
-        alert('Failed to upload slide: ' + err.message);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSlideImageUpload = (slideId, e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    e.target.value = '';
-
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const res = await api.upload(reader.result, file.name);
-        if (res.success && res.url) {
-          const updated = await cmsService.updateHeroSlide(slideId, { image: res.url });
-          setSlides(updated);
-          triggerSaveNotification('Hero slide image updated and saved to MongoDB.');
-        }
-      } catch (err) {
-        alert('Failed to update slide image: ' + err.message);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleDeleteSlide = async (id) => {
-    if (!canEdit) {
-      alert('Viewer role cannot modify slides.');
-      return;
-    }
-    if (!window.confirm('Delete this hero background slide?')) return;
-    const updated = await cmsService.deleteHeroSlide(id);
-    setSlides(updated);
-    triggerSaveNotification('Hero slide removed from MongoDB and live frontend.');
   };
 
   // ==========================================
@@ -196,52 +121,6 @@ export default function AdminStudioPage() {
     await cmsService.updateProject(slug, { status: newStatus });
     setProjects(cmsService.getProjects());
     triggerSaveNotification(`Project "${slug}" status set to ${newStatus}.`);
-  };
-
-  // ==========================================
-  // SERVICES ACTIONS (ADD, EDIT, DELETE)
-  // ==========================================
-  const handleOpenAddService = () => {
-    setSelectedService(null);
-    setIsServiceModalOpen(true);
-  };
-
-  const handleOpenEditService = (svc) => {
-    setSelectedService(svc);
-    setIsServiceModalOpen(true);
-  };
-
-  const handleSaveService = async (formData) => {
-    if (!canEdit) return;
-    try {
-      if (selectedService) {
-        // Edit
-        await cmsService.updateService(selectedService.slug || selectedService.id, formData);
-        triggerSaveNotification(`Service "${formData.title}" updated successfully.`);
-      } else {
-        // Add
-        await cmsService.addService(formData);
-        triggerSaveNotification(`New service "${formData.title}" added successfully.`);
-      }
-      setServices(cmsService.getServices());
-      setIsServiceModalOpen(false);
-    } catch (err) {
-      alert('Error saving service: ' + err.message);
-    }
-  };
-
-  const handleDeleteService = async (slugOrId, title) => {
-    if (!canEdit) return;
-    if (!window.confirm(`Are you sure you want to permanently delete service: "${title}"?`)) {
-      return;
-    }
-    try {
-      await cmsService.deleteService(slugOrId);
-      setServices(cmsService.getServices());
-      triggerSaveNotification(`Service "${title}" deleted from MongoDB.`);
-    } catch (err) {
-      alert('Error deleting service: ' + err.message);
-    }
   };
 
   // ==========================================
@@ -308,23 +187,9 @@ export default function AdminStudioPage() {
                 <span>Production Projects ({projects.length})</span>
               </button>
 
-              <button
-                type="button"
-                className={`admin-tab-btn ${activeTab === 'services' ? 'is-active' : ''}`}
-                onClick={() => setActiveTab('services')}
-              >
-                <Briefcase size={18} />
-                <span>Engineering Services ({services.length})</span>
-              </button>
+              
 
-              <button
-                type="button"
-                className={`admin-tab-btn ${activeTab === 'slides' ? 'is-active' : ''}`}
-                onClick={() => setActiveTab('slides')}
-              >
-                <Image size={18} />
-                <span>Hero Carousel Slides ({slides.length})</span>
-              </button>
+              
 
               <button
                 type="button"
@@ -335,14 +200,7 @@ export default function AdminStudioPage() {
                 <span>Trust Statistics (2x2)</span>
               </button>
 
-              <button
-                type="button"
-                className={`admin-tab-btn ${activeTab === 'leadership' ? 'is-active' : ''}`}
-                onClick={() => setActiveTab('leadership')}
-              >
-                <Award size={18} />
-                <span>Leadership Profiles</span>
-              </button>
+              
 
               <button
                 type="button"
@@ -497,189 +355,9 @@ export default function AdminStudioPage() {
             )}
 
             {/* ========================================================= */}
-            {/* 2. SERVICES TAB (FULL ADD, EDIT, DELETE) */}
-            {/* ========================================================= */}
-            {activeTab === 'services' && (
-              <div className="editor-card">
-                <div className="editor-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                  <div>
-                    <span className="admin-tag">CMS MongoDB Repository</span>
-                    <h2 className="editor-heading">Engineering Disciplines (Services)</h2>
-                    <p className="editor-sub">
-                      Add, update capabilities, tags, architectural descriptions, or remove services.
-                    </p>
-                  </div>
-
-                  {canEdit && (
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      onClick={handleOpenAddService}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                    >
-                      <Plus size={15} />
-                      <span>Add New Service</span>
-                    </button>
-                  )}
-                </div>
-
-                <div className="services-admin-table">
-                  {services.map((svc) => (
-                    <div key={svc.slug || svc.id} className="service-admin-row">
-                      <div className="svc-id-cell">{svc.id}</div>
-                      <div className="svc-main-cell">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <h4 style={{ margin: 0, fontSize: '16px', fontWeight: '700', color: '#0f172a' }}>
-                            {svc.title}
-                          </h4>
-                          <span style={{ fontSize: '11px', color: '#64748b', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px' }}>
-                            /{svc.slug}
-                          </span>
-                        </div>
-                        <p className="svc-desc-cell">{svc.description}</p>
-                        <div className="svc-tags-cell">
-                          {svc.tags?.map((t) => (
-                            <span key={t} className="tag-badge">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="svc-actions-cell" style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
-                        <a
-                          href="/services"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="view-live-btn"
-                        >
-                          <span>Live Page</span>
-                          <ExternalLink size={13} />
-                        </a>
-
-                        {canEdit && (
-                          <div style={{ display: 'flex', gap: '6px' }}>
-                            <button
-                              type="button"
-                              className="btn btn-outline btn-sm"
-                              onClick={() => handleOpenEditService(svc)}
-                              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', padding: '4px 8px' }}
-                            >
-                              <Edit2 size={13} />
-                              <span>Edit</span>
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteService(svc.slug || svc.id, svc.title)}
-                              title="Delete Service"
-                              style={{ background: 'transparent', border: '1px solid #fecaca', color: '#ef4444', borderRadius: '6px', padding: '5px', cursor: 'pointer' }}
-                            >
-                              <Trash2 size={13} />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ========================================================= */}
-            {/* 3. HERO SLIDES TAB (WITH DIRECT IMAGE UPLOADING) */}
-            {/* ========================================================= */}
-            {activeTab === 'slides' && (
-              <div className="editor-card">
-                <div className="editor-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                  <div>
-                    <span className="admin-tag">CMS MongoDB Repository</span>
-                    <h2 className="editor-heading">Hero Background Carousel Slides</h2>
-                    <p className="editor-sub">
-                      Upload high-resolution photography rendered by the homepage crossfade carousel.
-                    </p>
-                  </div>
-
-                  {canEdit && (
-                    <>
-                      <input
-                        type="file"
-                        ref={addSlideInputRef}
-                        onChange={handleAddSlideFile}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-primary btn-sm"
-                        onClick={() => addSlideInputRef.current?.click()}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                      >
-                        <UploadCloud size={15} />
-                        <span>Upload & Add Slide</span>
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                <div className="slides-editor-grid">
-                  {slides.map((slide, idx) => (
-                    <div key={slide.id || idx} className="slide-editor-item">
-                      <div className="slide-thumb-wrap">
-                        <img src={slide.image} alt={slide.alt} className="slide-thumb" />
-                        <span className="slide-seq-tag">0{idx + 1}</span>
-                      </div>
-                      <div className="slide-details">
-                        <span className="slide-id-txt">{slide.id}</span>
-                        <p className="slide-caption-txt">{slide.caption}</p>
-                        <span className="slide-alt-txt">{slide.alt}</span>
-                      </div>
-
-                      {canEdit && (
-                        <div className="slide-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                          <input
-                            type="file"
-                            ref={(el) => (slideFileInputRefs.current[slide.id] = el)}
-                            onChange={(e) => handleSlideImageUpload(slide.id, e)}
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-outline btn-sm"
-                            onClick={() => slideFileInputRefs.current[slide.id]?.click()}
-                            title="Upload new image for this slide"
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', padding: '5px 8px' }}
-                          >
-                            <UploadCloud size={13} />
-                            <span>Replace</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="delete-slide-btn"
-                            onClick={() => handleDeleteSlide(slide.id)}
-                            aria-label="Delete Slide"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ========================================================= */}
             {/* 4. STATS TAB */}
             {/* ========================================================= */}
             {activeTab === 'stats' && <StatsEditor />}
-
-            {/* ========================================================= */}
-            {/* 5. LEADERSHIP TAB */}
-            {/* ========================================================= */}
-            {activeTab === 'leadership' && <LeadershipEditor />}
 
             {/* ========================================================= */}
             {/* 6. CONTACT SUBMISSIONS TAB */}
@@ -923,13 +601,7 @@ export default function AdminStudioPage() {
         onSave={handleSaveProject}
       />
 
-      {/* Service Add/Edit Modal */}
-      <ServiceModal
-        isOpen={isServiceModalOpen}
-        service={selectedService}
-        onClose={() => setIsServiceModalOpen(false)}
-        onSave={handleSaveService}
-      />
+      
     </div>
   );
 }

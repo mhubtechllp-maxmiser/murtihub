@@ -1,9 +1,8 @@
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+﻿import React from 'react';
 import './Projects.scss';
 
 export default function ProjectCard({ project, index }) {
-  const { id, slug, name, title, status, description, image, gridSpan, liveUrl } = project;
+  const { id, slug, name, status, description, image, gridSpan, liveUrl } = project;
   // 1st, 3rd, 5th -> odd (light variant) | 2nd, 4th, 6th -> even (blue variant)
   const isEven = (index + 1) % 2 === 0;
   const projectUrl = liveUrl || `https://${slug}.murtihub.co.in`;
@@ -31,7 +30,7 @@ export default function ProjectCard({ project, index }) {
         <div className="project-media-wrapper">
           <img
             src={image}
-            alt={`${name} — ${title}`}
+            alt={name}
             className="project-image"
             loading="lazy"
           />
@@ -46,25 +45,13 @@ export default function ProjectCard({ project, index }) {
           </div>
         </div>
 
-        {/* Editorial Information Block */}
+        {/* Editorial Information Block: Name and Description Only */}
         <div className="project-body-content">
           <div className="project-header">
-            <div className="project-top-spine">
-              <span className="project-institution-name">{name}</span>
-              <div className="card-top-line" aria-hidden="true" />
-            </div>
-            <h3 className="project-headline">{title}</h3>
+            <h3 className="project-headline">{name}</h3>
           </div>
 
           <p className="project-summary">{description}</p>
-
-          {/* Live Action Footer */}
-          <div className="project-footer">
-            <div className="project-cta-link">
-              <span className="cta-text">View Live Platform</span>
-              <ArrowUpRight size={15} className="cta-arrow" aria-hidden="true" />
-            </div>
-          </div>
         </div>
       </a>
     </article>

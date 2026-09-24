@@ -5,7 +5,7 @@ export const projectsData = [
     title: "Distraction-Free Publishing & Prose Architecture",
     name: "Akshar Canvas",
     status: "Live",
-    gridSpan: "span-7", // large editorial card
+    gridSpan: "span-6", // large editorial card
     image: "/images/projects/akshar.jpg",
     liveUrl: "https://aksharcanvas.com",
     description:
@@ -34,7 +34,7 @@ export const projectsData = [
     title: "High-Concurrency Multi-Bitrate Streaming CDN",
     name: "GHSnap Flix",
     status: "Live",
-    gridSpan: "span-5", // medium editorial card
+    gridSpan: "span-6", // medium editorial card
     image: "/images/projects/ghsnap.jpg",
     liveUrl: "https://ghsnapflix.com",
     description:
@@ -63,7 +63,7 @@ export const projectsData = [
     title: "Deterministic WebGL Game Engine & Realtime Runtime",
     name: "GHGame Zone",
     status: "Live",
-    gridSpan: "span-5", // medium editorial card
+    gridSpan: "span-6", // medium editorial card
     image: "/images/projects/ghgame.jpg",
     liveUrl: "https://ghgamezone.com",
     description:
@@ -92,7 +92,7 @@ export const projectsData = [
     title: "Zero-Trust Cryptographic API Mesh & Reverse Proxy",
     name: "Sentinel Gateway",
     status: "Deployed",
-    gridSpan: "span-7", // wide editorial card
+    gridSpan: "span-6", // wide editorial card
     image: "/images/projects/sentinel.jpg",
     liveUrl: "https://sentinel.murtihub.co.in",
     description:
@@ -121,7 +121,7 @@ export const projectsData = [
     title: "Turnkey Multi-Vendor Commerce & Escrow Engine",
     name: "Omni Marketplace",
     status: "Deployed",
-    gridSpan: "span-12", // full-width flagship feature card
+    gridSpan: "span-6", // full-width flagship feature card
     image: "/images/projects/omni.jpg",
     liveUrl: "https://omni.murtihub.co.in",
     description:

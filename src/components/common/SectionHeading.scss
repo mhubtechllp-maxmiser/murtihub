@@ -1,4 +1,4 @@
-@use '../../styles/variables' as *;
+﻿@use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
 .section-heading {
@@ -79,16 +79,36 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
+      align-items: flex-end;
 
       @include respond-to(lg) {
-        grid-template-columns: 1.2fr 1fr;
-        align-items: flex-end;
-        gap: 4rem;
+        grid-template-columns: 1fr auto;
+        gap: 3rem;
       }
     }
 
     .section-title {
       margin-bottom: 0;
+    }
+
+    .section-description-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @include respond-to(lg) {
+        align-items: flex-end;
+      }
+    }
+
+    .section-heading-action {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 0.5rem;
+
+      @include respond-to(lg) {
+        margin-top: 0;
+      }
     }
   }
 
@@ -119,4 +139,3 @@
     }
   }
 }
-

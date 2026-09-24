@@ -11,6 +11,7 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
     title: '',
     slug: '',
     status: 'Live',
+    gridSpan: 'span-12',
     image: '/images/hero/hero-1.jpg',
     liveUrl: 'https://murtihub.co.in',
     description: '',
@@ -31,6 +32,7 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
         title: project.title || '',
         slug: project.slug || '',
         status: project.status || 'Live',
+        gridSpan: project.gridSpan || 'span-12',
         image: project.image || '/images/hero/hero-1.jpg',
         liveUrl: project.liveUrl || 'https://murtihub.co.in',
         description: project.description || '',
@@ -49,6 +51,7 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
         title: '',
         slug: '',
         status: 'Live',
+        gridSpan: 'span-12',
         image: '/images/hero/hero-1.jpg',
         liveUrl: 'https://murtihub.co.in',
         description: '',
@@ -168,15 +171,29 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
             </div>
 
             <div className="modal-form-group">
-              <label>Live URL</label>
-              <input
-                type="text"
-                placeholder="https://client-site.com"
-                value={formData.liveUrl}
-                onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
-                className="modal-input"
-              />
+              <label>Card Grid Layout / Width</label>
+              <select
+                value={formData.gridSpan || 'span-12'}
+                onChange={(e) => setFormData({ ...formData, gridSpan: e.target.value })}
+                className="modal-select"
+              >
+                <option value="span-12">Full Width Flagship (12 Columns - Side-by-Side)</option>
+                <option value="span-6">Half Width Balanced (6 Columns)</option>
+                <option value="span-7">Large Editorial (7 Columns)</option>
+                <option value="span-5">Medium Editorial (5 Columns)</option>
+              </select>
             </div>
+          </div>
+
+          <div className="modal-form-group">
+            <label>Live Platform URL</label>
+            <input
+              type="text"
+              placeholder="https://client-site.com"
+              value={formData.liveUrl}
+              onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
+              className="modal-input"
+            />
           </div>
 
           {/* Project Cover Image with direct File Upload */}

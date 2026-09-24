@@ -9,12 +9,12 @@ import { journeyStages } from '../data/journeyStages';
 import { servicesData } from '../data/servicesData';
 import { projectsData } from '../data/projectsData';
 import { architectureData } from '../data/architectureData';
-import { leadershipData } from '../data/leadershipData';
+
 import { covenantData } from '../data/covenantData';
 import { techArsenalData } from '../data/techArsenalData';
 import { api } from './api';
 
-const STORAGE_KEY_PREFIX = 'murtihub_cms_v5_';
+const STORAGE_KEY_PREFIX = 'murtihub_cms_v15_';
 
 function getStored(key, defaultValue) {
   try {
@@ -50,13 +50,13 @@ function notifyListeners(key, value) {
 // Map of default initial fallback datasets
 const defaultDatasets = {
   brand: brandData,
-  hero_slides: initialHeroSlides,
+
   trust_stats: trustStats,
   journey_stages: journeyStages,
-  services: servicesData,
+
   projects: projectsData,
   architecture: architectureData,
-  leadership: leadershipData,
+
   covenant: covenantData,
   tech_arsenal: techArsenalData,
 };
@@ -110,41 +110,9 @@ export const cmsService = {
     return updated;
   },
 
-  // Hero Slides
+  // Hero Slides (Static - Not editable or in MongoDB)
   getHeroSlides() {
-    return getStored('hero_slides', initialHeroSlides);
-  },
-  async saveHeroSlides(slides) {
-    await this.persistKey('hero_slides', slides);
-    return slides;
-  },
-  async addHeroSlide(newSlide) {
-    const current = this.getHeroSlides();
-    const slide = {
-      id: `slide-${Date.now()}`,
-      image: newSlide.image || '/images/hero/hero-1.jpg',
-      alt: newSlide.alt || 'MurtiHub Technology Workspace',
-      caption: newSlide.caption || 'Institutional Digital Systems',
-    };
-    const updated = [...current, slide];
-    await this.persistKey('hero_slides', updated);
-    return updated;
-  },
-  async updateHeroSlide(id, updatedFields) {
-    const current = this.getHeroSlides();
-    const updated = current.map((s) => (s.id === id ? { ...s, ...updatedFields } : s));
-    await this.persistKey('hero_slides', updated);
-    return updated;
-  },
-  async deleteHeroSlide(id) {
-    const current = this.getHeroSlides();
-    if (current.length <= 1) {
-      alert('At least one hero slide must remain published.');
-      return current;
-    }
-    const updated = current.filter((s) => s.id !== id);
-    await this.persistKey('hero_slides', updated);
-    return updated;
+    return initialHeroSlides;
   },
 
   // Trust Statistics
@@ -184,60 +152,12 @@ export const cmsService = {
     return getStored('journey_stages', journeyStages);
   },
 
-  // Services (Dynamic)
+  // Services (Static - Not editable or in MongoDB)
   getServices() {
-    return getStored('services', servicesData);
+    return servicesData;
   },
   getServiceBySlug(slug) {
-    const services = this.getServices();
-    return services.find((s) => s.slug === slug || s.id === slug);
-  },
-  async saveServices(services) {
-    await this.persistKey('services', services);
-    return services;
-  },
-  async addService(newSvc) {
-    const current = this.getServices();
-    const nextNum = current.length + 1;
-    const formattedId = nextNum < 10 ? `0${nextNum}` : `${nextNum}`;
-    const slug = newSvc.slug || newSvc.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const service = {
-      id: formattedId,
-      slug,
-      title: newSvc.title || 'New Engineering Service',
-      shortTitle: newSvc.shortTitle || newSvc.title || 'Engineering Service',
-      cardLayout: newSvc.cardLayout || 'vertical-panel',
-      description: newSvc.description || 'Institutional service description.',
-      longDescription: newSvc.longDescription || newSvc.description || '',
-      tags: Array.isArray(newSvc.tags) ? newSvc.tags : (newSvc.tags ? newSvc.tags.split(',').map((s) => s.trim()) : ['Enterprise']),
-      capabilities: Array.isArray(newSvc.capabilities) ? newSvc.capabilities : [],
-      technologies: Array.isArray(newSvc.technologies) ? newSvc.technologies : [],
-      engineeringApproach: newSvc.engineeringApproach || '',
-      relatedProjects: newSvc.relatedProjects || [],
-    };
-    const updated = [...current, service];
-    await this.persistKey('services', updated);
-    return updated;
-  },
-  async updateService(slug, updatedFields) {
-    const services = this.getServices();
-    const index = services.findIndex((s) => s.slug === slug || s.id === slug);
-    if (index !== -1) {
-      services[index] = { ...services[index], ...updatedFields };
-      await this.persistKey('services', [...services]);
-      return services[index];
-    }
-    return null;
-  },
-  async deleteService(slug) {
-    const services = this.getServices();
-    if (services.length <= 1) {
-      alert('At least one service must remain published.');
-      return services;
-    }
-    const updated = services.filter((s) => s.slug !== slug && s.id !== slug);
-    await this.persistKey('services', updated);
-    return updated;
+    return servicesData.find((s) => s.slug === slug || s.id === slug);
   },
 
   // Projects (Dynamic)
@@ -263,7 +183,7 @@ export const cmsService = {
       name: newProj.name || 'New Project',
       title: newProj.title || 'Institutional System Deployment',
       status: newProj.status || 'Live',
-      gridSpan: newProj.gridSpan || 'span-6',
+      gridSpan: newProj.gridSpan || 'span-12',
       image: newProj.image || '/images/hero/hero-1.jpg',
       liveUrl: newProj.liveUrl || 'https://murtihub.co.in',
       description: newProj.description || 'Institutional project summary description.',
@@ -308,68 +228,7 @@ export const cmsService = {
     return getStored('architecture', architectureData);
   },
 
-  // Leadership Data
-  getLeadership() {
-    const stored = getStored('leadership', null);
-    if (!stored) return leadershipData;
-    return {
-      ...leadershipData,
-      ...stored,
-      leaders: stored.leaders || (stored.leader ? [stored.leader] : leadershipData.leaders),
-      leader: (stored.leaders && stored.leaders[0]) || stored.leader || leadershipData.leader,
-      ethosPillars: stored.ethosPillars || leadershipData.ethosPillars,
-    };
-  },
-  async updateLeadership(data) {
-    const leaders = data.leaders || (data.leader ? [data.leader] : []);
-    const updated = {
-      ...leadershipData,
-      ...data,
-      leaders,
-      leader: leaders[0] || data.leader || leadershipData.leader,
-      ethosPillars: data.ethosPillars || leadershipData.ethosPillars,
-    };
-    await this.persistKey('leadership', updated);
-    return updated;
-  },
-  async addLeader(newLeader) {
-    const current = this.getLeadership();
-    const leaders = current.leaders || [];
-    const leaderId = newLeader.id || newLeader.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const leader = {
-      id: leaderId,
-      name: newLeader.name || 'Executive Partner',
-      title: newLeader.title || 'Senior Designated Partner',
-      role: newLeader.role || 'Partner | Engineering',
-      image: newLeader.image || '/images/leader.jpg',
-      bio: Array.isArray(newLeader.bio) ? newLeader.bio : [newLeader.bio || 'Executive profile biography.'],
-      values: newLeader.values || [],
-      quotes: newLeader.quotes || {
-        about: 'Engineering systems with institutional integrity.',
-        leadership: 'True technical leadership eliminates complexity.',
-      },
-    };
-    const updated = {
-      ...current,
-      leaders: [...leaders, leader],
-    };
-    await this.persistKey('leadership', updated);
-    return updated;
-  },
-  async deleteLeader(leaderId) {
-    const current = this.getLeadership();
-    const leaders = current.leaders || [];
-    if (leaders.length <= 1) {
-      alert('At least one leader profile must remain.');
-      return current;
-    }
-    const updated = {
-      ...current,
-      leaders: leaders.filter((l) => l.id !== leaderId),
-    };
-    await this.persistKey('leadership', updated);
-    return updated;
-  },
+  
 
   // Covenant Data
   getCovenant() {

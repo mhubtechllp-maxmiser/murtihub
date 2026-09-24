@@ -16,9 +16,9 @@ export default function Footer() {
   return (
     <footer className="site-footer" role="contentinfo">
       <div className="container">
-        {/* Top Branding Strip */}
-        <div className="footer-top">
-          <div className="footer-brand-col">
+        <div className="footer-rows">
+          {/* Row 1: Brand Info */}
+          <div className="footer-row footer-row-info">
             <Link to="/" className="footer-brand">
               <div className="footer-emblem-wrap">
                 <img
@@ -29,53 +29,56 @@ export default function Footer() {
               </div>
               <div className="footer-brand-titles">
                 <span className="footer-brand-name">{brand.companyName || 'MurtiHub Technologies'}</span>
-                <span className="footer-tagline">{brand.tagline || 'Next-Gen Technology Architecture'}</span>
+                <span className="footer-tagline">{brand.tagline || 'Engineering A More Open Tomorrow'}</span>
               </div>
             </Link>
-            <p className="footer-manifesto">
-              Ideas today, impact tomorrow. Architecting institutional software systems, distributed
-              platforms, and mathematically verified runtimes with complete client IP sovereignty.
+            <p className="footer-description">
+              {brand.description || 'We build digital solutions, scalable web systems, and modern products that help businesses innovate and grow.'}
             </p>
           </div>
 
-          {/* Sitemaps */}
-          <div className="footer-links-col">
-            <h4 className="footer-column-title">Navigation</h4>
-            <ul className="footer-nav-list">
-              {footerNavigation.map((item) => (
-                <li key={item.path}>
-                  <Link to={item.path} className="footer-link">
-                    <span>{item.label}</span>
-                    <ArrowUpRight size={12} className="footer-link-arrow" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Row 2: Quick Links */}
+          <div className="footer-row footer-row-links">
+            <div className="footer-row-label">
+              <span className="footer-label-badge">Quick Links</span>
+            </div>
+            <nav className="footer-nav" aria-label="Footer Navigation">
+              <ul className="footer-nav-list">
+                {footerNavigation.map((item) => (
+                  <li key={item.path}>
+                    <Link to={item.path} className="footer-link">
+                      <span>{item.label}</span>
+                      <ArrowUpRight size={11} className="footer-link-arrow" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          {/* Inquiries */}
-          <div className="footer-inquiries-col">
-            <h4 className="footer-column-title">Direct Inquiries</h4>
-            <p className="footer-inquiry-note">
-              Direct partner consultation with senior systems architects.
-            </p>
-            <a href={`mailto:${brand.email || 'enquiry@murtihub.co.in'}`} className="footer-email-btn">
-              <Mail size={16} />
-              <span>{brand.email || 'enquiry@murtihub.co.in'}</span>
-            </a>
-            <div className="footer-sla-badge">
-              <span className="sla-dot"></span>
-              <span>SLA Response: {brand.responseSLA || '< 24 Business Hours'}</span>
+          {/* Row 3: Inquiries */}
+          <div className="footer-row footer-row-inquiries">
+            <div className="footer-inquiry-meta">
+              <span className="footer-label-badge">Inquiries</span>
+              <span className="footer-inquiry-note">Have a project or question? Let's talk.</span>
+            </div>
+            <div className="footer-inquiry-actions">
+              <a href={`mailto:${brand.email || 'info@murtihub.co.in'}`} className="footer-email-btn">
+                <Mail size={14} />
+                <span>{brand.email || 'info@murtihub.co.in'}</span>
+              </a>
+              <div className="footer-sla-badge">
+                <span className="sla-dot"></span>
+                <span>Replies within 24h</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="hairline-dark footer-hairline"></div>
-
-        {/* Bottom Copyright & Ethos Strip */}
+        {/* Bottom Copyright & Legal Strip */}
         <div className="footer-bottom">
           <p className="footer-copyright">
-            {brand.copyright || '© 2026 MurtiHub Technologies. All Rights Reserved.'}
+            {brand.copyright || '© 2026 MurtiHub Technologies. All rights reserved.'}
           </p>
           <div className="footer-motto">
             <span className="motto-diamond">◆</span>

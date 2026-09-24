@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Clock, Lock } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { Mail } from 'lucide-react';
 import { cmsService } from '../services/cmsService';
 import ContactForm from '../components/contact/ContactForm';
 import './ContactPage.scss';
@@ -52,21 +52,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="meta-info-item">
-                  <Clock size={18} className="text-accent" />
-                  <div>
-                    <span className="info-key">Guaranteed Response SLA</span>
-                    <span className="info-val">{brand.responseSLA || '< 24 Business Hours'}</span>
-                  </div>
-                </div>
 
-                <div className="meta-info-item">
-                  <Lock size={18} className="text-accent" />
-                  <div>
-                    <span className="info-key">Legal Governance</span>
-                    <span className="info-val">Institutional NDA Available Upon First Contact</span>
-                  </div>
-                </div>
               </div>
             </div>
 

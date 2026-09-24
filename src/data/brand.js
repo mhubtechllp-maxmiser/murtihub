@@ -5,7 +5,7 @@ export const brandData = {
   headline: "Ideas Today\nImpact Tomorrow",
   description:
     "We build digital solutions, scalable web systems, and modern products that help businesses innovate and grow.",
-  email: "info@murtihub.co.in",
+  email: "enquiry@murtihub.co.in",
   responseSLA: "< 24 Hours",
   incorporationYear: "2026",
   legalStructure: "Incorporated Enterprise",

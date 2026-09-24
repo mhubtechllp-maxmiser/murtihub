@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash2, Save } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { X, Save } from 'lucide-react';
 import ImageUploadField from './ImageUploadField';
 import './ProjectModal.scss';
 
@@ -8,97 +8,66 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
 
   const [formData, setFormData] = useState({
     name: '',
-    title: '',
     slug: '',
     status: 'Live',
-    gridSpan: 'span-12',
     image: '/images/hero/hero-1.jpg',
     liveUrl: 'https://murtihub.co.in',
     description: '',
-    overview: '',
-    challenge: '',
-    engineeringApproach: '',
-    metrics: [
-      { value: '100%', label: 'Delivery Integrity', sub: 'Verified' },
-      { value: 'Zero', label: 'Downtime', sub: 'Redundant Architecture' },
-    ],
-    stack: 'React, Node.js, SCSS',
   });
 
   useEffect(() => {
     if (project) {
       setFormData({
         name: project.name || '',
-        title: project.title || '',
         slug: project.slug || '',
         status: project.status || 'Live',
-        gridSpan: project.gridSpan || 'span-12',
         image: project.image || '/images/hero/hero-1.jpg',
         liveUrl: project.liveUrl || 'https://murtihub.co.in',
         description: project.description || '',
-        overview: project.overview || '',
-        challenge: project.challenge || '',
-        engineeringApproach: project.engineeringApproach || '',
-        metrics: project.metrics && project.metrics.length > 0 ? project.metrics : [
-          { value: '100%', label: 'Delivery Integrity', sub: 'Verified' },
-        ],
-        stack: Array.isArray(project.stack) ? project.stack.join(', ') : (project.stack || ''),
       });
     } else {
       // Blank template for new project
       setFormData({
         name: '',
-        title: '',
         slug: '',
         status: 'Live',
-        gridSpan: 'span-12',
         image: '/images/hero/hero-1.jpg',
         liveUrl: 'https://murtihub.co.in',
         description: '',
-        overview: '',
-        challenge: '',
-        engineeringApproach: '',
-        metrics: [
-          { value: '100%', label: 'Delivery Integrity', sub: 'Verified' },
-        ],
-        stack: 'React, Node.js, SCSS',
       });
     }
   }, [project, isOpen]);
 
   if (!isOpen) return null;
 
-  const handleMetricChange = (index, field, val) => {
-    const updated = [...formData.metrics];
-    updated[index] = { ...updated[index], [field]: val };
-    setFormData({ ...formData, metrics: updated });
-  };
-
-  const addMetric = () => {
-    setFormData({
-      ...formData,
-      metrics: [...formData.metrics, { value: '', label: '', sub: '' }],
-    });
-  };
-
-  const removeMetric = (index) => {
-    if (formData.metrics.length <= 1) return;
-    setFormData({
-      ...formData,
-      metrics: formData.metrics.filter((_, i) => i !== index),
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.title.trim()) {
-      alert('Please provide project name and title');
+    if (!formData.name.trim()) {
+      alert('Please provide a project name');
+      return;
+    }
+    if (!formData.description.trim()) {
+      alert('Please provide a project description');
       return;
     }
 
+    const generatedSlug =
+      formData.slug.trim() ||
+      formData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
     const payload = {
-      ...formData,
-      stack: formData.stack.split(',').map((s) => s.trim()).filter(Boolean),
+      ...(project || {}),
+      name: formData.name.trim(),
+      title: formData.name.trim(),
+      slug: generatedSlug,
+      status: formData.status,
+      image: formData.image,
+      liveUrl: formData.liveUrl.trim(),
+      description: formData.description.trim(),
+      gridSpan: 'span-6',
     };
 
     onSave(payload);
@@ -109,9 +78,13 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
       <div className="admin-modal-card">
         <div className="admin-modal-header">
           <div>
-            <h3 className="modal-title">{isEditing ? 'Edit Production Project' : 'Add New Production Project'}</h3>
+            <h3 className="modal-title">
+              {isEditing ? 'Edit Production Project' : 'Add New Production Project'}
+            </h3>
             <p className="modal-subtitle">
-              {isEditing ? `Modify details, parameters, and cover image for ${formData.name}` : 'Publish a new institutional case study to the website'}
+              {isEditing
+                ? `Modify details and cover image for ${formData.name || 'project'}`
+                : 'Publish a new project card to the website'}
             </p>
           </div>
           <button type="button" className="modal-close-btn" onClick={onClose} aria-label="Close modal">
@@ -145,18 +118,6 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
             </div>
           </div>
 
-          <div className="modal-form-group">
-            <label>Headline Title *</label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. Distraction-Free Publishing & Prose Architecture"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="modal-input"
-            />
-          </div>
-
           <div className="form-grid-2">
             <div className="modal-form-group">
               <label>Project Status</label>
@@ -171,29 +132,15 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
             </div>
 
             <div className="modal-form-group">
-              <label>Card Grid Layout / Width</label>
-              <select
-                value={formData.gridSpan || 'span-12'}
-                onChange={(e) => setFormData({ ...formData, gridSpan: e.target.value })}
-                className="modal-select"
-              >
-                <option value="span-12">Full Width Flagship (12 Columns - Side-by-Side)</option>
-                <option value="span-6">Half Width Balanced (6 Columns)</option>
-                <option value="span-7">Large Editorial (7 Columns)</option>
-                <option value="span-5">Medium Editorial (5 Columns)</option>
-              </select>
+              <label>Live Platform URL</label>
+              <input
+                type="text"
+                placeholder="https://aksharcanvas.com"
+                value={formData.liveUrl}
+                onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
+                className="modal-input"
+              />
             </div>
-          </div>
-
-          <div className="modal-form-group">
-            <label>Live Platform URL</label>
-            <input
-              type="text"
-              placeholder="https://client-site.com"
-              value={formData.liveUrl}
-              onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
-              className="modal-input"
-            />
           </div>
 
           {/* Project Cover Image with direct File Upload */}
@@ -205,85 +152,14 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
           />
 
           <div className="modal-form-group">
-            <label>Short Description (Card Summary) *</label>
+            <label>Description (Card Summary) *</label>
             <textarea
-              rows={3}
+              rows={4}
               required
               placeholder="Concise overview rendered on project cards..."
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="modal-textarea"
-            />
-          </div>
-
-          <div className="modal-form-group">
-            <label>Detailed Architectural Overview</label>
-            <textarea
-              rows={3}
-              placeholder="In-depth problem statement and system context..."
-              value={formData.overview}
-              onChange={(e) => setFormData({ ...formData, overview: e.target.value })}
-              className="modal-textarea"
-            />
-          </div>
-
-          {/* Key Metrics */}
-          <div className="modal-metrics-section">
-            <div className="metrics-header-row">
-              <label className="section-label">Key Highlight Metrics</label>
-              <button type="button" className="btn btn-outline btn-sm" onClick={addMetric}>
-                <Plus size={13} />
-                <span>Add Metric</span>
-              </button>
-            </div>
-
-            <div className="metrics-list">
-              {formData.metrics.map((m, idx) => (
-                <div key={idx} className="metric-row">
-                  <input
-                    type="text"
-                    placeholder="Value (e.g. 10K+)"
-                    value={m.value}
-                    onChange={(e) => handleMetricChange(idx, 'value', e.target.value)}
-                    className="modal-input metric-val"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Label (e.g. Words / Day)"
-                    value={m.label}
-                    onChange={(e) => handleMetricChange(idx, 'label', e.target.value)}
-                    className="modal-input metric-label"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Subtext (e.g. Average)"
-                    value={m.sub || ''}
-                    onChange={(e) => handleMetricChange(idx, 'sub', e.target.value)}
-                    className="modal-input metric-sub"
-                  />
-                  {formData.metrics.length > 1 && (
-                    <button
-                      type="button"
-                      className="metric-del-btn"
-                      onClick={() => removeMetric(idx)}
-                      title="Remove metric"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="modal-form-group">
-            <label>Technology Stack (Comma-separated)</label>
-            <input
-              type="text"
-              placeholder="e.g. React, Node.js, MongoDB Atlas, Redis"
-              value={formData.stack}
-              onChange={(e) => setFormData({ ...formData, stack: e.target.value })}
-              className="modal-input"
             />
           </div>
 
@@ -301,4 +177,3 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
     </div>
   );
 }
-

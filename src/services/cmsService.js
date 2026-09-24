@@ -12,9 +12,10 @@ import { architectureData } from '../data/architectureData';
 
 import { covenantData } from '../data/covenantData';
 import { techArsenalData } from '../data/techArsenalData';
+import { leadershipData } from '../data/leadershipData';
 import { api } from './api';
 
-const STORAGE_KEY_PREFIX = 'murtihub_cms_v15_';
+const STORAGE_KEY_PREFIX = 'murtihub_cms_v16_';
 
 function getStored(key, defaultValue) {
   try {
@@ -59,6 +60,7 @@ const defaultDatasets = {
 
   covenant: covenantData,
   tech_arsenal: techArsenalData,
+  leadership: leadershipData,
 };
 
 export const cmsService = {
@@ -101,7 +103,12 @@ export const cmsService = {
 
   // Brand Data
   getBrand() {
-    return getStored('brand', brandData);
+    const brand = getStored('brand', brandData);
+    if (brand && brand.email === 'info@murtihub.co.in') {
+      brand.email = 'enquiry@murtihub.co.in';
+      setStored('brand', brand);
+    }
+    return brand;
   },
   async updateBrand(newData) {
     const current = this.getBrand();
@@ -113,6 +120,15 @@ export const cmsService = {
   // Hero Slides (Static - Not editable or in MongoDB)
   getHeroSlides() {
     return initialHeroSlides;
+  },
+
+  // Executive Leadership Profiles
+  getLeadership() {
+    return getStored('leadership', leadershipData);
+  },
+  async updateLeadership(newLeadershipData) {
+    await this.persistKey('leadership', newLeadershipData);
+    return newLeadershipData;
   },
 
   // Trust Statistics

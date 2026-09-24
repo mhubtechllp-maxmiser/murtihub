@@ -1,0 +1,16 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.leadership-page-root {
+  width: 100%;
+}
+
+.leader-showcase-section {
+  background-color: $color-bg;
+
+  .leaders-grid-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 5vw, 5rem);
+  }
+}

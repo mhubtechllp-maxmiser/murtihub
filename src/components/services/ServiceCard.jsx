@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import './Services.scss';
 
 export default function ServiceCard({ service, index }) {
@@ -35,10 +35,11 @@ export default function ServiceCard({ service, index }) {
         {/* Card Bottom Meta: Tags */}
         <div className="card-footer-meta">
           <div className="service-tags-list">
-            {tags.map((tag) => (
-              <span key={tag} className="tag-badge">
-                {tag}
-              </span>
+            {tags.map((tag, idx) => (
+              <React.Fragment key={tag}>
+                <span className="tag-text">{tag}</span>
+                {idx < tags.length - 1 && <span className="tag-separator" aria-hidden="true">|</span>}
+              </React.Fragment>
             ))}
           </div>
         </div>

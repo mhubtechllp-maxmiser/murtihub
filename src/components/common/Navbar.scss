@@ -190,14 +190,6 @@
   align-items: center;
   gap: 1.5rem;
 
-  .contact-link {
-    display: none;
-
-    @include respond-to(md) {
-      display: inline-block;
-    }
-  }
-
   .nav-cta {
     display: none;
 

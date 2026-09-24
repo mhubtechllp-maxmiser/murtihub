@@ -1,7 +1,9 @@
+﻿
+
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-// ── Root — locked to 100vh ────────────────────────────────────────────────────
+// â”€â”€ Root â€” locked to 100vh â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-root {
   position: relative;
@@ -19,14 +21,13 @@
   > * { pointer-events: auto; }
 }
 
-// ── Eyebrow (Tightly above headline) ──────────────────────────────────────────
+// â”€â”€ Eyebrow (Tightly above headline) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-eyebrow-row {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
   margin-bottom: clamp(0.75rem, 1.8vh, 1.35rem); // Reduced tight gap
-  opacity: 0; // GSAP
 
   .hc-eyebrow-dot {
     width: 6px;
@@ -55,7 +56,7 @@
   }
 }
 
-// ── Main Content Grid ─────────────────────────────────────────────────────────
+// â”€â”€ Main Content Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-main-grid {
   display: grid;
@@ -71,7 +72,7 @@
   }
 }
 
-// ── Left Column — lifted upwards into prime visual space ──────────────────────
+// â”€â”€ Left Column â€” lifted upwards into prime visual space â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-left-col {
   display: flex;
@@ -81,7 +82,7 @@
   margin-bottom: clamp(2.5rem, 6.5vh, 5.5rem); // Moves text up
 }
 
-// ── Headline — Amarante Font, Increased Size, Blue-White Radiant Gradient ────
+// â”€â”€ Headline â€” Amarante Font, Increased Size, Blue-White Radiant Gradient â”€â”€â”€â”€
 
 .hc-headline {
   font-family: $font-sans;
@@ -92,7 +93,7 @@
   margin: 0 0 clamp(0.9rem, 2vh, 1.5rem);
   text-transform: none; // Capitalised
 
-  // Blue → white radiant gradient
+  // Blue â†’ white radiant gradient
   background: linear-gradient(
     135deg,
     #ffffff 0%,
@@ -111,7 +112,6 @@
 
 .hc-headline-line {
   display: block;
-  opacity: 0; // GSAP
 }
 
 .hc-body {
@@ -121,10 +121,9 @@
   color: rgba(255, 255, 255, 0.75);
   max-width: 500px;
   margin-bottom: clamp(1.25rem, 2.6vh, 2rem);
-  opacity: 0; // GSAP
 }
 
-// ── CTA Buttons ───────────────────────────────────────────────────────────────
+// â”€â”€ CTA Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-cta-group {
   display: flex;
@@ -146,7 +145,6 @@
   border-radius: 3px;
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   cursor: pointer;
-  opacity: 0; // GSAP
   white-space: nowrap;
   svg { flex-shrink: 0; }
   &:hover { transform: translateY(-2px); }
@@ -177,7 +175,7 @@
   }
 }
 
-// ── Right Column — Positioned slightly left & bottom ──────────────────────────
+// â”€â”€ Right Column â€” Positioned slightly left & bottom â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-right-col {
   display: none;
@@ -193,7 +191,7 @@
   }
 }
 
-// ── Vision Card — Exact Match to User Uploaded Design ─────────────────────────
+// â”€â”€ Vision Card â€” Exact Match to User Uploaded Design â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-vision-card {
   display: flex;
@@ -206,7 +204,6 @@
   border: 1px solid rgba(59, 130, 246, 0.32);
   border-radius: 12px;
   padding: clamp(1rem, 1.8vh, 1.35rem) clamp(1.1rem, 1.6vw, 1.45rem);
-  opacity: 0; // GSAP
 
   // Neo glow edge
   box-shadow:
@@ -285,7 +282,7 @@
   flex-shrink: 0;
 }
 
-// Right section of card — Play button & label
+// Right section of card â€” Play button & label
 .hc-card-right {
   display: flex;
   flex-direction: column;
@@ -342,7 +339,7 @@
   text-align: center;
 }
 
-// ── Bottom Bar ────────────────────────────────────────────────────────────────
+// â”€â”€ Bottom Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-bottom-bar {
   display: flex;
@@ -355,7 +352,6 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  opacity: 0; // GSAP
 
   .hc-scroll-circle {
     width: 30px;
@@ -388,7 +384,7 @@
   }
 }
 
-// ── Neo Ambient Glow ──────────────────────────────────────────────────────────
+// â”€â”€ Neo Ambient Glow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 .hc-root::before {
   content: '';
@@ -409,14 +405,14 @@
   transform: translateZ(0);
 }
 
-// ── Animation ─────────────────────────────────────────────────────────────────
+// â”€â”€ Animation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 @keyframes scrollBob {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(5px); }
 }
 
-// ── Responsive ────────────────────────────────────────────────────────────────
+// â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 @media (max-width: #{$bp-lg}) {
   .hc-right-col { display: none; }
@@ -470,5 +466,38 @@
 
   .hc-body {
     font-size: 0.92rem;
+  }
+}
+
+// ── Slide Transitions for dynamic carousel text ─────────────────────────────
+.hc-slide-text-block {
+  display: flex;
+  flex-direction: column;
+  animation: heroTextSlideIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hc-card-content-anim {
+  animation: heroCardSlideIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes heroTextSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

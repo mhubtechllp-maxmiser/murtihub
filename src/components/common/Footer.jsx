@@ -63,9 +63,9 @@ export default function Footer() {
               <span className="footer-inquiry-note">Have a project or question? Let's talk.</span>
             </div>
             <div className="footer-inquiry-actions">
-              <a href={`mailto:${brand.email || 'info@murtihub.co.in'}`} className="footer-email-btn">
+              <a href={`mailto:${brand.email || 'enquiry@murtihub.co.in'}`} className="footer-email-btn">
                 <Mail size={14} />
-                <span>{brand.email || 'info@murtihub.co.in'}</span>
+                <span>{brand.email || 'enquiry@murtihub.co.in'}</span>
               </a>
               <div className="footer-sla-badge">
                 <span className="sla-dot"></span>

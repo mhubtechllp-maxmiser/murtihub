@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
 import { cmsService } from '../services/cmsService';
@@ -48,10 +48,11 @@ export default function ServicesPage() {
                       <span className="entry-tier">Institutional Discipline</span>
                     </div>
                     <div className="entry-tags">
-                      {service.tags.map((tag) => (
-                        <span key={tag} className="tag-badge">
-                          {tag}
-                        </span>
+                      {service.tags.map((tag, idx) => (
+                        <React.Fragment key={tag}>
+                          <span className="entry-tag-text">{tag}</span>
+                          {idx < service.tags.length - 1 && <span className="entry-tag-separator">|</span>}
+                        </React.Fragment>
                       ))}
                     </div>
                   </div>
@@ -83,16 +84,7 @@ export default function ServicesPage() {
                       </ul>
                     </div>
 
-                    <div className="tech-stack-row">
-                      <span className="stack-label">Specialized Technologies:</span>
-                      <div className="stack-pills">
-                        {service.technologies.map((tech) => (
-                          <span key={tech} className="tech-pill">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+
                   </div>
                 </div>
 

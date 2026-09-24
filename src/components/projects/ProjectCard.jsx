@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import './Projects.scss';
 
 export default function ProjectCard({ project, index }) {
@@ -45,13 +46,20 @@ export default function ProjectCard({ project, index }) {
           </div>
         </div>
 
-        {/* Editorial Information Block: Name and Description Only */}
+        {/* Editorial Information Block: Name, Description & Live Site Action */}
         <div className="project-body-content">
           <div className="project-header">
             <h3 className="project-headline">{name}</h3>
           </div>
 
           <p className="project-summary">{description}</p>
+
+          <div className="project-live-action">
+            <span className="project-live-link">
+              <span>View Live Site</span>
+              <ArrowUpRight size={15} className="live-link-icon" aria-hidden="true" />
+            </span>
+          </div>
         </div>
       </a>
     </article>

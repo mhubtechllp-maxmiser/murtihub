@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ShieldCheck, Award, Lock, Users } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { ShieldCheck, Lock, Award, Users } from 'lucide-react';
+import { cmsService } from '../services/cmsService';
 import SectionHeading from '../components/common/SectionHeading';
 import CTASection from '../components/common/CTASection';
-import { cmsService } from '../services/cmsService';
 import './AboutPage.scss';
-
 
 const ethosPillars = [
   {
-    title: "Ethical Stewardship",
-    description: "Upholding moral integrity, unambiguous client advocacy, and responsible engineering in every deployed system."
+    title: 'Ethical Stewardship',
+    description: 'Upholding moral integrity, unambiguous client advocacy, and responsible engineering in every deployed system.'
   },
   {
-    title: "Institutional Resilience",
-    description: "Building software architectures and governance frameworks that stand unyielding across generational technological shifts."
+    title: 'Institutional Resilience',
+    description: 'Building software architectures and governance frameworks that stand unyielding across generational shifts.'
   },
   {
-    title: "Long-Horizon Value Creation",
-    description: "Prioritizing enduring client sovereignty and computational robustness over short-term expedience."
+    title: 'Long-Horizon Value',
+    description: 'Prioritizing enduring client sovereignty and computational robustness over short-term expedience.'
   }
 ];
 
@@ -31,17 +29,15 @@ export default function AboutPage() {
   }, []);
 
   const aboutStats = [
-    { value: '2026', label: 'Incorporated Enterprise', sub: 'Est. 2026' },
-    { value: brand.incorporationYear || '2026', label: brand.legalStructure || 'Incorporated Enterprise', sub: `Est. ${brand.incorporationYear || '2026'}` },
-    { value: '100%', label: 'Client Sovereignty', sub: '100% IP Ownership' },
-    { value: '99.99%', label: 'Availability SLA', sub: 'Uptime Benchmark' }
+    { value: brand.incorporationYear || '2026', label: 'Incorporated Enterprise' },
+    { value: '100%', label: 'Client IP Ownership' },
+    { value: '99.99%', label: 'Availability SLA' }
   ];
 
   return (
     <div className="about-page-root">
-      {/* Page Header Banner (Full-Width Static Hero Background) */}
+      {/* Page Header Banner */}
       <section className="page-header-banner about-header-banner about-hero-static-section" aria-label="About MurtiHub Technologies">
-        {/* Full-width static background visual */}
         <div className="about-hero-bg-container" aria-hidden="true">
           <img
             src="/images/about/about-hero-bg.jpg"
@@ -54,15 +50,10 @@ export default function AboutPage() {
 
         <div className="container about-hero-container">
           <div className="about-hero-content">
-            <div className="banner-status-pill">
-              <span className="pulsing-beacon" aria-hidden="true" />
-              <span className="pill-text">Origin // Identity // Covenant</span>
-              <span className="pill-divider" aria-hidden="true">·</span>
-              <span className="pill-coord">Est. 2026</span>
-            </div>
+
 
             <h1 className="banner-title text-display">
-              Engineering <span className="title-gradient">Digital Sovereignty</span> For An Open Tomorrow.
+              Digital <span className="title-gradient">Sovereignty.</span>
             </h1>
 
             <div className="banner-accent-spine" aria-hidden="true">
@@ -71,17 +62,15 @@ export default function AboutPage() {
             </div>
 
             <p className="banner-desc lead-paragraph">
-              MurtiHub Technologies is a premier digital engineering firm. We design, build, and
-              scale mission-critical software systems, distributed platforms, and high-concurrency
-              digital architectures for ambitious enterprises globally.
+              Engineering mission-critical systems and distributed enterprise architectures.
             </p>
 
             <div className="banner-credentials-strip">
               <div className="credential-chip">
                 <ShieldCheck size={18} className="chip-icon" />
                 <div className="chip-meta">
-                  <strong className="chip-title">100% Client IP</strong>
-                  <span className="chip-sub">Unconditional Ownership</span>
+                  <strong className="chip-title">Sovereign Code</strong>
+                  <span className="chip-sub">Full Client Ownership</span>
                 </div>
               </div>
               <div className="credential-chip">
@@ -94,8 +83,8 @@ export default function AboutPage() {
               <div className="credential-chip">
                 <Award size={18} className="chip-icon" />
                 <div className="chip-meta">
-                  <strong className="chip-title">Executive Peer</strong>
-                  <span className="chip-sub">Direct Partner Access</span>
+                  <strong className="chip-title">Direct Access</strong>
+                  <span className="chip-sub">Partner-Led Engineering</span>
                 </div>
               </div>
             </div>
@@ -103,13 +92,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Institutional Provenance Statistics */}
+      {/* Institutional Statistics */}
       <section className="about-stats-strip">
         <div className="container">
           <div className="about-stats-grid">
             {aboutStats.map((stat, idx) => (
               <div key={idx} className="about-stat-box">
-                <span className="box-sub">{stat.sub}</span>
                 <span className="box-val">{stat.value}</span>
                 <span className="box-lbl">{stat.label}</span>
               </div>
@@ -123,43 +111,36 @@ export default function AboutPage() {
         <div className="container">
           <div className="about-narrative-grid">
             <div className="narrative-left">
-              <span className="technical-label">Institutional Provenance</span>
               <h2 className="narrative-title text-h2">
-                Craftsmanship over commodity. We build systems that endure.
+                Systems That Endure.
               </h2>
             </div>
 
             <div className="narrative-right">
               <p className="lead-paragraph">
-                MurtiHub Technologies was founded on an unyielding principle: enterprise technology
-                must be engineered with mathematical precision and lasting institutional permanence,
+                MurtiHub Technologies is founded on a core principle: enterprise technology
+                must be engineered with mathematical precision and lasting permanence,
                 not ephemeral hype cycles.
               </p>
               <p>
-                In an era where disposable SaaS wrappers and bloated commodity frameworks dominate,
-                ambitious organizations routinely find themselves burdened by escalating technical
-                debt, opaque vendor locks, and fragile dependencies.
-              </p>
-              <p>
-                MurtiHub restores sovereign craftsmanship. From multi-bitrate streaming CDNs and
-                zero-trust cryptographic gateways to deterministic WebGL physics and multi-vendor
-                escrow ledgers, we write software from first principles. Our code belongs 100% to our
-                clients, backed by verified benchmarks and enduring institutional stewardship.
+                We write software from first principles—delivering scalable distributed platforms,
+                zero-trust security boundaries, and high-concurrency systems backed by verified
+                benchmarks and enduring institutional stewardship.
               </p>
 
               <div className="narrative-pillars">
                 <div className="pillar-bullet">
                   <Lock size={18} className="text-accent" />
                   <div>
-                    <strong>Cryptographic Sovereign Boundaries</strong>
-                    <p>Zero implicit trust. End-to-end mTLS v1.3 encryption across every perimeter.</p>
+                    <strong>Cryptographic Boundaries</strong>
+                    <p>End-to-end mTLS encryption and zero-trust perimeter isolation.</p>
                   </div>
                 </div>
                 <div className="pillar-bullet">
                   <Users size={18} className="text-accent" />
                   <div>
-                    <strong>Partner-Led Technical Governance</strong>
-                    <p>Direct engagement with senior architects and designated partners.</p>
+                    <strong>Partner-Led Governance</strong>
+                    <p>Direct collaboration with senior architects from architecture to deploy.</p>
                   </div>
                 </div>
               </div>
@@ -168,14 +149,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Organizational Ethos & Pillars */}
+      {/* Organizational Ethos */}
       <section className="section section-surface about-ethos-section">
         <div className="container">
           <SectionHeading
-            eyebrow="Organizational Ethos"
+            eyebrow="Core Values"
             title="Engineering With Purpose."
-            subtitle="Absolute Transparency • 100% Client IP Ownership • Executive Partnership"
-            description="Our three non-negotiable operational commitments to every enterprise engagement."
+            description="Our foundational operational commitments to every enterprise engagement."
           />
 
           <div className="ethos-cards-grid">
@@ -188,8 +168,6 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-
-          
         </div>
       </section>
 

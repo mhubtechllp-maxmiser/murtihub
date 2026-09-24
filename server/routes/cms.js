@@ -1,25 +1,34 @@
 ﻿import express from 'express';
 import Project from '../models/Project.js';
 import Stat from '../models/Stat.js';
+import Leader from '../models/Leader.js';
+import { leadershipData } from '../../src/data/leadershipData.js';
 import { protect, requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // @route   GET /api/cms
-// @desc    Get dynamic CMS collections (projects and stats only)
+// @desc    Get dynamic CMS collections (projects, stats, and leadership)
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const [projects, stats] = await Promise.all([
+    let [projects, stats, leaders] = await Promise.all([
       Project.find().sort({ id: 1 }).lean(),
       Stat.find().lean(),
+      Leader.find().lean(),
     ]);
+
+    if (!leaders || leaders.length === 0) {
+      await Leader.insertMany(leadershipData.leaders);
+      leaders = await Leader.find().lean();
+    }
 
     return res.json({
       success: true,
       data: {
         projects: projects || [],
         trust_stats: stats || [],
+        leadership: { leaders },
       },
     });
   } catch (error) {
@@ -45,6 +54,15 @@ router.get('/:key', async (req, res) => {
       return res.json({ success: true, key, data: stats });
     }
 
+    if (key === 'leadership') {
+      let leaders = await Leader.find().lean();
+      if (!leaders || leaders.length === 0) {
+        await Leader.insertMany(leadershipData.leaders);
+        leaders = await Leader.find().lean();
+      }
+      return res.json({ success: true, key, data: { leaders } });
+    }
+
     return res.json({ success: true, key, data: null });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -52,7 +70,7 @@ router.get('/:key', async (req, res) => {
 });
 
 // @route   PUT /api/cms/:key
-// @desc    Update CMS dataset (only projects and stats are stored in MongoDB)
+// @desc    Update CMS dataset
 // @access  Protected (Super Admin & Editor)
 router.put('/:key', protect, requireRole('superadmin', 'editor'), async (req, res) => {
   try {
@@ -106,9 +124,31 @@ router.put('/:key', protect, requireRole('superadmin', 'editor'), async (req, re
       });
     }
 
+    if (key === 'leadership') {
+      const leaderList = Array.isArray(data) ? data : (data.leaders || []);
+      if (Array.isArray(leaderList)) {
+        const ids = leaderList.map((l) => l.id).filter(Boolean);
+        await Leader.deleteMany({ id: { $nin: ids } });
+
+        for (const leader of leaderList) {
+          await Leader.findOneAndUpdate(
+            { id: leader.id },
+            leader,
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+          );
+        }
+      }
+      return res.json({
+        success: true,
+        message: 'Leadership profiles successfully synchronized in MongoDB leaders collection',
+        key,
+        data,
+      });
+    }
+
     return res.json({
       success: true,
-      message: `${key} is handled statically or client-side; not stored in MongoDB.`,
+      message: `CMS key "${key}" saved.`,
       key,
       data,
     });

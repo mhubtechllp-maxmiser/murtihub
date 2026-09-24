@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react';
+﻿import React, { useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ArrowRight, ChevronDown, Play } from 'lucide-react';
@@ -6,6 +6,9 @@ import './HeroContent.scss';
 
 export default function HeroContent({ slides = [], currentIndex = 0 }) {
   const containerRef = useRef(null);
+  const currentSlide = slides[currentIndex] || slides[0] || {};
+  const headlineLines = currentSlide.headlineLines || (currentSlide.headline ? [currentSlide.headline] : ['MurtiHub']);
+  const visionTitleLines = currentSlide.visionTitle || ['Technology', 'for a more open', 'tomorrow.'];
 
   useLayoutEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -16,7 +19,7 @@ export default function HeroContent({ slides = [], currentIndex = 0 }) {
 
       tl
         .fromTo('.hc-eyebrow-row', { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.7 })
-        .fromTo('.hc-headline-line', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.0, stagger: 0.18 }, '-=0.3')
+        .fromTo('.hc-headline-line', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.15 }, '-=0.3')
         .fromTo('.hc-body', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.35')
         .fromTo('.hc-cta-group .hc-btn', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, stagger: 0.12 }, '-=0.3')
         .fromTo('.hc-vision-card', { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.8 }, '-=0.4')
@@ -32,23 +35,24 @@ export default function HeroContent({ slides = [], currentIndex = 0 }) {
       <div className="hc-main-grid">
         {/* Left column — text content */}
         <div className="hc-left-col">
-          {/* Eyebrow directly above headline with tight spacing */}
-          <div className="hc-eyebrow-row">
-            <span className="hc-eyebrow-dot" aria-hidden="true" />
-            <span className="hc-eyebrow-text">Engineering A More Open Tomorrow</span>
-            <span className="hc-eyebrow-line" aria-hidden="true" />
+          <div key={`slide-text-${currentIndex}`} className="hc-slide-text-block">
+            {/* Eyebrow directly above headline with tight spacing */}
+            <div className="hc-eyebrow-row">
+              <span className="hc-eyebrow-dot" aria-hidden="true" />
+              <span className="hc-eyebrow-text">{currentSlide.eyebrow || 'Engineering A More Open Tomorrow'}</span>
+              <span className="hc-eyebrow-line" aria-hidden="true" />
+            </div>
+
+            <h1 className="hc-headline" aria-label={headlineLines.join(' ')}>
+              {headlineLines.map((line, idx) => (
+                <span key={idx} className="hc-headline-line">{line}</span>
+              ))}
+            </h1>
+
+            <p className="hc-body">
+              {currentSlide.description || 'MurtiHub Technologies builds digital solutions, scalable systems, and future-ready products that empower businesses to grow, innovate and lead.'}
+            </p>
           </div>
-
-          <h1 className="hc-headline" aria-label="Ideas Today Impact Tomorrow">
-            <span className="hc-headline-line">Ideas Today</span>
-            <span className="hc-headline-line">Impact</span>
-            <span className="hc-headline-line">Tomorrow</span>
-          </h1>
-
-          <p className="hc-body">
-            MurtiHub Technologies builds digital solutions, scalable systems, and
-            future-ready products that empower businesses to grow, innovate and lead.
-          </p>
 
           <div className="hc-cta-group">
             <Link to="/contact" className="hc-btn hc-btn-primary">
@@ -64,15 +68,18 @@ export default function HeroContent({ slides = [], currentIndex = 0 }) {
         <div className="hc-right-col">
           <div className="hc-vision-card">
             {/* Left section of card */}
-            <div className="hc-card-left">
+            <div key={`slide-vision-${currentIndex}`} className="hc-card-left hc-card-content-anim">
               <div className="hc-card-eyebrow-wrap">
                 <span className="hc-card-dot" aria-hidden="true" />
-                <span className="hc-card-eyebrow">Our Vision</span>
+                <span className="hc-card-eyebrow">{currentSlide.visionEyebrow || 'Our Vision'}</span>
               </div>
               <h3 className="hc-card-title">
-                Technology<br />
-                for a more open<br />
-                tomorrow.
+                {visionTitleLines.map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {line}
+                    {idx < visionTitleLines.length - 1 && <br />}
+                  </React.Fragment>
+                ))}
               </h3>
               <div className="hc-card-accent-line" aria-hidden="true" />
             </div>

@@ -78,14 +78,6 @@ export default function Navbar() {
 
           {/* Action / CTA */}
           <div className="navbar-actions">
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `nav-link contact-link ${isActive ? 'is-active' : ''}`
-              }
-            >
-              Contact
-            </NavLink>
             <Link to="/contact" className="btn btn-primary btn-sm nav-cta">
               <span>Let's Build</span>
               <ArrowRight size={14} className="btn-hover-arrow" aria-hidden="true" />

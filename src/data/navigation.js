@@ -1,8 +1,9 @@
-export const mainNavigation = [
+﻿export const mainNavigation = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Services", path: "/services" },
-  { label: "Projects", path: "/projects" }
+  { label: "Projects", path: "/projects" },
+  { label: "Leadership", path: "/leadership" }
 ];
 
 export const footerNavigation = [
@@ -10,5 +11,6 @@ export const footerNavigation = [
   { label: "About", path: "/about" },
   { label: "Services", path: "/services" },
   { label: "Projects", path: "/projects" },
+  { label: "Leadership", path: "/leadership" },
   { label: "Contact", path: "/contact" }
 ];

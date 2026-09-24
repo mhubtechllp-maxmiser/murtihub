@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   KeyRound,
   Save,
+  Users,
 } from 'lucide-react';
 import { cmsService } from '../services/cmsService';
 import { api } from '../services/api';
@@ -21,6 +22,7 @@ import StatsEditor from '../components/admin/StatsEditor';
 import AdminUserManager from '../components/admin/AdminUserManager';
 import AccountSecurityEditor from '../components/admin/AccountSecurityEditor';
 import ProjectModal from '../components/admin/ProjectModal';
+import LeadershipEditor from '../components/admin/LeadershipEditor';
 import './AdminStudioPage.scss';
 
 export default function AdminStudioPage() {
@@ -187,6 +189,15 @@ export default function AdminStudioPage() {
                 <span>Production Projects ({projects.length})</span>
               </button>
 
+              <button
+                type="button"
+                className={`admin-tab-btn ${activeTab === 'leadership' ? 'is-active' : ''}`}
+                onClick={() => setActiveTab('leadership')}
+              >
+                <Users size={18} />
+                <span>Executive Leadership</span>
+              </button>
+
               
 
               
@@ -286,8 +297,7 @@ export default function AdminStudioPage() {
                       </div>
 
                       <div className="proj-admin-content">
-                        <div className="proj-admin-top">
-                          <span className="proj-name-tag">{proj.name}</span>
+                        <div className="proj-admin-top" style={{ justifyContent: 'flex-end', marginBottom: '8px' }}>
                           <select
                             value={proj.status?.toUpperCase() === 'DEPLOYED' ? 'Deployed' : 'Live'}
                             disabled={!canEdit}
@@ -299,16 +309,13 @@ export default function AdminStudioPage() {
                           </select>
                         </div>
 
-                        <h4 className="proj-admin-title">{proj.title}</h4>
-                        <p className="proj-admin-desc">{proj.description}</p>
+                        <h4 className="proj-admin-title" style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 8px 0', color: '#071d49' }}>
+                          {proj.name}
+                        </h4>
 
-                        <div className="proj-admin-metrics">
-                          {proj.metrics?.map((m, mIdx) => (
-                            <span key={mIdx} className="admin-m-chip">
-                              <strong>{m.value}</strong> {m.label}
-                            </span>
-                          ))}
-                        </div>
+                        <p className="proj-admin-desc" style={{ margin: '0 0 16px 0', fontSize: '13.5px', color: '#475569', lineHeight: 1.6 }}>
+                          {proj.description}
+                        </p>
 
                         {/* Project Card Actions Bar */}
                         <div className="proj-card-actions" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #e2e8f0' }}>
@@ -523,7 +530,7 @@ export default function AdminStudioPage() {
                       value={brandForm.email || ''}
                       onChange={(e) => handleBrandChange('email', e.target.value)}
                       className="admin-inline-input"
-                      placeholder="info@murtihub.co.in"
+                      placeholder="enquiry@murtihub.co.in"
                       disabled={!canEdit}
                     />
                   </div>
@@ -583,6 +590,8 @@ export default function AdminStudioPage() {
             {/* 8. RBAC ADMIN USERS TAB */}
             {/* 8. ACCOUNT SECURITY TAB (CHANGE PASSWORD) */}
             {/* ========================================================= */}
+            {activeTab === 'leadership' && <LeadershipEditor />}
+
             {activeTab === 'security' && <AccountSecurityEditor />}
 
             {/* ========================================================= */}

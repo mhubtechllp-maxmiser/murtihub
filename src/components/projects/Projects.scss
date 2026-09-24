@@ -189,6 +189,30 @@
       max-width: 580px;
     }
 
+    .project-live-action {
+      margin-top: clamp(1.2rem, 2.5vh, 1.8rem);
+      padding-top: 1.15rem;
+      border-top: 1px solid rgba(10, 31, 68, 0.08);
+      display: flex;
+      align-items: center;
+
+      .project-live-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-family: $font-sans;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: capitalize;
+        transition: color 0.25s ease;
+
+        .live-link-icon {
+          transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+      }
+    }
+
     // Key Metrics Strip
     .project-metrics-row {
       display: grid;
@@ -332,6 +356,24 @@
 
   .project-summary {
     color: #475569;
+  }
+
+  .project-live-action {
+    border-top-color: rgba(10, 31, 68, 0.08);
+
+    .project-live-link {
+      color: #2563eb;
+    }
+  }
+
+  &:hover {
+    .project-live-link {
+      color: #1d4ed8;
+
+      .live-link-icon {
+        transform: translate(3px, -3px);
+      }
+    }
   }
 
   .project-metrics-row {
@@ -483,6 +525,14 @@
     color: rgba(226, 232, 240, 0.86);
   }
 
+  .project-live-action {
+    border-top-color: rgba(255, 255, 255, 0.12);
+
+    .project-live-link {
+      color: #38bdf8;
+    }
+  }
+
   .project-metrics-row {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -524,6 +574,14 @@
 
   &:hover {
     border-color: rgba(56, 189, 248, 0.65);
+
+    .project-live-link {
+      color: #7dd3fc;
+
+      .live-link-icon {
+        transform: translate(3px, -3px);
+      }
+    }
     transform: translateY(-5px);
     box-shadow:
       0 22px 55px -10px rgba(3, 12, 32, 0.75),

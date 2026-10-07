@@ -1,14 +1,36 @@
-﻿import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
-import { ArrowRight, ChevronDown, Play } from 'lucide-react';
+import { ArrowRight, ChevronDown, Play, X } from 'lucide-react';
 import './HeroContent.scss';
 
 export default function HeroContent({ slides = [], currentIndex = 0 }) {
   const containerRef = useRef(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const currentSlide = slides[currentIndex] || slides[0] || {};
   const headlineLines = currentSlide.headlineLines || (currentSlide.headline ? [currentSlide.headline] : ['MurtiHub']);
   const visionTitleLines = currentSlide.visionTitle || ['Technology', 'for a more open', 'tomorrow.'];
+
+  // Lock body scroll and listen for Escape key when modal is open
+  useEffect(() => {
+    if (!isVideoModalOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsVideoModalOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isVideoModalOpen]);
 
   useLayoutEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -89,14 +111,24 @@ export default function HeroContent({ slides = [], currentIndex = 0 }) {
 
             {/* Right section of card */}
             <div className="hc-card-right">
-              <button className="hc-card-play-btn" aria-label="Watch Our Story">
+              <button
+                type="button"
+                className="hc-card-play-btn"
+                aria-label="Watch Our Story"
+                onClick={() => setIsVideoModalOpen(true)}
+              >
                 <span className="hc-play-ring">
                   <Play size={18} fill="#ffffff" color="#ffffff" className="hc-play-icon" aria-hidden="true" />
                 </span>
               </button>
-              <span className="hc-card-play-label">
+              <button
+                type="button"
+                className="hc-card-play-label"
+                onClick={() => setIsVideoModalOpen(true)}
+                aria-label="Watch Our Story"
+              >
                 Watch<br />Our Story
-              </span>
+              </button>
             </div>
           </div>
         </div>
@@ -112,6 +144,51 @@ export default function HeroContent({ slides = [], currentIndex = 0 }) {
           <span className="hc-scroll-line" aria-hidden="true" />
         </div>
       </div>
+
+      {/* ── Video Popup Modal ────────────────────────────────── */}
+      {isVideoModalOpen &&
+        createPortal(
+          <div
+            className="hc-video-modal-backdrop"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Watch Our Story"
+            onClick={() => setIsVideoModalOpen(false)}
+          >
+            <div
+              className="hc-video-modal-container"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="hc-video-modal-header">
+                <div className="hc-video-modal-tag">
+                  <span className="hc-video-modal-tag-dot" aria-hidden="true" />
+                  <span className="hc-video-modal-tag-text">MurtiHub &bull; Our Story</span>
+                </div>
+                <button
+                  type="button"
+                  className="hc-video-modal-close"
+                  onClick={() => setIsVideoModalOpen(false)}
+                  aria-label="Close video"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="hc-video-player-frame">
+                <video
+                  className="hc-video-player"
+                  src="/intro.mp4"
+                  controls
+                  autoPlay
+                  playsInline
+                >
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

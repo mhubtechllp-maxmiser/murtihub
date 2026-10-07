@@ -37,40 +37,20 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Row 2: Quick Links */}
-          <div className="footer-row footer-row-links">
-            <div className="footer-row-label">
-              <span className="footer-label-badge">Quick Links</span>
-            </div>
-            <nav className="footer-nav" aria-label="Footer Navigation">
-              <ul className="footer-nav-list">
-                {footerNavigation.map((item) => (
-                  <li key={item.path}>
-                    <Link to={item.path} className="footer-link">
-                      <span>{item.label}</span>
-                      <ArrowUpRight size={11} className="footer-link-arrow" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-
-          {/* Row 3: Inquiries */}
+          {/* Row 2: Contact */}
           <div className="footer-row footer-row-inquiries">
             <div className="footer-inquiry-meta">
-              <span className="footer-label-badge">Inquiries</span>
-              <span className="footer-inquiry-note">Have a project or question? Let's talk.</span>
+              <span className="footer-label-badge">Contact</span>
             </div>
             <div className="footer-inquiry-actions">
+              <Link to="/contact" className="footer-email-btn">
+                <span>Contact Us</span>
+                <ArrowUpRight size={14} />
+              </Link>
               <a href={`mailto:${brand.email || 'enquiry@murtihub.co.in'}`} className="footer-email-btn">
                 <Mail size={14} />
                 <span>{brand.email || 'enquiry@murtihub.co.in'}</span>
               </a>
-              <div className="footer-sla-badge">
-                <span className="sla-dot"></span>
-                <span>Replies within 24h</span>
-              </div>
             </div>
           </div>
         </div>

@@ -73,7 +73,7 @@ export const servicesData = [
     slug: "cms-websites",
     title: "CMS Websites",
     shortTitle: "CMS Websites",
-    cardLayout: "wide-panel",
+    cardLayout: "technical-panel",
     description:
       "Modern decoupled and headless content management systems providing instantaneous page rendering, effortless publishing, and omni-channel scale.",
     longDescription:

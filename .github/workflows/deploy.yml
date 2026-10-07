@@ -27,6 +27,8 @@ jobs:
             cd /opt/murtihub-new
 
             echo "Pulling latest code..."
+            git reset --hard
+            git clean -fd
             git pull origin main
 
             echo "Installing frontend dependencies..."

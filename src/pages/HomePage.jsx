@@ -18,8 +18,8 @@ export default function HomePage() {
   const [services, setServices] = useState(cmsService.getServices());
   const [projects, setProjects] = useState(cmsService.getProjects());
   const [heroIndex, setHeroIndex] = useState(0);
-  const displayedServices = services.slice(0, 3);
-  const displayedProjects = projects.slice(0, 3);
+  const displayedServices = services.slice(0, 4);
+  const displayedProjects = projects.slice(0, 4);
 
   useEffect(() => {
     const unsubSlides = cmsService.subscribe('hero_slides', setSlides);

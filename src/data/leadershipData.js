@@ -1,15 +1,15 @@
-﻿export const leadershipData = {
+export const leadershipData = {
   leaders: [
     {
       id: "rammurti-katiyar",
       name: "Mrs. Rammurti Katiyar",
-      title: "Designated Partner & Chairperson",
+      title: "Designated Partner & Guiding Force",
       role: "Partner | Governance | Strategy",
       image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172325/murtihub/leadership/rammurti-katiyar.jpg",
       bio: [
-        "Mrs. Rammurti Katiyar serves as Designated Partner and Chairperson of MurtiHub Technologies, guiding institutional governance, strategic vision, and sovereign engineering stewardship.",
-        "Under her executive leadership, MurtiHub was founded upon an uncompromising premise: that enterprise software should be built with institutional permanence, ethical transparency, and complete IP sovereignty for the client.",
-        "She stewards the firm's long-horizon commitments, ensuring that MurtiHub never compromises engineering craftsmanship for short-term expedience, and fostering deep executive trust with partners and enterprises globally."
+        "Mrs. Rammurti Katiyar — Founder & Guiding Force",
+        "At 68, Mrs. Rammurti Katiyar is the heart and conscience of MurtiHub. Her life is a testament to a simple but powerful belief: those who learn from change never fall behind. Rather than resisting the fast-moving world of technology, she has always embraced it — encouraging our team to stay curious, adapt boldly, and treat every shift in the industry as an opportunity to grow.",
+        "Her guiding principle shapes everything we do: the client is treated like God. For her, service is not a transaction but a sacred trust. Every client relationship is honored with respect, integrity, and genuine care — a standard she has instilled into the very DNA of MurtiHub."
       ],
       values: [
         {
@@ -30,21 +30,21 @@
       ],
       quotes: {
         about:
-          "True technological progress is measured by the trust it inspires and the human potential it unleashes.",
+          "It's this balance of timeless values and modern innovation that allows us to serve our clients with both heart and cutting-edge capability.",
         leadership:
-          "True technological advancement is judged not merely by speed, but by the permanence, fairness, and trust embodied in the systems we deliver."
+          "It's this balance of timeless values and modern innovation that allows us to serve our clients with both heart and cutting-edge capability."
       }
     },
     {
-      id: "rishi-katiyar",
-      name: "Mr. Rishi Katiyar",
-      title: "Designated Partner & Chief Architect",
-      role: "Partner | System Architecture | Engineering",
-      image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172326/murtihub/leadership/rishi-katiyar.jpg",
+      id: "divya-katiyar",
+      name: "Mrs. Divya Katiyar",
+      title: "Entrepreneur & Driving Vision",
+      role: "Partner | Sales Product | Engineering",
+      image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792151937/murtihub/leadership/whatsapp_image_2026-09-29_at_7_25_08_pm_1792151937484.jpg",
       bio: [
-        "Mr. Rishi Katiyar serves as Designated Partner and Chief Architect of MurtiHub Technologies, directing technical strategy, distributed architecture, and autonomous AI systems engineering.",
-        "With deep technical mastery across high-concurrency cloud infrastructure, deterministic WebGL runtimes, and multi-agent systems, he leads the firm's core engineering teams in translating complex enterprise requirements into mathematical realities.",
-        "He champions the firm's sovereign IP philosophy and engineering rigor, ensuring every production deployment adheres to zero-trust perimeters, sub-50ms latency standards, and resilient scale."
+        "Mrs. Divya Katiyar — Entrepreneur & Driving Vision",
+        "At 38, Mrs. Divya Katiyar brings the energy and ambition of a new generation of enterprise. A dynamic entrepreneur and startup builder, she believes that every challenge — no matter how complex — carries a solution waiting to be discovered. Her solution-oriented mindset turns problems into possibilities and ideas into working products.",
+        "Divya inspires our team to think sharper, move faster, and always keep the outcome in focus. Under her leadership, MurtiHub stays agile, innovative, and relentlessly committed to delivering real results for the people we serve."
       ],
       values: [
         {
@@ -65,9 +65,9 @@
       ],
       quotes: {
         about:
-          "We do not build disposable software. Every line of code is an institutional commitment to longevity and sovereign performance.",
+          "Together, We embody what MurtiHub Technologies stands for — the wisdom to value people and the courage to embrace change.",
         leadership:
-          "True software engineering is the discipline of eliminating accidental complexity so that institutions can operate with absolute autonomy."
+          "Together, We embody what MurtiHub Technologies stands for — the wisdom to value people and the courage to embrace change."
       }
     }
   ],

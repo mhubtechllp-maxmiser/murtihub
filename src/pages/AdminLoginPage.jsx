@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import {
-  ShieldCheck,
   Lock,
   Mail,
   Eye,
@@ -212,7 +211,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@murtihub.co.in"
+                  placeholder="name@company.com"
                   className="login-input"
                   autoComplete="email"
                 />
@@ -284,7 +283,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@murtihub.co.in"
+                  placeholder="name@company.com"
                   className="login-input"
                   autoComplete="email"
                   autoFocus
@@ -423,11 +422,6 @@ export default function AdminLoginPage() {
         )}
 
         <div className="login-footer">
-          <div className="demo-credentials-note">
-            <ShieldCheck size={14} className="note-icon" />
-            <span>Default Super Admin: <code>admin@murtihub.co.in</code></span>
-          </div>
-
           <Link to="/" className="back-to-site-link">
             <ArrowLeft size={14} />
             <span>Return to MurtiHub Website</span>

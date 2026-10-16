@@ -132,7 +132,7 @@ export default function AdminUserManager() {
               <input
                 type="text"
                 required
-                placeholder="e.g. Elena Rostova"
+                placeholder="Administrator Full Name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="aum-input"
@@ -144,7 +144,7 @@ export default function AdminUserManager() {
               <input
                 type="email"
                 required
-                placeholder="e.g. elena@murtihub.co.in"
+                placeholder="admin@company.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="aum-input"

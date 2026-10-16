@@ -5,7 +5,7 @@
       name: "Mrs. Rammurti Katiyar",
       title: "Designated Partner & Chairperson",
       role: "Partner | Governance | Strategy",
-      image: "/images/leader.jpg",
+      image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172325/murtihub/leadership/rammurti-katiyar.jpg",
       bio: [
         "Mrs. Rammurti Katiyar serves as Designated Partner and Chairperson of MurtiHub Technologies, guiding institutional governance, strategic vision, and sovereign engineering stewardship.",
         "Under her executive leadership, MurtiHub was founded upon an uncompromising premise: that enterprise software should be built with institutional permanence, ethical transparency, and complete IP sovereignty for the client.",
@@ -40,7 +40,7 @@
       name: "Mr. Rishi Katiyar",
       title: "Designated Partner & Chief Architect",
       role: "Partner | System Architecture | Engineering",
-      image: "/images/leader-2.jpg",
+      image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172326/murtihub/leadership/rishi-katiyar.jpg",
       bio: [
         "Mr. Rishi Katiyar serves as Designated Partner and Chief Architect of MurtiHub Technologies, directing technical strategy, distributed architecture, and autonomous AI systems engineering.",
         "With deep technical mastery across high-concurrency cloud infrastructure, deterministic WebGL runtimes, and multi-agent systems, he leads the firm's core engineering teams in translating complex enterprise requirements into mathematical realities.",

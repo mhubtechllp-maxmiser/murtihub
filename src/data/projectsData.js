@@ -6,7 +6,7 @@ export const projectsData = [
     name: "Akshar Canvas",
     status: "Live",
     gridSpan: "span-6", // large editorial card
-    image: "/images/projects/akshar.jpg",
+    image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172327/murtihub/projects/akshar-canvas.jpg",
     liveUrl: "https://aksharcanvas.com",
     description:
       "A literary digital sanctuary for authors and thinkers — distraction-free typography, instant cloud state persistence, and sub-50ms editor latency.",
@@ -35,7 +35,7 @@ export const projectsData = [
     name: "GHSnap Flix",
     status: "Live",
     gridSpan: "span-6", // medium editorial card
-    image: "/images/projects/ghsnap.jpg",
+    image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172328/murtihub/projects/ghsnap-flix.jpg",
     liveUrl: "https://ghsnapflix.com",
     description:
       "Petabyte-scale video on demand with intelligent HLS/DASH transcoding, global CDN orchestration, and zero-buffer adaptive streaming.",
@@ -64,7 +64,7 @@ export const projectsData = [
     name: "GHGame Zone",
     status: "Live",
     gridSpan: "span-6", // medium editorial card
-    image: "/images/projects/ghgame.jpg",
+    image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172329/murtihub/projects/ghgame-zone.jpg",
     liveUrl: "https://ghgamezone.com",
     description:
       "Browser-native multiplayer gaming with deterministic physics, sub-15ms WebSocket tick sync, and zero-install WebGL shader pipelines.",
@@ -93,7 +93,7 @@ export const projectsData = [
     name: "Sentinel Gateway",
     status: "Deployed",
     gridSpan: "span-6", // wide editorial card
-    image: "/images/projects/sentinel.jpg",
+    image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172331/murtihub/projects/sentinel-gateway.jpg",
     liveUrl: "https://sentinel.murtihub.co.in",
     description:
       "Hardened mTLS service mesh inspecting millions of requests per second with automated certificate rotation and hardware-accelerated payload inspection.",
@@ -122,7 +122,7 @@ export const projectsData = [
     name: "Omni Marketplace",
     status: "Deployed",
     gridSpan: "span-6", // full-width flagship feature card
-    image: "/images/projects/omni.jpg",
+    image: "https://res.cloudinary.com/txyaqhdq/image/upload/v1792172332/murtihub/projects/omni-marketplace.jpg",
     liveUrl: "https://omni.murtihub.co.in",
     description:
       "Sovereign multi-vendor commerce with automated escrow settlement, dynamic tax across 40 jurisdictions, and headless GraphQL APIs.",

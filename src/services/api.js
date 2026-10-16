@@ -161,11 +161,26 @@ export const api = {
     },
   },
 
-  // File & Image Upload API
-  async upload(base64Data, filename) {
+  // File & Image Upload & Media API (Cloudinary / CDN)
+  async upload(base64Data, filename, folder = 'murtihub') {
     return request('/api/upload', {
       method: 'POST',
-      body: JSON.stringify({ image: base64Data, filename }),
+      body: JSON.stringify({ image: base64Data, filename, folder }),
+    });
+  },
+
+  async getMedia(folder = 'murtihub', maxResults = 50, nextCursor = null) {
+    let url = `/api/upload?folder=${encodeURIComponent(folder)}&max_results=${maxResults}`;
+    if (nextCursor) {
+      url += `&next_cursor=${encodeURIComponent(nextCursor)}`;
+    }
+    return request(url);
+  },
+
+  async deleteMedia(publicId) {
+    return request('/api/upload', {
+      method: 'DELETE',
+      body: JSON.stringify({ public_id: publicId }),
     });
   },
 };

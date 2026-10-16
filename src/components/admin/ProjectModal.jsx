@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Save } from 'lucide-react';
 import ImageUploadField from './ImageUploadField';
 import './ProjectModal.scss';
@@ -148,7 +148,8 @@ export default function ProjectModal({ project, isOpen, onClose, onSave }) {
             label="Project Cover Image"
             value={formData.image}
             onChange={(newUrl) => setFormData({ ...formData, image: newUrl })}
-            hint="Upload custom screenshot or graphic. Saved to /uploads/"
+            hint="Upload custom screenshot or graphic. Hosted permanently on Cloudinary CDN."
+            folder="murtihub/projects"
           />
 
           <div className="modal-form-group">

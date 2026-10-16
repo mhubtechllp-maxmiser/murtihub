@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cmsService } from '../../services/cmsService';
 import { Save, Plus, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
 import ImageUploadField from './ImageUploadField';
@@ -189,7 +189,8 @@ export default function LeadershipEditor() {
                   label="Executive Portrait / Photo"
                   value={leader.image}
                   onChange={(newUrl) => handleLeaderChange(idx, 'image', newUrl)}
-                  hint="Upload portrait photo. Saved to /uploads/"
+                  hint="Upload portrait photo. Hosted permanently on Cloudinary CDN."
+                  folder="murtihub/leadership"
                 />
               </div>
 

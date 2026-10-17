@@ -30,10 +30,32 @@ jobs:
             test -f package.json
             test -f server/index.js
 
-            echo "Pulling latest code..."
+            echo "Safely protecting production .env..."
+            if [ -f .env ]; then
+              cp .env .env.prod.bak
+            fi
+
+            echo "Fetching latest code from origin..."
             git fetch origin main
-            git checkout main
-            git pull origin main
+
+            echo "Discarding local changes to build & dependency artifacts..."
+            git checkout -- dist/ 2>/dev/null || true
+            git checkout -- node_modules/ 2>/dev/null || true
+
+            echo "Synchronizing to origin/main..."
+            git reset --hard origin/main
+
+            if [ -f .env.prod.bak ]; then
+              echo "Restoring production .env..."
+              cp .env.prod.bak .env
+              rm -f .env.prod.bak
+            fi
+
+            if grep -q "^PORT=" .env 2>/dev/null; then
+              sed -i 's/^PORT=.*/PORT=5003/' .env
+            else
+              echo "PORT=5003" >> .env
+            fi
 
             echo "Installing dependencies (frontend & backend)..."
             npm ci

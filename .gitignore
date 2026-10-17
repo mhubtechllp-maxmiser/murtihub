@@ -31,6 +31,8 @@ pids
 *.pid
 *.seed
 *.pid.lock
+public/uploads/*
+!public/uploads/.gitkeep
 
 # Diagnostic & Coverage
 coverage/

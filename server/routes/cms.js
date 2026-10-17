@@ -1,26 +1,35 @@
-﻿import express from 'express';
+import express from 'express';
 import Project from '../models/Project.js';
 import Stat from '../models/Stat.js';
 import Leader from '../models/Leader.js';
+import SiteContent from '../models/SiteContent.js';
 import { leadershipData } from '../../src/data/leadershipData.js';
 import { protect, requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // @route   GET /api/cms
-// @desc    Get dynamic CMS collections (projects, stats, and leadership)
+// @desc    Get dynamic CMS collections (projects, stats, leadership, and site_contents)
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    let [projects, stats, leaders] = await Promise.all([
+    let [projects, stats, leaders, siteDocs] = await Promise.all([
       Project.find().sort({ id: 1 }).lean(),
       Stat.find().lean(),
       Leader.find().lean(),
+      SiteContent.find().lean(),
     ]);
 
     if (!leaders || leaders.length === 0) {
       await Leader.insertMany(leadershipData.leaders);
       leaders = await Leader.find().lean();
+    }
+
+    const siteMap = {};
+    if (siteDocs && siteDocs.length > 0) {
+      siteDocs.forEach((doc) => {
+        siteMap[doc.key] = doc.data;
+      });
     }
 
     return res.json({
@@ -29,6 +38,7 @@ router.get('/', async (req, res) => {
         projects: projects || [],
         trust_stats: stats || [],
         leadership: { leaders },
+        ...siteMap,
       },
     });
   } catch (error) {
@@ -61,6 +71,11 @@ router.get('/:key', async (req, res) => {
         leaders = await Leader.find().lean();
       }
       return res.json({ success: true, key, data: { leaders } });
+    }
+
+    const siteDoc = await SiteContent.findOne({ key }).lean();
+    if (siteDoc) {
+      return res.json({ success: true, key, data: siteDoc.data });
     }
 
     return res.json({ success: true, key, data: null });
@@ -146,9 +161,15 @@ router.put('/:key', protect, requireRole('superadmin', 'editor'), async (req, re
       });
     }
 
+    await SiteContent.findOneAndUpdate(
+      { key },
+      { key, data, updatedBy: req.user ? req.user.email : 'admin' },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
     return res.json({
       success: true,
-      message: `CMS key "${key}" saved.`,
+      message: `CMS key "${key}" saved in MongoDB site_contents collection.`,
       key,
       data,
     });

@@ -1,4 +1,3 @@
-
 name: Deploy MurtiHub
 
 on:
@@ -32,23 +31,24 @@ jobs:
             test -f server/index.js
 
             echo "Pulling latest code..."
-            git reset --hard
-            git clean -fd
+            git fetch origin main
+            git checkout main
             git pull origin main
 
-            echo "Installing frontend dependencies..."
+            echo "Installing dependencies (frontend & backend)..."
             npm ci
 
             echo "Building frontend..."
             npm run build
 
-            echo "Installing backend dependencies..."
-            cd /opt/murtihub/app/server
-            npm ci --omit=dev
+            if [ -f server/package.json ]; then
+              echo "Installing server-specific dependencies..."
+              (cd server && npm ci --omit=dev)
+            fi
 
             echo "Restarting MurtiHub backend on port 5003..."
             cd /opt/murtihub/app
-            PORT=5003 pm2 restart murtihub-api --update-env
+            PORT=5003 pm2 restart murtihub-api --update-env || PORT=5003 pm2 start server/index.js --name murtihub-api --update-env
 
             echo "Waiting for backend startup..."
             sleep 3

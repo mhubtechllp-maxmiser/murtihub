@@ -51,11 +51,8 @@ jobs:
               rm -f .env.prod.bak
             fi
 
-            if grep -q "^PORT=" .env 2>/dev/null; then
-              sed -i 's/^PORT=.*/PORT=5003/' .env
-            else
-              echo "PORT=5003" >> .env
-            fi
+            APP_PORT=$(grep -E "^PORT=" .env | cut -d '=' -f2 | tr -d '\r ' || echo "3000")
+            [ -z "$APP_PORT" ] && APP_PORT="3000"
 
             echo "Installing dependencies (frontend & backend)..."
             npm ci
@@ -68,16 +65,16 @@ jobs:
               (cd server && npm ci --omit=dev)
             fi
 
-            echo "Restarting MurtiHub backend on port 5003..."
+            echo "Restarting MurtiHub backend on port $APP_PORT..."
             cd /opt/murtihub/app
-            PORT=5003 pm2 restart murtihub-api --update-env || PORT=5003 pm2 start server/index.js --name murtihub-api --update-env
+            PORT=$APP_PORT pm2 restart murtihub-api --update-env || PORT=$APP_PORT pm2 start server/index.js --name murtihub-api --update-env
 
             echo "Waiting for backend startup..."
             sleep 3
 
             echo "Checking backend port..."
-            if ! ss -ltn | grep -q ':5003 '; then
-              echo "ERROR: Backend is not listening on port 5003"
+            if ! ss -ltn | grep -q ":$APP_PORT "; then
+              echo "ERROR: Backend is not listening on port $APP_PORT"
               pm2 logs murtihub-api --lines 40 --nostream
               exit 1
             fi

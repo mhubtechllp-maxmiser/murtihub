@@ -21,7 +21,7 @@ import cmsRoutes from './routes/cms.js';
 import uploadRoutes from './routes/upload.js';
 
 const app = express();
-const PORT = process.env.PORT || 5003;
+const PORT = process.env.PORT || 3000;
 
 // Enable CORS for Vite dev server & production origin
 app.use(

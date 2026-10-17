@@ -1,10 +1,10 @@
 import nodemailer from 'nodemailer';
 
 const getTransporter = () => {
-  const host = process.env.ZOHO_SMTP_HOST || 'smtp.zoho.in';
+  const host = (process.env.ZOHO_SMTP_HOST || 'smtp.zoho.in').trim();
   const port = parseInt(process.env.ZOHO_SMTP_PORT || '465', 10);
-  const user = process.env.ZOHO_EMAIL || 'enquiry@murtihub.co.in';
-  const pass = process.env.ZOHO_APP_PASSWORD || '';
+  const user = (process.env.ZOHO_EMAIL || 'admin@murtihub.co.in').trim();
+  const pass = (process.env.ZOHO_APP_PASSWORD || '').trim();
 
   return nodemailer.createTransport({
     host,
@@ -21,7 +21,7 @@ const getTransporter = () => {
 };
 
 export const verifyMailConnection = async () => {
-  const pass = process.env.ZOHO_APP_PASSWORD;
+  const pass = (process.env.ZOHO_APP_PASSWORD || '').trim();
   if (!pass || pass === 'your_app_password') {
     console.log('[Zoho Mail] Notice: ZOHO_APP_PASSWORD is set to placeholder. Please provide your real Zoho App Password in .env to send live emails.');
     return false;
@@ -30,7 +30,7 @@ export const verifyMailConnection = async () => {
   try {
     const transporter = getTransporter();
     await transporter.verify();
-    console.log('[Zoho Mail] Transporter connected successfully to', process.env.ZOHO_SMTP_HOST);
+    console.log(`[Zoho Mail] Transporter connected successfully to ${process.env.ZOHO_SMTP_HOST || 'smtp.zoho.in'}:${process.env.ZOHO_SMTP_PORT || 465} (${process.env.ZOHO_EMAIL})`);
     return true;
   } catch (err) {
     console.warn('[Zoho Mail] Transporter verification note:', err.message);
@@ -39,8 +39,9 @@ export const verifyMailConnection = async () => {
 };
 
 export const sendContactNotification = async (submission) => {
-  const recipient = process.env.ZOHO_EMAIL || 'enquiry@murtihub.co.in';
-  const pass = process.env.ZOHO_APP_PASSWORD;
+  const sender = (process.env.ZOHO_EMAIL || 'admin@murtihub.co.in').trim();
+  const recipient = (process.env.ZOHO_INQUIRY_RECEIVER || process.env.ZOHO_EMAIL || 'enquiry@murtihub.co.in').trim();
+  const pass = (process.env.ZOHO_APP_PASSWORD || '').trim();
 
   if (!pass || pass === 'your_app_password') {
     console.log('[Zoho Mail] Submission received & saved to DB. Email dispatch skipped: ZOHO_APP_PASSWORD is not configured.');
@@ -53,7 +54,7 @@ export const sendContactNotification = async (submission) => {
   try {
     const transporter = getTransporter();
     const mailOptions = {
-      from: `"MurtiHub Website" <${recipient}>`,
+      from: `"MurtiHub Website" <${sender}>`,
       to: recipient,
       replyTo: submission.email,
       subject: `[New Inquiry] ${submission.name} — ${submission.projectType || 'General Consultation'}`,
@@ -109,8 +110,8 @@ export const sendContactNotification = async (submission) => {
 };
 
 export const sendPasswordResetOtpEmail = async ({ to, name, otp }) => {
-  const sender = process.env.ZOHO_EMAIL || 'enquiry@murtihub.co.in';
-  const pass = process.env.ZOHO_APP_PASSWORD;
+  const sender = (process.env.ZOHO_EMAIL || 'admin@murtihub.co.in').trim();
+  const pass = (process.env.ZOHO_APP_PASSWORD || '').trim();
 
   console.log(`[Zoho Mail OTP] Active OTP generated for ${to}: [ ${otp} ]`);
 

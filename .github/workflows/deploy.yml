@@ -1,3 +1,4 @@
+
 name: Deploy MurtiHub
 
 on:
@@ -24,7 +25,11 @@ jobs:
             echo "       MURTIHUB DEPLOYMENT STARTING"
             echo "========================================="
 
-            cd /opt/murtihub-new
+            cd /opt/murtihub/app
+
+            echo "Checking project directory..."
+            test -f package.json
+            test -f server/index.js
 
             echo "Pulling latest code..."
             git reset --hard
@@ -38,11 +43,28 @@ jobs:
             npm run build
 
             echo "Installing backend dependencies..."
-            cd server
-            npm ci
+            cd /opt/murtihub/app/server
+            npm ci --omit=dev
 
-            echo "Restarting MurtiHub backend..."
-            pm2 restart murtihub-api
+            echo "Restarting MurtiHub backend on port 5003..."
+            cd /opt/murtihub/app
+            PORT=5003 pm2 restart murtihub-api --update-env
+
+            echo "Waiting for backend startup..."
+            sleep 3
+
+            echo "Checking backend port..."
+            if ! ss -ltn | grep -q ':5003 '; then
+              echo "ERROR: Backend is not listening on port 5003"
+              pm2 logs murtihub-api --lines 40 --nostream
+              exit 1
+            fi
+
+            echo "Testing Nginx configuration..."
+            sudo nginx -t
+
+            echo "Reloading Nginx..."
+            sudo systemctl reload nginx
 
             echo "Saving PM2 process list..."
             pm2 save

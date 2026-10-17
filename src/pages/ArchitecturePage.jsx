@@ -1,13 +1,19 @@
-import React from 'react';
-import { architectureData } from '../data/architectureData';
-import SectionHeading from '../components/common/SectionHeading';
+import React, { useState, useEffect } from 'react';
+import { cmsService } from '../services/cmsService';
 import TopologyVisualizer from '../components/architecture/TopologyVisualizer';
 import DisciplinesBlock from '../components/architecture/DisciplinesBlock';
 import CTASection from '../components/common/CTASection';
 import './ArchitecturePage.scss';
 
 export default function ArchitecturePage() {
-  const { heading, mainTitle, description, pillars } = architectureData;
+  const [archData, setArchData] = useState(cmsService.getArchitecture());
+
+  useEffect(() => {
+    const unsub = cmsService.subscribe('architecture', setArchData);
+    return () => unsub();
+  }, []);
+
+  const { heading, mainTitle, description, pillars = [] } = archData || {};
 
   return (
     <div className="architecture-page-root">

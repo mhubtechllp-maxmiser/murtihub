@@ -1,4 +1,5 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import { cmsService } from '../services/cmsService';
 import LeaderProfile from '../components/leadership/LeaderProfile';
 import CTASection from '../components/common/CTASection';
@@ -6,13 +7,22 @@ import './LeadershipPage.scss';
 
 export default function LeadershipPage() {
   const [leadership, setLeadership] = useState(cmsService.getLeadership());
+  const [syncStatus, setSyncStatus] = useState(cmsService.getStatus());
 
   useEffect(() => {
-    const unsub = cmsService.subscribe('leadership', setLeadership);
-    return () => { unsub(); };
+    const unsubLeadership = cmsService.subscribe('leadership', setLeadership);
+    const unsubStatus = cmsService.subscribe('__status__', setSyncStatus);
+    return () => {
+      unsubLeadership();
+      unsubStatus();
+    };
   }, []);
 
-  const leaders = leadership?.leaders || [];
+  const handleRetry = () => {
+    cmsService.initRemoteSync(true).catch(() => {});
+  };
+
+  const leaders = leadership?.leaders || (Array.isArray(leadership) ? leadership : []);
 
   return (
     <div className="leadership-page-root">
@@ -33,19 +43,39 @@ export default function LeadershipPage() {
       {/* Leadership Profile Showcase */}
       <section className="section section-light leader-showcase-section" aria-label="Designated Partners">
         <div className="container">
-          <div className="leaders-grid-showcase">
-            {leaders.map((leader, index) => (
-              <LeaderProfile
-                key={leader.id || index}
-                leader={leader}
-                index={index}
-              />
-            ))}
-          </div>
+          {syncStatus.isError && (
+            <div className="cms-status-banner cms-error" role="alert" style={{ marginBottom: '2rem' }}>
+              <AlertCircle size={18} />
+              <span>Failed to load executive leadership from MongoDB: {syncStatus.error}</span>
+              <button type="button" className="retry-btn" onClick={handleRetry}>
+                <RefreshCw size={14} />
+                <span>Retry</span>
+              </button>
+            </div>
+          )}
+
+          {leaders.length > 0 ? (
+            <div className="leaders-grid-showcase">
+              {leaders.map((leader, index) => (
+                <LeaderProfile
+                  key={leader.id || index}
+                  leader={leader}
+                  index={index}
+                />
+              ))}
+            </div>
+          ) : syncStatus.isLoading ? (
+            <div className="cms-section-loading" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+              <div className="loading-spinner" style={{ margin: '0 auto 1rem' }} />
+              <p>Loading executive leadership profiles from MongoDB...</p>
+            </div>
+          ) : (
+            <div className="cms-section-empty" style={{ textAlign: 'center', padding: '4rem 1rem', color: '#64748b' }}>
+              <p>No executive leadership profiles are currently published in the database.</p>
+            </div>
+          )}
         </div>
       </section>
-
-      
 
       {/* CTA */}
       <CTASection

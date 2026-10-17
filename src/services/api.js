@@ -153,12 +153,6 @@ export const api = {
         body: JSON.stringify({ data }),
       });
     },
-    async seed(payload) {
-      return request('/api/cms/seed', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-    },
   },
 
   // File & Image Upload & Media API (Cloudinary / CDN)

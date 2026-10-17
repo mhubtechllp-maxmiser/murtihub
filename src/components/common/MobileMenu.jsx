@@ -1,10 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { X, ArrowRight, ShieldCheck, Mail } from 'lucide-react';
-import { brandData } from '../../data/brand';
+import { cmsService } from '../../services/cmsService';
 import './MobileMenu.scss';
 
 export default function MobileMenu({ isOpen, onClose, navigation }) {
+  const [brand, setBrand] = useState(cmsService.getBrand());
+
+  useEffect(() => {
+    const unsub = cmsService.subscribe('brand', setBrand);
+    return () => unsub();
+  }, []);
+
   // Prevent background scrolling when menu is open
   useEffect(() => {
     if (isOpen) {
@@ -32,7 +39,7 @@ export default function MobileMenu({ isOpen, onClose, navigation }) {
               />
             </div>
             <div>
-              <span className="brand-name">MurtiHub</span>
+              <span className="brand-name">{brand.shortName || 'MurtiHub'}</span>
               <span className="brand-sub">Technologies</span>
             </div>
           </Link>
@@ -80,13 +87,12 @@ export default function MobileMenu({ isOpen, onClose, navigation }) {
             <ArrowRight size={16} />
           </Link>
 
-          <a href={`mailto:${brandData.email}`} className="mobile-email-link">
+          <a href={`mailto:${brand.email || 'enquiry@murtihub.co.in'}`} className="mobile-email-link">
             <Mail size={14} />
-            <span>{brandData.email}</span>
+            <span>{brand.email || 'enquiry@murtihub.co.in'}</span>
           </a>
         </div>
       </div>
     </div>
   );
 }
-

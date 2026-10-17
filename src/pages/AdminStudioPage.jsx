@@ -28,7 +28,7 @@ import './AdminStudioPage.scss';
 export default function AdminStudioPage() {
   const { user, isSuperAdmin, canEdit } = useAuth();
   const [activeTab, setActiveTab] = useState('projects'); // Default to projects per user interest
-  const [projects, setProjects] = useState(cmsService.getProjects());
+  const [projects, setProjects] = useState(cmsService.getProjects() || []);
   const [submissions, setSubmissions] = useState([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
   const [brand, setBrand] = useState(cmsService.getBrand());
@@ -58,8 +58,7 @@ export default function AdminStudioPage() {
   useEffect(() => {
     loadSubmissions();
     const unsub = cmsService.subscribe('*', () => {
-      setProjects(cmsService.getProjects());
-      setBrand(cmsService.getBrand());
+      setProjects(cmsService.getProjects() || []);
       const b = cmsService.getBrand();
       setBrand(b);
       setBrandForm(b);
@@ -186,7 +185,7 @@ export default function AdminStudioPage() {
                 onClick={() => setActiveTab('projects')}
               >
                 <FileText size={18} />
-                <span>Production Projects ({projects.length})</span>
+                <span>Production Projects ({projects?.length || 0})</span>
               </button>
 
               <button

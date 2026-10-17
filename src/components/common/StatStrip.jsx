@@ -29,22 +29,26 @@ export default function StatStrip({ stats: initialStats, theme = 'light' }) {
       setStats(initialStats);
       return;
     }
-    setStats(cmsService.getTrustStats());
     const unsub = cmsService.subscribe('trust_stats', (newStats) => {
-      if (newStats) setStats(newStats);
+      setStats(newStats);
     });
-    return unsub;
+    return () => unsub();
   }, [initialStats]);
+
+  const statList = Array.isArray(stats) ? stats : [];
+  if (statList.length === 0) {
+    return null; // Don't render empty stat bar
+  }
 
   return (
     <section className={`stat-strip-section theme-${theme}`} aria-label="Institutional Key Statistics">
       <div className="container">
         <div className="stat-strip-container">
-          {stats.map((stat, idx) => (
+          {statList.map((stat, idx) => (
             <StatItem
               key={stat.id || idx}
               stat={stat}
-              isLast={idx === stats.length - 1}
+              isLast={idx === statList.length - 1}
             />
           ))}
         </div>
@@ -52,4 +56,3 @@ export default function StatStrip({ stats: initialStats, theme = 'light' }) {
     </section>
   );
 }
-

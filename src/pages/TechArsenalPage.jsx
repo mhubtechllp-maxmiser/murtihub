@@ -1,11 +1,18 @@
-import React from 'react';
-import { techArsenalData } from '../data/techArsenalData';
+import React, { useState, useEffect } from 'react';
+import { cmsService } from '../services/cmsService';
 import TechModuleGrid from '../components/tech/TechModuleGrid';
 import CTASection from '../components/common/CTASection';
 import './TechArsenalPage.scss';
 
 export default function TechArsenalPage() {
-  const { heading, subheading, description } = techArsenalData;
+  const [arsenalData, setArsenalData] = useState(cmsService.getTechArsenal());
+
+  useEffect(() => {
+    const unsub = cmsService.subscribe('tech_arsenal', setArsenalData);
+    return () => unsub();
+  }, []);
+
+  const { heading, subheading, description } = arsenalData || {};
 
   return (
     <div className="tech-arsenal-page-root">
@@ -33,4 +40,3 @@ export default function TechArsenalPage() {
     </div>
   );
 }
-

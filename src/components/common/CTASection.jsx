@@ -1,7 +1,7 @@
-﻿import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Mail, Clock, ShieldCheck } from 'lucide-react';
-import { brandData } from '../../data/brand';
+import { cmsService } from '../../services/cmsService';
 import './CTASection.scss';
 
 export default function CTASection({
@@ -10,6 +10,13 @@ export default function CTASection({
   description = "Have an idea, system or digital challenge? Let's engineer the next step. Direct partner consultation with senior systems architects.",
   theme = 'dark'
 }) {
+  const [brand, setBrand] = useState(cmsService.getBrand());
+
+  useEffect(() => {
+    const unsub = cmsService.subscribe('brand', setBrand);
+    return () => unsub();
+  }, []);
+
   return (
     <section className="cta-section-wrapper" aria-label="Initiate Engagement">
       <div className={`cta-card theme-${theme}`}>
@@ -23,7 +30,7 @@ export default function CTASection({
             <div className="cta-guarantees">
               <div className="guarantee-item">
                 <Clock size={15} className="guarantee-icon" />
-                <span>Response SLA: {brandData.responseSLA}</span>
+                <span>Response SLA: {brand.responseSLA || '< 24 Hours'}</span>
               </div>
               <div className="guarantee-item">
                 <ShieldCheck size={15} className="guarantee-icon" />
@@ -38,9 +45,9 @@ export default function CTASection({
               <ArrowRight size={16} className="btn-hover-arrow" />
             </Link>
 
-            <a href={`mailto:${brandData.email}`} className="cta-direct-email">
+            <a href={`mailto:${brand.email || 'enquiry@murtihub.co.in'}`} className="cta-direct-email">
               <Mail size={16} />
-              <span>{brandData.email}</span>
+              <span>{brand.email || 'enquiry@murtihub.co.in'}</span>
             </a>
           </div>
         </div>

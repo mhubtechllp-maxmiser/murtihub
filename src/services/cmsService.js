@@ -1,70 +1,129 @@
 // ============================================================================
-// MURTIHUB TECHNOLOGIES — CMS DATA SERVICE & REACTIVITY (MONGODB SYNC)
+// MURTIHUB TECHNOLOGIES — STRICT MONGODB-BACKED CMS DATA SERVICE
+// ============================================================================
+// Single source of truth: MongoDB Atlas (Database: MurtihubNew)
+// Automatic mock fallbacks and mock database writes have been removed.
 // ============================================================================
 
-import { brandData } from '../data/brand';
-import { initialHeroSlides } from '../data/heroSlides';
-import { trustStats } from '../data/trustStats';
-import { journeyStages } from '../data/journeyStages';
-import { servicesData } from '../data/servicesData';
-import { projectsData } from '../data/projectsData';
-import { architectureData } from '../data/architectureData';
-
-import { covenantData } from '../data/covenantData';
-import { techArsenalData } from '../data/techArsenalData';
-import { leadershipData } from '../data/leadershipData';
 import { api } from './api';
+import { mainNavigation, footerNavigation } from '../data/navigation';
+import { journeyStages as staticJourneyStages } from '../data/journeyStages';
+import { architectureData as staticArchitectureData } from '../data/architectureData';
+import { techArsenalData as staticTechArsenalData } from '../data/techArsenalData';
 
-const STORAGE_KEY_PREFIX = 'murtihub_cms_v16_';
+const CACHE_PREFIX = 'murtihub_cms_db_v1_';
+const OLD_STORAGE_PREFIX = 'murtihub_cms_v16_';
 
-function getStored(key, defaultValue) {
+// Purge any legacy mock cache saved in earlier builds
+if (typeof window !== 'undefined') {
   try {
-    const item = localStorage.getItem(STORAGE_KEY_PREFIX + key);
-    return item ? JSON.parse(item) : defaultValue;
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(OLD_STORAGE_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
   } catch (e) {
-    console.warn(`Error reading CMS key ${key}:`, e);
-    return defaultValue;
+    // Ignore storage access errors
   }
 }
 
-function setStored(key, value) {
-  try {
-    localStorage.setItem(STORAGE_KEY_PREFIX + key, JSON.stringify(value));
-    notifyListeners(key, value);
-  } catch (e) {
-    console.error(`Error saving CMS key ${key}:`, e);
-  }
-}
+// In-memory state holding real MongoDB CMS content
+const cmsState = {
+  projects: null,
+  trust_stats: null,
+  leadership: null,
+  hero_slides: null,
+  services: null,
+  brand: null,
+  covenant: null,
+  navigation: null,
+  seo: null,
+  journey_stages: null,
+  architecture: null,
+  tech_arsenal: null,
+};
+
+// Sync lifecycle status
+const syncStatus = {
+  isLoading: true,
+  isInitialized: false,
+  isError: false,
+  error: null,
+  lastSyncedAt: null,
+};
 
 // Reactivity listeners
 const listeners = new Map();
 
 function notifyListeners(key, value) {
   if (listeners.has(key)) {
-    listeners.get(key).forEach((cb) => cb(value));
+    listeners.get(key).forEach((cb) => {
+      try {
+        cb(value);
+      } catch (e) {
+        console.error(`Error in CMS subscriber for "${key}":`, e);
+      }
+    });
   }
   if (listeners.has('*')) {
-    listeners.get('*').forEach((cb) => cb(key, value));
+    listeners.get('*').forEach((cb) => {
+      try {
+        cb(key, value);
+      } catch (e) {
+        console.error('Error in wildcard CMS subscriber:', e);
+      }
+    });
   }
 }
 
-// Map of default initial fallback datasets
-const defaultDatasets = {
-  brand: brandData,
+function getCached(key) {
+  try {
+    const item = localStorage.getItem(CACHE_PREFIX + key);
+    return item ? JSON.parse(item) : null;
+  } catch (e) {
+    return null;
+  }
+}
 
-  trust_stats: trustStats,
-  journey_stages: journeyStages,
+function setCached(key, value) {
+  try {
+    if (value === undefined || value === null) {
+      localStorage.removeItem(CACHE_PREFIX + key);
+    } else {
+      localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(value));
+    }
+  } catch (e) {
+    console.warn(`[CMS Cache] Could not cache key "${key}":`, e.message);
+  }
+}
 
-  projects: projectsData,
-  architecture: architectureData,
+// Seed in-memory state from verified previous DB cache if available
+if (typeof window !== 'undefined') {
+  [
+    'projects',
+    'trust_stats',
+    'leadership',
+    'hero_slides',
+    'services',
+    'brand',
+    'covenant',
+    'navigation',
+    'seo',
+    'journey_stages',
+    'architecture',
+    'tech_arsenal',
+  ].forEach((key) => {
+    const cached = getCached(key);
+    if (cached !== null) {
+      cmsState[key] = cached;
+    }
+  });
+}
 
-  covenant: covenantData,
-  tech_arsenal: techArsenalData,
-  leadership: leadershipData,
-};
+let activeSyncPromise = null;
 
 export const cmsService = {
-  // Subscribers
+  // Subscribe to updates for a specific key, or '*' for any change
   subscribe(key, callback) {
     if (!listeners.has(key)) {
       listeners.set(key, new Set());
@@ -75,40 +134,117 @@ export const cmsService = {
     };
   },
 
-  // Sync all CMS keys from MongoDB on initial mount
-  async initRemoteSync() {
-    try {
-      const res = await api.cms.getAll();
-      if (res.success && res.data) {
-        Object.entries(res.data).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            setStored(key, value);
-          }
-        });
+  // Get current sync lifecycle status
+  getStatus() {
+    return { ...syncStatus };
+  },
+
+  // Sync all CMS collections from MongoDB
+  async initRemoteSync(force = false) {
+    if (activeSyncPromise && !force) {
+      return activeSyncPromise;
+    }
+
+    syncStatus.isLoading = true;
+    syncStatus.isError = false;
+    syncStatus.error = null;
+    notifyListeners('__status__', syncStatus);
+
+    activeSyncPromise = (async () => {
+      try {
+        const res = await api.cms.getAll();
+        if (res && res.success && res.data) {
+          const data = res.data;
+
+          cmsState.projects = Array.isArray(data.projects) ? data.projects : [];
+          cmsState.trust_stats = Array.isArray(data.trust_stats) ? data.trust_stats : [];
+          cmsState.leadership = data.leadership && Array.isArray(data.leadership.leaders)
+            ? data.leadership
+            : { leaders: Array.isArray(data.leadership) ? data.leadership : [] };
+          cmsState.hero_slides = Array.isArray(data.hero_slides) ? data.hero_slides : [];
+          cmsState.services = Array.isArray(data.services) ? data.services : [];
+          cmsState.brand = data.brand || null;
+          cmsState.covenant = data.covenant || null;
+          cmsState.navigation = data.navigation || null;
+          cmsState.seo = data.seo || null;
+          cmsState.journey_stages = data.journey_stages || null;
+          cmsState.architecture = data.architecture || null;
+          cmsState.tech_arsenal = data.tech_arsenal || null;
+
+          // Cache verified database responses for offline resilience
+          Object.entries(cmsState).forEach(([key, val]) => {
+            if (val !== null && val !== undefined) {
+              setCached(key, val);
+              notifyListeners(key, val);
+            }
+          });
+
+          syncStatus.isLoading = false;
+          syncStatus.isInitialized = true;
+          syncStatus.isError = false;
+          syncStatus.lastSyncedAt = Date.now();
+          notifyListeners('*', cmsState);
+          notifyListeners('__status__', syncStatus);
+          return { success: true, data: cmsState };
+        } else {
+          throw new Error(res?.message || 'Invalid CMS response structure from MongoDB');
+        }
+      } catch (err) {
+        console.error('[CMS Sync Error]: Failed to fetch website content from MongoDB:', err.message);
+        syncStatus.isLoading = false;
+        syncStatus.isError = true;
+        syncStatus.error = err.message || 'Failed to connect to backend CMS service';
+        notifyListeners('__status__', syncStatus);
+        throw err;
+      } finally {
+        activeSyncPromise = null;
       }
-    } catch (err) {
-      console.log('[CMS Sync] Using local cache / baseline data (backend offline or uninitialized)');
-    }
+    })();
+
+    return activeSyncPromise;
   },
 
-  // Async helper to save key locally and sync to MongoDB
+  // Authorized intentional save action to MongoDB
   async persistKey(key, data) {
-    setStored(key, data);
-    try {
-      await api.cms.update(key, data);
-    } catch (err) {
-      console.warn(`[CMS API] Failed to sync ${key} to MongoDB:`, err.message);
+    if (data === undefined || data === null) {
+      throw new Error(`Cannot persist undefined or null data for key "${key}"`);
     }
+
+    // Call backend PUT /api/cms/:key (protected with JWT & RBAC)
+    const res = await api.cms.update(key, data);
+    if (!res || !res.success) {
+      throw new Error(res?.message || `Failed to update "${key}" in MongoDB`);
+    }
+
+    // Update in-memory state and cache upon confirmed persistence
+    cmsState[key] = data;
+    setCached(key, data);
+    notifyListeners(key, data);
+    notifyListeners('*', cmsState);
+
+    return res;
   },
 
-  // Brand Data
+  // ==========================================
+  // BRAND STANDARDS
+  // ==========================================
   getBrand() {
-    const brand = getStored('brand', brandData);
-    if (brand && brand.email === 'info@murtihub.co.in') {
-      brand.email = 'enquiry@murtihub.co.in';
-      setStored('brand', brand);
-    }
-    return brand;
+    return (
+      cmsState.brand || {
+        companyName: 'MurtiHub Technologies',
+        shortName: 'MurtiHub',
+        tagline: 'Engineering A More Open Tomorrow',
+        headline: 'Ideas Today\nImpact Tomorrow',
+        description:
+          'We build digital solutions, scalable web systems, and modern products that help businesses innovate and grow.',
+        email: 'enquiry@murtihub.co.in',
+        responseSLA: '< 24 Hours',
+        incorporationYear: '2026',
+        legalStructure: 'Incorporated Enterprise',
+        copyright: '© 2026 MurtiHub Technologies. All rights reserved.',
+        motto: 'Craftsmanship over commodity',
+      }
+    );
   },
   async updateBrand(newData) {
     const current = this.getBrand();
@@ -117,30 +253,40 @@ export const cmsService = {
     return updated;
   },
 
-  // Hero Slides (Static - Not editable or in MongoDB)
+  // ==========================================
+  // HERO SLIDES (Dynamic from MongoDB hero_slides)
+  // ==========================================
   getHeroSlides() {
-    return initialHeroSlides;
+    return cmsState.hero_slides;
+  },
+  async updateHeroSlides(slides) {
+    await this.persistKey('hero_slides', slides);
+    return slides;
   },
 
-  // Executive Leadership Profiles
+  // ==========================================
+  // EXECUTIVE LEADERSHIP (Dynamic from MongoDB leaders)
+  // ==========================================
   getLeadership() {
-    return getStored('leadership', leadershipData);
+    return cmsState.leadership;
   },
   async updateLeadership(newLeadershipData) {
     await this.persistKey('leadership', newLeadershipData);
     return newLeadershipData;
   },
 
-  // Trust Statistics
+  // ==========================================
+  // TRUST STATISTICS (Dynamic from MongoDB stats)
+  // ==========================================
   getTrustStats() {
-    return getStored('trust_stats', trustStats);
+    return cmsState.trust_stats;
   },
   async updateTrustStats(stats) {
     await this.persistKey('trust_stats', stats);
     return stats;
   },
   async addTrustStat(newStat) {
-    const current = this.getTrustStats();
+    const current = this.getTrustStats() || [];
     const stat = {
       id: `stat-${Date.now()}`,
       number: newStat.number || 10,
@@ -153,46 +299,56 @@ export const cmsService = {
     return updated;
   },
   async deleteTrustStat(id) {
-    const current = this.getTrustStats();
+    const current = this.getTrustStats() || [];
     if (current.length <= 1) {
-      alert('At least one statistic must remain.');
-      return current;
+      throw new Error('At least one statistic must remain published.');
     }
     const updated = current.filter((s) => s.id !== id);
     await this.persistKey('trust_stats', updated);
     return updated;
   },
 
-  // Journey Stages
-  getJourneyStages() {
-    return getStored('journey_stages', journeyStages);
-  },
-
-  // Services (Static - Not editable or in MongoDB)
+  // ==========================================
+  // SERVICES (Dynamic from MongoDB services)
+  // ==========================================
   getServices() {
-    return servicesData;
+    return cmsState.services;
   },
   getServiceBySlug(slug) {
-    return servicesData.find((s) => s.slug === slug || s.id === slug);
+    const services = this.getServices();
+    if (!services || !Array.isArray(services)) return null;
+    return services.find((s) => s.slug === slug || s.id === slug) || null;
+  },
+  async updateServices(services) {
+    await this.persistKey('services', services);
+    return services;
   },
 
-  // Projects (Dynamic)
+  // ==========================================
+  // PROJECTS (Dynamic from MongoDB projects)
+  // ==========================================
   getProjects() {
-    return getStored('projects', projectsData);
+    return cmsState.projects;
   },
   getProjectBySlug(slug) {
     const projects = this.getProjects();
-    return projects.find((p) => p.slug === slug || p.id === slug);
+    if (!projects || !Array.isArray(projects)) return null;
+    return projects.find((p) => p.slug === slug || p.id === slug) || null;
   },
   async saveProjects(projects) {
     await this.persistKey('projects', projects);
     return projects;
   },
   async addProject(newProj) {
-    const current = this.getProjects();
+    const current = this.getProjects() || [];
     const nextNum = current.length + 1;
     const formattedId = nextNum < 10 ? `0${nextNum}` : `${nextNum}`;
-    const slug = newProj.slug || newProj.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const slug =
+      newProj.slug ||
+      newProj.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
     const project = {
       id: formattedId,
       slug,
@@ -200,17 +356,21 @@ export const cmsService = {
       title: newProj.title || 'Institutional System Deployment',
       status: newProj.status || 'Live',
       gridSpan: newProj.gridSpan || 'span-12',
-      image: newProj.image || '/images/hero/hero-1.jpg',
+      image: newProj.image || '/images/hero/hero-bg.webp',
       liveUrl: newProj.liveUrl || 'https://murtihub.co.in',
       description: newProj.description || 'Institutional project summary description.',
       overview: newProj.overview || newProj.description || '',
       challenge: newProj.challenge || '',
       engineeringApproach: newProj.engineeringApproach || '',
       architecture: newProj.architecture || '',
-      metrics: Array.isArray(newProj.metrics) ? newProj.metrics : [
-        { value: '100%', label: 'Delivery Integrity', sub: 'Verified' },
-      ],
-      stack: Array.isArray(newProj.stack) ? newProj.stack : (newProj.stack ? newProj.stack.split(',').map((s) => s.trim()) : ['React', 'Node.js']),
+      metrics: Array.isArray(newProj.metrics)
+        ? newProj.metrics
+        : [{ value: '100%', label: 'Delivery Integrity', sub: 'Verified' }],
+      stack: Array.isArray(newProj.stack)
+        ? newProj.stack
+        : newProj.stack
+        ? newProj.stack.split(',').map((s) => s.trim())
+        : ['React', 'Node.js'],
       outcome: newProj.outcome || '',
       relatedProjects: newProj.relatedProjects || [],
     };
@@ -219,116 +379,113 @@ export const cmsService = {
     return updated;
   },
   async updateProject(slug, updatedFields) {
-    const projects = this.getProjects();
+    const projects = this.getProjects() || [];
     const index = projects.findIndex((p) => p.slug === slug || p.id === slug);
     if (index !== -1) {
-      projects[index] = { ...projects[index], ...updatedFields };
-      await this.persistKey('projects', [...projects]);
-      return projects[index];
+      const updatedList = [...projects];
+      updatedList[index] = { ...updatedList[index], ...updatedFields };
+      await this.persistKey('projects', updatedList);
+      return updatedList[index];
     }
-    return null;
+    throw new Error(`Project with slug "${slug}" not found in database.`);
   },
   async deleteProject(slug) {
-    const projects = this.getProjects();
+    const projects = this.getProjects() || [];
     if (projects.length <= 1) {
-      alert('At least one project must remain published.');
-      return projects;
+      throw new Error('At least one project must remain published.');
     }
     const updated = projects.filter((p) => p.slug !== slug && p.id !== slug);
     await this.persistKey('projects', updated);
     return updated;
   },
 
-  // Architecture Data
-  getArchitecture() {
-    return getStored('architecture', architectureData);
-  },
-
-  
-
-  // Covenant Data
+  // ==========================================
+  // COVENANT (Dynamic from MongoDB site_contents)
+  // ==========================================
   getCovenant() {
-    return getStored('covenant', covenantData);
+    return cmsState.covenant;
+  },
+  async updateCovenant(covenantData) {
+    await this.persistKey('covenant', covenantData);
+    return covenantData;
   },
 
-  // Tech Arsenal
-  getTechArsenal() {
-    return getStored('tech_arsenal', techArsenalData);
-  },
-
-  // Contact Submissions
-  async getSubmissions() {
-    try {
-      const res = await api.contact.list();
-      if (res.success && res.submissions) {
-        setStored('contact_submissions', res.submissions);
-        return res.submissions;
+  // ==========================================
+  // NAVIGATION (Dynamic from MongoDB site_contents)
+  // ==========================================
+  getNavigation() {
+    return (
+      cmsState.navigation || {
+        main: mainNavigation,
+        footer: footerNavigation,
       }
-    } catch (err) {
-      console.log('[Submissions] Loading cached submissions:', err.message);
+    );
+  },
+  async updateNavigation(navigationData) {
+    await this.persistKey('navigation', navigationData);
+    return navigationData;
+  },
+
+  // ==========================================
+  // ARCHITECTURE & TECH ARSENAL & JOURNEY
+  // ==========================================
+  getJourneyStages() {
+    return cmsState.journey_stages || staticJourneyStages;
+  },
+  getArchitecture() {
+    return cmsState.architecture || staticArchitectureData;
+  },
+  getTechArsenal() {
+    return cmsState.tech_arsenal || staticTechArsenalData;
+  },
+
+  // ==========================================
+  // CONTACT SUBMISSIONS (Strict Real API)
+  // ==========================================
+  async getSubmissions() {
+    const res = await api.contact.list();
+    if (res && res.success && res.submissions) {
+      return res.submissions;
     }
-    return getStored('contact_submissions', []);
+    return [];
   },
 
   async submitContactForm(formData) {
-    try {
-      const res = await api.contact.submit(formData);
-      return res;
-    } catch (err) {
-      console.error('[Contact Form API Error]:', err);
-      // Fallback local save
-      const submissions = getStored('contact_submissions', []);
-      const newSubmission = {
-        _id: `local-${Date.now()}`,
-        name: formData.name,
-        email: formData.email,
-        company: formData.company,
-        projectType: formData.projectType,
-        message: formData.message,
-        status: 'Unread',
-        createdAt: new Date().toISOString(),
-      };
-      setStored('contact_submissions', [newSubmission, ...submissions]);
-      return { success: true, message: 'Message saved locally (offline mode)' };
-    }
+    // Submit directly to MongoDB backend without fake offline saving
+    const res = await api.contact.submit(formData);
+    return res;
   },
 
   async markSubmissionHandled(id) {
-    try {
-      await api.contact.updateStatus(id, 'Handled');
-    } catch (err) {
-      console.warn('Could not update status on backend:', err.message);
-    }
-    const submissions = getStored('contact_submissions', []);
-    const updated = submissions.map((sub) =>
-      (sub._id === id || sub.id === id) ? { ...sub, status: 'Handled' } : sub
-    );
-    setStored('contact_submissions', updated);
-    return updated;
+    await api.contact.updateStatus(id, 'Handled');
+    return this.getSubmissions();
   },
 
   async deleteSubmission(id) {
-    try {
-      await api.contact.delete(id);
-    } catch (err) {
-      console.warn('Could not delete on backend:', err.message);
-    }
-    const submissions = getStored('contact_submissions', []);
-    const updated = submissions.filter((sub) => sub._id !== id && sub.id !== id);
-    setStored('contact_submissions', updated);
-    return updated;
+    await api.contact.delete(id);
+    return this.getSubmissions();
   },
 
-  // Reset to initial baseline
-  resetToDefaults() {
-    Object.keys(defaultDatasets).forEach((k) => {
-      localStorage.removeItem(STORAGE_KEY_PREFIX + k);
-    });
+  // Clear local cache without resetting to mock datasets
+  clearCache() {
+    if (typeof window !== 'undefined') {
+      try {
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith(CACHE_PREFIX) || key.startsWith(OLD_STORAGE_PREFIX)) {
+            localStorage.removeItem(key);
+          }
+        });
+      } catch (e) {
+        // Ignore
+      }
+    }
     notifyListeners('*', null);
   },
 };
 
-// Initiate background sync on file load
+// Initiate remote database sync on file load
 if (typeof window !== 'undefined') {
-  cmsService.initRemoteSync();
+  cmsService.initRemoteSync().catch((err) => {
+    console.warn('[CMS Service] Initial MongoDB sync deferred:', err.message);
+  });
 }

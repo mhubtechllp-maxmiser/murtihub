@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
+import { cmsService } from '../../services/cmsService';
 import { mainNavigation } from '../../data/navigation';
-import { brandData } from '../../data/brand';
 import MobileMenu from './MobileMenu';
 import './Navbar.scss';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [brand, setBrand] = useState(cmsService.getBrand());
+  const [navData, setNavData] = useState(cmsService.getNavigation());
   const location = useLocation();
 
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
+    const unsubBrand = cmsService.subscribe('brand', setBrand);
+    const unsubNav = cmsService.subscribe('navigation', setNavData);
+
     const handleScroll = () => {
       if (window.scrollY > 30) {
         setIsScrolled(true);
@@ -25,13 +30,19 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      unsubBrand();
+      unsubNav();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Close mobile menu on page transition
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
+
+  const navItems = navData?.main || mainNavigation;
 
   return (
     <>
@@ -42,7 +53,7 @@ export default function Navbar() {
       >
         <div className="navbar-container">
           {/* Brand Logo & Name */}
-          <Link to="/" className="navbar-brand" aria-label="MurtiHub Technologies Home">
+          <Link to="/" className="navbar-brand" aria-label={`${brand.companyName || 'MurtiHub Technologies'} Home`}>
             <div className="brand-emblem-wrap">
               <img
                 src="/images/MHLOGO.png"
@@ -53,7 +64,7 @@ export default function Navbar() {
               />
             </div>
             <div className="brand-titles">
-              <span className="brand-name">MurtiHub</span>
+              <span className="brand-name">{brand.shortName || 'MurtiHub'}</span>
               <span className="brand-sub">Technologies</span>
             </div>
           </Link>
@@ -61,7 +72,7 @@ export default function Navbar() {
           {/* Desktop Navigation Links */}
           <nav className="navbar-nav" aria-label="Main Navigation">
             <ul className="nav-list">
-              {mainNavigation.map((item) => (
+              {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
                   <NavLink
                     to={item.path}
@@ -101,9 +112,8 @@ export default function Navbar() {
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        navigation={mainNavigation}
+        navigation={navItems}
       />
     </>
   );
 }
-

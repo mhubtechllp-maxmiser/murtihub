@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowUpRight } from 'lucide-react';
 import { cmsService } from '../../services/cmsService';
-import { footerNavigation } from '../../data/navigation';
 import './Footer.scss';
 
 export default function Footer() {
@@ -10,7 +9,7 @@ export default function Footer() {
 
   useEffect(() => {
     const unsub = cmsService.subscribe('brand', setBrand);
-    return unsub;
+    return () => unsub();
   }, []);
 
   return (

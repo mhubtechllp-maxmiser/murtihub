@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import { cmsService } from '../services/cmsService';
-import SectionHeading from '../components/common/SectionHeading';
 import ProjectShowcase from '../components/projects/ProjectShowcase';
 import CTASection from '../components/common/CTASection';
 import './ProjectsPage.scss';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState(cmsService.getProjects());
+  const [syncStatus, setSyncStatus] = useState(cmsService.getStatus());
 
   useEffect(() => {
-    const unsub = cmsService.subscribe('projects', setProjects);
-    return () => unsub();
+    const unsubProjects = cmsService.subscribe('projects', setProjects);
+    const unsubStatus = cmsService.subscribe('__status__', setSyncStatus);
+    return () => {
+      unsubProjects();
+      unsubStatus();
+    };
   }, []);
+
+  const handleRetry = () => {
+    cmsService.initRemoteSync(true).catch(() => {});
+  };
+
+  const projectList = Array.isArray(projects) ? projects : [];
 
   return (
     <div className="projects-page-root">
@@ -32,7 +43,29 @@ export default function ProjectsPage() {
       {/* Projects Editorial Showcase */}
       <section className="section section-light projects-showcase-section">
         <div className="container">
-          <ProjectShowcase projects={projects} />
+          {syncStatus.isError && (
+            <div className="cms-status-banner cms-error" role="alert" style={{ marginBottom: '2rem' }}>
+              <AlertCircle size={18} />
+              <span>Failed to load projects from MongoDB: {syncStatus.error}</span>
+              <button type="button" className="retry-btn" onClick={handleRetry}>
+                <RefreshCw size={14} />
+                <span>Retry</span>
+              </button>
+            </div>
+          )}
+
+          {projectList.length > 0 ? (
+            <ProjectShowcase projects={projectList} />
+          ) : syncStatus.isLoading ? (
+            <div className="cms-section-loading" style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+              <div className="loading-spinner" style={{ margin: '0 auto 1rem' }} />
+              <p>Loading production projects from MongoDB...</p>
+            </div>
+          ) : (
+            <div className="cms-section-empty" style={{ textAlign: 'center', padding: '4rem 1rem', color: '#64748b' }}>
+              <p>No production projects are currently published in the database.</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -44,4 +77,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-
